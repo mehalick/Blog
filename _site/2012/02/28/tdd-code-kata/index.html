@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TDD Code Kata</title>
+  <meta name="author" content="Andy Mehalick">
+  <meta name="copyright" content="Andy Mehalick">
+  <meta name="description" content="The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit my...">
+  <meta itemprop="name" content="TDD Code Kata">
+  <meta itemprop="description" content="The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with Roy Osherove’s TekPub video series followed by his book The Art of Unit Testing I was aware of this string calculator TDD kata and knew that’s where I wanted to start.">
+  <meta itemprop="image" content="">
+  <meta property="og:title" content="TDD Code Kata">
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="https://andy.mehalick.com/2012/02/28/tdd-code-kata/">
+  <meta property="og:image" content="">
+  <meta property="og:site_name" content="Andy Mehalick">
+  <meta property="og:description" content="The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with Roy Osherove’s TekPub video series followed by his book The Art of Unit Testing I was aware of this string calculator TDD kata and knew that’s where I wanted to start.">
+  <meta property="fb:admins" content="">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400">
+  <link rel="canonical" href="https://andy.mehalick.com/2012/02/28/tdd-code-kata/">
+  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="https://andy.mehalick.com/feed.xml">
+  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+  
+  <body>
+  
+    <header>
+    <nav>
+        <div class="page-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>        
+            <a id="rss" href="https://andy.mehalick.com/feed.xml" title="Subscribe to RSS"><img src="/content/images/rss-icon.png" alt="rss icon" width="32" height="32" /></a>
+            <br class="clearer"/>
+        </div>
+    </nav>  
+</header>
+  
+    <main id="main" class="page-width">
+        <div class="padded">
+            <div id="sidebar">
+                <img src="/content/images/photo.jpg" alt="Andy Mehalick" width="140" height="170" />
+            </div>
+            <div id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, Designer</h2>
+                <hr />
+            </div>
+            <div id="content">
+              
+              <article class="blog-post">
+    <header>
+        <h1 class="header"><a href="">TDD Code Kata</a></h1>
+        <div class="subheader">
+            <time datetime="2012-02-28 00:00:00 +0300" pubdate>28 February 2012</time>   
+        </div>
+        <!--<ul class="social">
+            <li><div class="fb-like" data-href="" data-send="true" data-show-faces="false"></div></li>
+        </ul> -->
+        <br class="clearer" />
+    </header>
+    <p>The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with <a href="https://tekpub.com/productions/tdd">Roy Osherove’s TekPub video series</a> followed by his book <a href="https://www.manning.com/osherove/">The Art of Unit Testing</a> I was aware of this <a href="https://osherove.com/tdd-kata-1">string calculator TDD kata</a> and knew that’s where I wanted to start.</p>
+
+<p>Working remotely in a +8 hour time zone made it easy to tack an extra 30 minutes onto my work day and commit to waking up my fingers and brain with a daily code kata first thing in the morning. I decided to keep a log of my progress and note any shortcuts or approaches I learned along the way. I wanted to not only exercise my TDD skills but also my efficiency with Visual Studio and ReSharper.</p>
+
+<p>On day one I started the exercise mouseless and that meant a small learning curve; adjusting was easy enough though. To pile on the pain I also decided engage my katas using only a proper touch typing technique. My natural typing style is more akin to a predator drone, hovering and attacking with calculated fury. Yes, most of my fingers get in on the action but collateral damage is high and it is far from touch typing. Actually typing correctly may have been the hardest part of this challenge. </p>
+
+<p>The following screencast is my recording of the final kata on day 20 with my TDD and ReSharper commentary.</p>
+
+<h2 id="screencast">Screencast</h2>
+
+<iframe height="523" src="https://player.vimeo.com/video/37580009?title=0&amp;byline=0&amp;portrait=0&amp;color=BFD9E5" frameborder="0" width="930" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+
+<h2 id="daily-log">Daily Log</h2>
+
+<table border="1" cellspacing="0" cellpadding="2">
+
+<thead>
+
+<tr>
+
+<th>Day</th>
+
+<th>Progress</th>
+
+<th>Learned</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>0</td>
+
+<td colspan="2">
+
+<p>I didn’t count this as an official day, I just spent time learning keyboard shortcuts and how to navigate Visual Studio without a mouse. I learned the existing keyboard shortcuts:</p>
+
+<p>Ctrl-Shift-N – New Project<br />
+Ctrl-R, V – ReSharper’s Introduce Variable</p>
+
+<p>… and created some new ones:</p>
+
+<p>Ctrl-P, Ctrl-M – Open Package Manager Console<br />  
+Ctrl-R, Ctrl-T – Run TestDriven.NET Tests<br />  
+Ctrl-R, Ctrl-A – Run Tests Again</p>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>1</td>
+
+<td>Steps 1 – 3</td>
+
+</tr>
+
+<tr>
+
+<td>2</td>
+
+<td>Steps 1 – 3</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>3</td>
+
+<td>Steps 1 – 3 and started 4</td>
+
+<td>Alt-\ – ReSharper’s Navigate Members</td>
+
+</tr>
+
+<tr>
+
+<td>4</td>
+
+<td>Steps 1 – 3 and started 4</td>
+
+<td>Ctrl-R, P – ReSharper’s Introduce Parameter</td>
+
+</tr>
+
+<tr>
+
+<td>5</td>
+
+<td>Steps 1 – 4 </td>
+
+<td>Ctrl-R, V – ReSharper’s Introduce Variable</td>
+
+</tr>
+
+<tr>
+
+<td>6</td>
+
+<td>Steps 1 – 4 and started 5</td>
+
+<td>
+
+Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch for continuous testing.
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>7</td>
+
+<td>Steps 1 – 4 and started 5</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>8</td>
+
+<td>Steps 1 – 5 FINISHED!</td>
+
+<td>Gave up on NCrunch, just not for me.</td>
+
+</tr>
+
+<tr>
+
+<td>9</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>10</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>11</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>12</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>13</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>14</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>15</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>16</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>17</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>18</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>19</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+<tr>
+
+<td>20</td>
+
+<td>Steps 1 – 5 Finished</td>
+<td></td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</article>
+
+<div id="disqus_thread"></div>
+
+<script>
+    //var disqus_developer = parseInt(@(Request.IsLocal ? 1 : 0));
+    var disqus_shortname = "andymehalick";
+    var disqus_identifier = "4";
+    var disqus_title = "TDD Code Kata";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+              
+            </div>       
+        </div>
+    </main>
+  
+    <footer id="site-footer">
+    All site design and development by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a>.
+</footer>
+  
+    <div id="fb-root"></div>
+  
+  </body>
+
+</html>

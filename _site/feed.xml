@@ -5,31 +5,780 @@
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
     <link>https://andy.mehalick.com/</link>
     <atom:link href="https://andy.mehalick.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 19 Sep 2015 14:01:21 +0300</pubDate>
-    <lastBuildDate>Sat, 19 Sep 2015 14:01:21 +0300</lastBuildDate>
+    <pubDate>Sat, 19 Sep 2015 20:45:37 +0300</pubDate>
+    <lastBuildDate>Sat, 19 Sep 2015 20:45:37 +0300</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
-        <title>Welcome to Jekyll!</title>
-        <description>&lt;p&gt;!You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+        <title>EF6: Adding a Created Date/Time Column Automatically with Code First Migrations</title>
+        <description>&lt;p&gt;Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:&lt;/p&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/8/2-6-2014%2012-07-35%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;p&gt;I’m using UTC dates so I don’t have to worry about the time zone of the server where this ultimately lives and calling the column &lt;strong&gt;CreatedUtc&lt;/strong&gt; because it’s concise but clear.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;p&gt;So let’s get started, I’ll create a new class library in Visual Studio called CreatedUtcColumnDemo and immediately add Entity Framework via Nuget.&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Install-Package EntityFramework&lt;/pre&gt;
+
+&lt;p&gt;Now we’ll add our first entity and data context, notice the &lt;strong&gt;CreatedUtc&lt;/strong&gt; property with data annotations:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;CreatedUtcColumnDemo&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Andy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Product&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProductId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Required&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;DatabaseGenerated&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DatabaseGeneratedOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Computed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DateTime&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CreatedUtc&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DataContext&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbContext&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Products&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Because we’ll ultimately want our &lt;strong&gt;CreatedUtc&lt;/strong&gt; property on all entities let’s extract an abstract base class (EntityBase) and have Product inherit from it:&lt;/p&gt;
 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;CreatedUtcColumnDemo&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Product&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EntityBase&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ProductId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EntityBase&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Required&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;DatabaseGenerated&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DatabaseGeneratedOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Computed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DateTime&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CreatedUtc&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DataContext&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbContext&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Products&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we’ll enable migrations and create a single migration to create our Products table:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Enable-Migrations&lt;/pre&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Add-Migration AddProduct&lt;/pre&gt;
+
+&lt;p&gt;At this point our solution looks like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/8/2-6-2014%2011-52-49%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We now want to ensure that when we update our database via code first migrations  our &lt;strong&gt;CreatedUtc&lt;/strong&gt; property gets a default value, in this case GETUTCDATE(). One option would be to adjust the migration class manually, for each entity we &lt;em&gt;could&lt;/em&gt; update CreateTable(), notice the addition of defaultValueSql: “GETUTCDATE()”.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;partial&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddProduct&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbMigration&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Up&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;CreateTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;&quot;dbo.Products&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;ProductId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;CreatedUtc&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;DateTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nullable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;defaultValueSql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;GETUTCDATE()&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;PrimaryKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ProductId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Down&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;DropTable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dbo.Products&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This would become tedious and error prone as we start to add new entities though. A more efficient approach would be to create a custom SqlServerMigrationSqlGenerator and update our migration configuration to use this. Jumping right to the code:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;CreatedUtcColumnDemo.Migrations&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sealed&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Configuration&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbMigrationsConfiguration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;AutomaticMigrationsEnabled&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nf&quot;&gt;SetSqlGenerator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;System.Data.SqlClient&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;CustomSqlServerMigrationSqlGenerator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomSqlServerMigrationSqlGenerator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SqlServerMigrationSqlGenerator&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AddColumnOperation&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addColumnOperation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addColumnOperation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addColumnOperation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CreateTableOperation&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createTableOperation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createTableOperation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;createTableOperation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IEnumerable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ColumnModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columnModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columnModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PropertyModel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;CreatedUtc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DefaultValueSql&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;GETUTCDATE()&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice how CustomSqlServerMigrationSqlGenerator inherits from SqlServerMigrationSqlGenerator and overrides two Generate(…) methods. We then set our custom generator to the default for our project via SetSqlGenerator(“System.Data.SqlClient”, new CustomSqlServerMigrationSqlGenerator()).&lt;/p&gt;
+
+&lt;p&gt;Lastly, we’ll update our local database and we’re done.&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Update-Database&lt;/pre&gt;
+
+&lt;p&gt;Now, every time we create a new entity we inherit from EntityBase, when we update our database with migrations it will always add a &lt;strong&gt;CreatedUtc&lt;/strong&gt; column with a default value of GETUTCDATE().&lt;/p&gt;
+
+&lt;p&gt;You can find the demo source code at &lt;a href=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot; title=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot;&gt;https://github.com/andy-mehalick/CreatedUtcColumnDemo&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 18 Sep 2015 13:36:09 +0300</pubDate>
-        <link>https://andy.mehalick.com/2015/09/18/welcome-to-jekyll/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2015/09/18/welcome-to-jekyll/</guid>
+        <pubDate>Thu, 06 Feb 2014 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Localizing Entity Framework POCO Properties with JSON - Part 1</title>
+        <description>&lt;p&gt;It’s day #1 on a new project demanding my favorite requirement: localization yay! The yay emphasize is mine because localization presents some thorny technical challenges that often pull along a trailer load of complexity. Framework tools make many of the localization tasks a breeze but there’s always that one piece just beyond .NET’s reach: storing localized text in a database. Since I’ve spent far too many hours (days?) wrestling with lookup table and lookup tables for lookup table solutions it’s time to start this project off with a simple and elegant solution – one that plays nice with Entity Framework and maybe even brings its own UI to the party.&lt;/p&gt;
+
+&lt;p&gt;My requirements are simple: I’m using EF code first and will need to store entities having multilanguage properties… and I want to work with a super-simple, elegant, unobtrusive API that reads like poetry. Spoiler alert — we’re bringing JSON to the party along with my new favorite NuGet package (ok dislaimer I wrote it).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/localized-property.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s jump in — this tutorial will ditch the too-popular generic lookup table approach and store localized text for entities as key/value serialized JSON. Our JSON is simple, readable, and searchable. We’ll then use some simple extension methods from the NuGet package &lt;a href=&quot;https://www.nuget.org/packages/OrangeJetpack.Localization&quot;&gt;OrangeJetpack.Localization&lt;/a&gt; to make getting and setting our localized text a breeze.&lt;/p&gt;
+
+&lt;p&gt;To peak ahead just a bit we’ll be using a regular EF POCO model and code-first migrations. We’ll work with an entity &lt;strong&gt;Planet&lt;/strong&gt; having a &lt;strong&gt;PlanetId&lt;/strong&gt; and a &lt;strong&gt;Name&lt;/strong&gt; property that will eventually be localized to English, Russian, and Japanese. Ultimately it will look like this in our database:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%207-15-38%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setup&quot;&gt;Setup&lt;/h2&gt;
+
+&lt;p&gt;To start things off new-up a fresh ASP.NET MVC web application. You can play along at home or download a working demo at: &lt;a href=&quot;https://github.com/andy-mehalick/OrangeJetpack.LocalizationDemo&quot;&gt;https://github.com/andy-mehalick/OrangeJetpack.LocalizationDemo&lt;/a&gt;. Next we’ll add our simple EF POCO and DbContext classes:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Planet&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;DatabaseGenerated&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DatabaseGeneratedOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PlanetId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Required&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PlanetsContext&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbContext&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DbSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;planet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We’ll then let code first migrations create our local db with some Powershell in Package Manager Console:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Enable-Migrations&lt;/pre&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Add-Migrations AddPlanet&lt;/pre&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Update-Database&lt;/pre&gt;
+
+&lt;p&gt;Finally, let’s add a HomeController with Index() and scaffold a list view.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HomeController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Controller&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PlanetsContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;PlanetsContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Snap your fingers to add some sample data and you should see:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%207-36-35%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Eesh, close but let’s now show the localized content only.&lt;/p&gt;
+
+&lt;h2 id=&quot;nuget-and-orangejetpacklocalizationmvc&quot;&gt;NuGet and OrangeJetpack.Localization.Mvc&lt;/h2&gt;
+
+&lt;p&gt;Start by added the NuGet package &lt;a href=&quot;https://www.nuget.org/packages/OrangeJetpack.Localization.Mvc&quot;&gt;OrangeJetpack.Localization.Mvc&lt;/a&gt; (it will drag its dependency &lt;a href=&quot;https://www.nuget.org/packages/OrangeJetpack.Localization&quot;&gt;OrangeJetpack.Localization&lt;/a&gt; along with it):&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;PM&amp;gt; Install-Package OrangeJetpack.Localization.Mvc&lt;/pre&gt;
+
+&lt;p&gt;This package will add a LocalizationLanguages property to app settings, let’s add the language codes for English, Russian, and Japanese:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;appSettings&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;add&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;LocalizationLanguages&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;en,ru,ja&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/appSettings&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, let’s update Planet to indicate it is localizable and that Planet.Name is localized – we can do this by implementing ILocalizable and decorating Name with LocalizedAttribute:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Planet&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ILocalizable&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;DatabaseGenerated&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DatabaseGeneratedOption&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PlanetId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Required&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Localized&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This now generously grants us access to an IEnumerable&lt;ilocalizeable&gt;.Localize() extension method. This method accepts a language code and a list of properties to localize.&lt;/ilocalizeable&gt;&lt;/p&gt;
+
+&lt;p&gt;Back to HomeController.Index(), add an optional langCode input parameter and change _db.Planets.ToList() to _db.Planets.Localize(langCode, I =&amp;gt; i.Name):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HomeController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Controller&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PlanetsContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;PlanetsContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;langCode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;en&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Localize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;langCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Of course we could get language code from the user’s web browser or a profile setting but let’s keep it simple for now. If we omit a language code or use an unsupported one it will default to the first language in our app settings, “en” by default. Let’s run it again passing in the language code for Russian:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%207-59-35%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here’s what it would look like with no language, Japanese, or an unknown language:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%208-54-38%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;multiple-localized-properties&quot;&gt;Multiple Localized Properties&lt;/h2&gt;
+
+&lt;p&gt;Finally, one bonus of our extension method Localize() is its support for multiple properties; if Planet had additional localized properties we could pass them in as a params[] list:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-csharp&quot; data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Localize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;langCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Atmosphere&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;That’s it for now, in Part 2 we’ll look at adding and updating our localizable entities with the included editor template for MVC and eventually we’ll dig deeper in OrangeJetpack.Localization implementation. If you want to jump ahead you can find the project at &lt;a href=&quot;https://github.com/andy-mehalick/OrangeJetpack.Localization&quot;&gt;https://github.com/andy-mehalick/OrangeJetpack.Localization&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Sep 2013 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Keeping Your Data Access Honest with SQL Server Profiler</title>
+        <description>&lt;p&gt;I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and later Entity Framework were introduced I can honestly say I’ve been a happier developer. Writing data access code for a new project is usually fun the first day but it gets tedious and tiring quickly. By the end of each day you’ve written hundreds of lines of code that could and should be written for you or abstracted away by magic data access fairies.&lt;/p&gt;
+
+&lt;p&gt;Despite understandable skepticism from some DBAs, modern ORMs do a great job and do lower the costs of developing and maintaining software. As a bonus they make software developers happy and that’s often the secret sauce in the success of a large software project.&lt;/p&gt;
+
+&lt;p&gt;I’ve been working on an application for a number of years that started with LINQ to SQL and later moved to Entity Framework. Very early in the development lifecycle we spent a lot of time validating our data access. We learned how to adjust our LINQ statements to emit efficient SQL, we tuned our table indexes as necessary, and threw an occasional stored procedure into the mix when we needed a little heavy lifting done.&lt;/p&gt;
+
+&lt;p&gt;It seems we may have started to put too much trust in ORM’ing in the last year or two because while evaluating a web page that was taking a few too many seconds to load I found something that came as a bit of a surprise: a page that had become very intimate with our database – in our case almost 500 SQL statements worth of intimacy with over a million table reads.&lt;/p&gt;
+
+&lt;p&gt;What I relearned is that while ORMs like Entity Framework can generally be trusted they can make it easy to misuse. An important step in any database-centric software development process is to periodically evaluate your database access and validate it is behaving as expected. While many third-party tools exist to make this easy, chances are you already have a free[and powerful] one at your disposal: SQL Server Profiler. Profiling is fairly simple; just a matter of configuring a trace and you’re off and running.&lt;/p&gt;
+
+&lt;h2 id=&quot;get-started&quot;&gt;Get Started&lt;/h2&gt;
+
+&lt;p&gt;SQL Server Profiler has been included with SQL Server Management Studio since at least version 2000 and hasn’t changed to much over the years as far as I can tell. To access it from Management Studio simply select Tools &amp;gt; SQL Server Profiler:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/sql-server-management-studio.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;events-selection&quot;&gt;Events Selection&lt;/h2&gt;
+
+&lt;p&gt;When you launch SQL Server Profiler you’ll first need to select your server. I’m going to assume you’ll be running application locally from Visual Studio; your SQL Server can be local or remote. Profiling tools will need to be installed and running on the database but in my experience this is the default.&lt;/p&gt;
+
+&lt;p&gt;Now the fun part – a profile session is called a trace and has several properties we’ll need to configure. By default, Profiler sends a lot of information back so we’ll want to configure it to filter most of the noise out.&lt;/p&gt;
+
+&lt;p&gt;You’ll notice on the Trace Properties &amp;gt; Events Selection tab six events that we can trace, we’re not too concerned with audits or connections so deselect everything but RPC:Completed and SQL:BatchCompleted.&lt;/p&gt;
+
+&lt;p&gt;They are a lot of columns that won’t be useful to us either, uncheck everything but TextData, CPU, Read, Write, Duration, and SPID (required).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/profiler-events-selection.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;column-filters&quot;&gt;Column Filters&lt;/h2&gt;
+
+&lt;p&gt;To be sure we’re only seeing the databases we need and the SQL statements generated by our application we’ll need to filter our columns. Start by enabling the &lt;em&gt;Show all columns&lt;/em&gt; checkbox and then click &lt;em&gt;Column Filters…&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Unless configured otherwise Visual Studio will connect to your database(s) within the context of your domain account; to see only the SQL that you and your application generate select NTUserName and enter your Windows domain username excluding the domain:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/nt-user-name.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In addition to the SQL statement executions and stored procedure calls Profiler shows a bit more information than we need and we can filter this out using TextData. There are ultimately four statements that are generated by LINQ to SQL and Entity Framework and they can all be added as filters:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;select %&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;declare %&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;exec dbo.%&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;exec sp_executesql %&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/text-data.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, if you have other applications that are interacting with your target server using your account you can add a filter on DatabaseName as well. If your application uses multiple database you can add them all.&lt;/p&gt;
+
+&lt;h2 id=&quot;run&quot;&gt;Run&lt;/h2&gt;
+
+&lt;p&gt;Now you’re ready, click &lt;em&gt;Run&lt;/em&gt; and switch back to Visual Studio to start your application (with or without debugging). To look at single pages use Profile’s &lt;em&gt;Start&lt;/em&gt;, &lt;em&gt;Pause&lt;/em&gt;, and &lt;em&gt;Clear Window&lt;/em&gt; buttons as you move through your application. In a future post I’ll describe how to interpret the output, save to XML, and export to Excel for analysis. Have fun&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/profile-output.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 25 May 2012 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>TDD Code Kata</title>
+        <description>&lt;p&gt;The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with &lt;a href=&quot;https://tekpub.com/productions/tdd&quot;&gt;Roy Osherove’s TekPub video series&lt;/a&gt; followed by his book &lt;a href=&quot;https://www.manning.com/osherove/&quot;&gt;The Art of Unit Testing&lt;/a&gt; I was aware of this &lt;a href=&quot;https://osherove.com/tdd-kata-1&quot;&gt;string calculator TDD kata&lt;/a&gt; and knew that’s where I wanted to start.&lt;/p&gt;
+
+&lt;p&gt;Working remotely in a +8 hour time zone made it easy to tack an extra 30 minutes onto my work day and commit to waking up my fingers and brain with a daily code kata first thing in the morning. I decided to keep a log of my progress and note any shortcuts or approaches I learned along the way. I wanted to not only exercise my TDD skills but also my efficiency with Visual Studio and ReSharper.&lt;/p&gt;
+
+&lt;p&gt;On day one I started the exercise mouseless and that meant a small learning curve; adjusting was easy enough though. To pile on the pain I also decided engage my katas using only a proper touch typing technique. My natural typing style is more akin to a predator drone, hovering and attacking with calculated fury. Yes, most of my fingers get in on the action but collateral damage is high and it is far from touch typing. Actually typing correctly may have been the hardest part of this challenge. &lt;/p&gt;
+
+&lt;p&gt;The following screencast is my recording of the final kata on day 20 with my TDD and ReSharper commentary.&lt;/p&gt;
+
+&lt;h2 id=&quot;screencast&quot;&gt;Screencast&lt;/h2&gt;
+
+&lt;iframe height=&quot;523&quot; src=&quot;https://player.vimeo.com/video/37580009?title=0&amp;amp;byline=0&amp;amp;portrait=0&amp;amp;color=BFD9E5&quot; frameborder=&quot;0&quot; width=&quot;930&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h2 id=&quot;daily-log&quot;&gt;Daily Log&lt;/h2&gt;
+
+&lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;2&quot;&gt;
+
+&lt;thead&gt;
+
+&lt;tr&gt;
+
+&lt;th&gt;Day&lt;/th&gt;
+
+&lt;th&gt;Progress&lt;/th&gt;
+
+&lt;th&gt;Learned&lt;/th&gt;
+
+&lt;/tr&gt;
+
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;0&lt;/td&gt;
+
+&lt;td colspan=&quot;2&quot;&gt;
+
+&lt;p&gt;I didn’t count this as an official day, I just spent time learning keyboard shortcuts and how to navigate Visual Studio without a mouse. I learned the existing keyboard shortcuts:&lt;/p&gt;
+
+&lt;p&gt;Ctrl-Shift-N – New Project&lt;br /&gt;
+Ctrl-R, V – ReSharper’s Introduce Variable&lt;/p&gt;
+
+&lt;p&gt;… and created some new ones:&lt;/p&gt;
+
+&lt;p&gt;Ctrl-P, Ctrl-M – Open Package Manager Console&lt;br /&gt;  
+Ctrl-R, Ctrl-T – Run TestDriven.NET Tests&lt;br /&gt;  
+Ctrl-R, Ctrl-A – Run Tests Again&lt;/p&gt;
+
+&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;1&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 3&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;2&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 3&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;3&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 3 and started 4&lt;/td&gt;
+
+&lt;td&gt;Alt-\ – ReSharper’s Navigate Members&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;4&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 3 and started 4&lt;/td&gt;
+
+&lt;td&gt;Ctrl-R, P – ReSharper’s Introduce Parameter&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;5&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 4 &lt;/td&gt;
+
+&lt;td&gt;Ctrl-R, V – ReSharper’s Introduce Variable&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;6&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 4 and started 5&lt;/td&gt;
+
+&lt;td&gt;
+
+Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch for continuous testing.
+
+&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;7&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 4 and started 5&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;8&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 FINISHED!&lt;/td&gt;
+
+&lt;td&gt;Gave up on NCrunch, just not for me.&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;9&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;10&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;11&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;12&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;13&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;14&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;15&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;16&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;17&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;18&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;19&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;tr&gt;
+
+&lt;td&gt;20&lt;/td&gt;
+
+&lt;td&gt;Steps 1 – 5 Finished&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+
+&lt;/tbody&gt;
+
+&lt;/table&gt;
+</description>
+        <pubDate>Tue, 28 Feb 2012 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2012/02/28/tdd-code-kata/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/02/28/tdd-code-kata/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Hg Strip and Transplant</title>
+        <description>&lt;p&gt;It’s rare that I reach to my Mercurial toolbelt to wield these two Hg commands but it happens on occasion and that’s enough to warrant a quick summary of each. Both are distributed with Mercurial but not enabled by default (more on that below).&lt;/p&gt;
+
+&lt;h2 id=&quot;strip&quot;&gt;Strip&lt;/h2&gt;
+
+&lt;p&gt;Strip is a simple command to delete one or more changesets; typically used to remove commits that may have mistakes or to remove a set of experimental commits that you want to back out of. You’ll definitely want to avoid stripping changesets already pushed out to others, it’s much better to only strip changesets that live locally.&lt;/p&gt;
+
+&lt;p&gt;So let’s say you start up a new feature branch and make a couple of commits only to realize you’ve made some really bad design choices. There are many reasons why you should want to preserve all commits, good or bad; but let’s ignore those for now and proceed with our strip anyways. In our example let’s assume there are problems with changeset 11 (and subsequently 12):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/strip-commits-before.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Simply execute &lt;strong&gt;hg strip&lt;/strong&gt; with the revision number to want to remove; all higher revisions in the branch will be removed and revisions numbers in other branches will be reset:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg strip 11&lt;/pre&gt;
+
+&lt;p&gt;You’ll be left with the branch structure below, notice how changeset 13 was renumbered down to 11:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/strip-commits-after.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Stripped changesets will be stored in “.hg/strip-bundle” and can be restored if necessary; the existing revision numbers will be preserved and your restored commits will get new revision numbers from there. You’ll need to find the bundle file name and execute something like:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg unbundle .hg/strip-backup/0e5dd67a89f4-backup.hg&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/strip-commits-unbundled.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;transplant&quot;&gt;Transplant&lt;/h2&gt;
+
+&lt;p&gt;Transplant is a command that copies one or more changesets from one branch to another. I use this command occasionally when I’ve made very simple changes to a development branch that I later decide need to be pushed out to say a release or default branch. Assume you want to copy changesets 10 and 11 from the develop branch to the release branch:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/transplant-before.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Start by updating your local working directory to the branch that will receive the changesets (release) and then execute transplant by passing in the name of the source branch (develop) and one or more revision numbers:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg transplant –b develop 10 11&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/transplant-after.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;enabling-strip-and-transplant&quot;&gt;Enabling Strip and Transplant&lt;/h2&gt;
+
+&lt;p&gt;Both commands are part of extensions that are distributed with Mercurial but will need to be enabled. Strip is included with &lt;a href=&quot;http://mercurial.selenic.com/wiki/MqExtension&quot;&gt;Mercurial Queues Extensions&lt;/a&gt; and transplant in its own &lt;a href=&quot;http://mercurial.selenic.com/wiki/TransplantExtension&quot;&gt;Transplant Extension&lt;/a&gt;. Simply add them to your Mercurial.ini file:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/2012-02-22%2010-24-46%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2012 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Fun with NUnit and ReSharper Templates</title>
+        <description>&lt;p&gt;About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying a book or two on the subject, and making a focused exploration of the tools I’m already familiar with. Always a fan of efficiency tools in general and ReSharper specifically, I looked to see how this favorite tool could help me eek out a bit more productivity with TDD and my unit test framework of choice: NUnit. Enter &lt;a href=&quot;http://www.jetbrains.com/resharper/features/code_templates.html&quot;&gt;ReSharper code templates&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;ReSharper has three flavors of code templates and in general they allow you to new-up code files or insert code from templates, automatically filling placeholders with variables either automatically or from user input. With NUnit the two I use most are file templates for creating test fixture class files and live templates for inserting new test methods.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-fixture-file-template&quot;&gt;Test Fixture File Template&lt;/h2&gt;
+
+&lt;p&gt;Creating test fixture classes is a common occurrence and an ideal candidate for templates, especially when I noticed I was performing the same half dozen simple steps just to get started writing new tests:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;add new class file to test project, rename&lt;/li&gt;
+  &lt;li&gt;decorate with TestFixture and add NUnit reference&lt;/li&gt;
+  &lt;li&gt;wrap class with ReSharper disable comments&lt;/li&gt;
+  &lt;li&gt;add new test method and decorate with Test&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-05%209-18-18%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Aside: I find I favor the test naming convention introduced to me in &lt;a href=&quot;http://tekpub.com/view/tdd/1&quot;&gt;Roy Osherove’s TDD Master Class video from TekPub&lt;/a&gt;: Method_Scenario_Expected(). ReSharper enjoys reminding me that it disapproves of underscored method names and an easy way to silence it is with its own disable comments: &lt;font color=&quot;#008000&quot;&gt;// ReSharper disable InconsistentNaming&lt;/font&gt;. Alternatively you can &lt;a href=&quot;http://atombrenner.blogspot.com/2010/07/how-to-change-resharper-naming-style.html&quot;&gt;change ReSharper’s naming style for test methods&lt;/a&gt; altogether but this only applies to your machine and your team members would need to do the same.&lt;/p&gt;
+
+&lt;h2 id=&quot;creating-a-file-template&quot;&gt;Creating a File Template&lt;/h2&gt;
+
+&lt;p&gt;You can access ReSharper’s file templates via ReSharper &amp;gt; Templates Explorer… &amp;gt; File Templates [tab] and you can import the templates I’ve linked to below or add you own. In this case I have a template simply called Test Fixture:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-26-29%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When creating templates you’ll notice how $PLACEHOLDERS$ can be used to dynamically insert environmental, solution, or project variables into your code or allow you to tab, tab, tab your way through completion:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-32-21%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, creating a new class file from your template is easy: you can create it from within a code file via the ReSharper &lt;a href=&quot;http://www.jetbrains.com/resharper/webhelp/Reference__Keyboard_Shortcuts.html&quot;&gt;keyboard shortcut&lt;/a&gt; &lt;em&gt;Ctrl+Alt+Insert&lt;/em&gt; or from the VS project context menu: Add &amp;gt; New from Template &amp;gt; Test Fixture. Bam! Too easy.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-method-live-template&quot;&gt;Test Method Live Template&lt;/h2&gt;
+
+&lt;p&gt;Live templates are born from VS’s code snippets feature but raised like Kobe beef and are equally delicious. I’ve long since replaced all my homegrown code snippets with live templates, it’s an easy exercise well-worth the effort. My live template for a Test method is quite simply:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-42-45%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-44-32%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this point you can simply start typing “test” in any class to expose the ReSharper live templates context menu and tab your way through to generate your test method stub.&lt;/p&gt;
+
+&lt;h2 id=&quot;import-templates&quot;&gt;Import Templates&lt;/h2&gt;
+
+&lt;p&gt;ReSharper allows you to import and export templates to share with others, these are the two I use most that you’re welcome to enjoy:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/nunit-file-template.DotSettings&quot;&gt;NUnit Test Fixture File Template&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/nunit-live-template.DotSettings&quot;&gt;NUnit Test Method Live Template&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 07 Jan 2012 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>An Introduction to Hgflow</title>
+        <description>&lt;p&gt;Having bounced between a number of version control solutions the last five years I’m finally very comfortable enjoying the sole embrace of Mercurial (Hg). It’s easy to be a fan of distributed version control and not only does Hg work very well within my workflow but fits nicely with my tech stack (FogBugz + Kiln by day and Bitbucket + AppHarbor by night). Very recently I was introduced to hgflow having played with it for a few days across several projects I’ve become a big fan.&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Hgflow is an open-source extension for Hg inspired by git-flow (&lt;a href=&quot;http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/&quot;&gt;Why aren’t you using git-flow?&lt;/a&gt;) and built around Vincent Driessen’s popular &lt;a href=&quot;http://nvie.com/posts/a-successful-git-branching-model&quot;&gt;Git branching model&lt;/a&gt;. In essence it formalizes the workflow around Driessen’s model and provides commands for branching and merging features, releases, and hotfixes within that model. For me it provided a very comfortable model to work within and a nice set of commands to provide the perfect amount of control and automation.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://nvie.com/posts/a-successful-git-branching-model&quot;&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/nvie-branching-model.jpg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;download-and-install&quot;&gt;Download and Install&lt;/h2&gt;
+
+&lt;p&gt;The project is hosted on Bitbucket (&lt;a href=&quot;https://bitbucket.org/yinwm/hgflow/overview&quot;&gt;https://bitbucket.org/yinwm/hgflow/overview&lt;/a&gt;), you can download the latest [currently] hgflow-v0.4.py from the downloads page (only 17KB!). I saved it directly to C:\Program Files (x86)\Kiln Client\hgflow-v0.4.py. Hgflow itself appears to have branched a few times and updated version appear to be available by &lt;a href=&quot;https://bitbucket.org/yujiewu/hgflow/overview&quot;&gt;others&lt;/a&gt; but yinwm’s appears to be the original and most followed.&lt;/p&gt;
+
+&lt;p&gt;The extension is a single Python file, to add it into Hg just update your hg ini file, mine is at: C:\Users\%USERNAME%\Mercurial.ini:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-22%2010-16-30%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;walkthrough&quot;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;For the following walkthrough I’m going to create a simple repository and demonstrate creating our first feature and release branch. I’ll be interacting with hgflow exclusively from the command line but I’ll show you screenshots from TortoiseHg as I go so you can visualize what is happening with the repository.&lt;/p&gt;
+
+&lt;p&gt;Let’s start by creating a directory and initializing a repository and hgflow; I’ll go with the default branch name options which feel right to me:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-14-04%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This creates for us a &lt;strong&gt;default&lt;/strong&gt; and &lt;strong&gt;develop&lt;/strong&gt; branch and commits:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-17-07%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So now let’s say I’m tasked with creating a new feature we’re calling Strong Coffee, I’ll tell hgflow that I want to create a feature branch and the feature command branches for us and sets it as our working copy:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg flow feature start strong-coffee&lt;/pre&gt;
+
+&lt;p&gt;I’ll now add a simple file (coffee.txt) and commit:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-20-24%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that my feature is complete I will tell hgflow I am finished; this is where automation steps it up a notch by committing, merging with &lt;strong&gt;develop&lt;/strong&gt; branch, and setting it as my working copy:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg flow feature finish strong-coffee&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-22-19%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let’s say we fully integration test &lt;strong&gt;develop&lt;/strong&gt; with our new Strong Coffee feature and are ready to push out the next release (version 0.1) of our project, we:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg flow release start 0.1&lt;/pre&gt;
+
+&lt;p&gt;This is where we probably deploy to staging and acceptance test, when approved we finish the release:&lt;/p&gt;
+
+&lt;pre class=&quot;cmd&quot;&gt;hg flow release finish 0.1&lt;/pre&gt;
+
+&lt;p&gt;This moves our release to the &lt;strong&gt;default&lt;/strong&gt; branch (a.k.a. production) and merges back into &lt;strong&gt;develop&lt;/strong&gt; (not usually necessary but helpful in some situations).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-30-05%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As an aside, if you are using Bitbucket to host your source code (FREE) and AppHarbor to host the application (FREE) this step automatically runs your unit tests and if passing deploys the latest version for you (AUTOMATIC + FREE = CRAZY DELICIOUS). Seriously, if you have personal projects I strongly recommend Bitbucket + AppHarbor.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Hgflow shouldn’t introduce any radical change to the standard source control workflow, it simply introduces a more formal vocabulary for describing branches and applies a nice model to the process. On top of that it adds a nice bit of automation and makes working with Hg even more enjoyable.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 24 Dec 2011 00:00:00 +0300</pubDate>
+        <link>https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/</guid>
         
         
       </item>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EF6: Adding a Created Date/Time Column Automatically with Code First Migrations</title>
+  <meta name="author" content="Andy Mehalick">
+  <meta name="copyright" content="Andy Mehalick">
+  <meta name="description" content="Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a defa...">
+  <meta itemprop="name" content="EF6: Adding a Created Date/Time Column Automatically with Code First Migrations">
+  <meta itemprop="description" content="Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:">
+  <meta itemprop="image" content="">
+  <meta property="og:title" content="EF6: Adding a Created Date/Time Column Automatically with Code First Migrations">
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/">
+  <meta property="og:image" content="">
+  <meta property="og:site_name" content="Andy Mehalick">
+  <meta property="og:description" content="Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:">
+  <meta property="fb:admins" content="">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400">
+  <link rel="canonical" href="https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/">
+  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="https://andy.mehalick.com/feed.xml">
+  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+  
+  <body>
+  
+    <header>
+    <nav>
+        <div class="page-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>        
+            <a id="rss" href="https://andy.mehalick.com/feed.xml" title="Subscribe to RSS"><img src="/content/images/rss-icon.png" alt="rss icon" width="32" height="32" /></a>
+            <br class="clearer"/>
+        </div>
+    </nav>  
+</header>
+  
+    <main id="main" class="page-width">
+        <div class="padded">
+            <div id="sidebar">
+                <img src="/content/images/photo.jpg" alt="Andy Mehalick" width="140" height="170" />
+            </div>
+            <div id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, Designer</h2>
+                <hr />
+            </div>
+            <div id="content">
+              
+              <article class="blog-post">
+    <header>
+        <h1 class="header"><a href="">EF6: Adding a Created Date/Time Column Automatically with Code First Migrations</a></h1>
+        <div class="subheader">
+            <time datetime="2014-02-06 00:00:00 +0300" pubdate>6 February 2014</time>   
+        </div>
+        <!--<ul class="social">
+            <li><div class="fb-like" data-href="" data-send="true" data-show-faces="false"></div></li>
+        </ul> -->
+        <br class="clearer" />
+    </header>
+    <p>Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/38696855/blog/8/2-6-2014%2012-07-35%20PM.png" alt="" /></p>
+
+<p>I’m using UTC dates so I don’t have to worry about the time zone of the server where this ultimately lives and calling the column <strong>CreatedUtc</strong> because it’s concise but clear.</p>
+
+<p>So let’s get started, I’ll create a new class library in Visual Studio called CreatedUtcColumnDemo and immediately add Entity Framework via Nuget.</p>
+
+<pre class="cmd">PM&gt; Install-Package EntityFramework</pre>
+
+<p>Now we’ll add our first entity and data context, notice the <strong>CreatedUtc</strong> property with data annotations:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Product</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">ProductId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="p">[</span><span class="n">Required</span><span class="p">,</span> <span class="nf">DatabaseGenerated</span><span class="p">(</span><span class="n">DatabaseGeneratedOption</span><span class="p">.</span><span class="n">Computed</span><span class="p">)]</span>
+        <span class="k">public</span> <span class="n">DateTime</span> <span class="n">CreatedUtc</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">DataContext</span> <span class="p">:</span> <span class="n">DbContext</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">product</span><span class="p">&gt;</span> <span class="n">Products</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Because we’ll ultimately want our <strong>CreatedUtc</strong> property on all entities let’s extract an abstract base class (EntityBase) and have Product inherit from it:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Product</span> <span class="p">:</span> <span class="n">EntityBase</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">ProductId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>  
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">EntityBase</span>
+    <span class="p">{</span>
+        <span class="p">[</span><span class="n">Required</span><span class="p">,</span> <span class="nf">DatabaseGenerated</span><span class="p">(</span><span class="n">DatabaseGeneratedOption</span><span class="p">.</span><span class="n">Computed</span><span class="p">)]</span>
+        <span class="k">public</span> <span class="n">DateTime</span> <span class="n">CreatedUtc</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">DataContext</span> <span class="p">:</span> <span class="n">DbContext</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">product</span><span class="p">&gt;</span> <span class="n">Products</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Now we’ll enable migrations and create a single migration to create our Products table:</p>
+
+<pre class="cmd">PM&gt; Enable-Migrations</pre>
+
+<pre class="cmd">PM&gt; Add-Migration AddProduct</pre>
+
+<p>At this point our solution looks like:</p>
+
+<p><img src="https://dl.dropboxusercontent.com/u/38696855/blog/8/2-6-2014%2011-52-49%20AM.png" alt="" /></p>
+
+<p>We now want to ensure that when we update our database via code first migrations  our <strong>CreatedUtc</strong> property gets a default value, in this case GETUTCDATE(). One option would be to adjust the migration class manually, for each entity we <em>could</em> update CreateTable(), notice the addition of defaultValueSql: “GETUTCDATE()”.</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">AddProduct</span> <span class="p">:</span> <span class="n">DbMigration</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Up</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nf">CreateTable</span><span class="p">(</span>
+            <span class="s">"dbo.Products"</span><span class="p">,</span>
+            <span class="n">c</span> <span class="p">=&gt;</span> <span class="k">new</span>
+                <span class="p">{</span>
+                    <span class="n">ProductId</span> <span class="p">=</span> <span class="n">c</span><span class="p">.</span><span class="nf">Int</span><span class="p">(</span><span class="n">nullable</span><span class="p">:</span> <span class="k">false</span><span class="p">,</span> <span class="n">identity</span><span class="p">:</span> <span class="k">true</span><span class="p">),</span>
+                    <span class="n">Name</span> <span class="p">=</span> <span class="n">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(),</span>
+                    <span class="n">CreatedUtc</span> <span class="p">=</span> <span class="n">c</span><span class="p">.</span><span class="nf">DateTime</span><span class="p">(</span><span class="n">nullable</span><span class="p">:</span> <span class="k">false</span><span class="p">,</span> <span class="n">defaultValueSql</span><span class="p">:</span> <span class="s">"GETUTCDATE()"</span><span class="p">),</span>
+                <span class="p">})</span>
+            <span class="p">.</span><span class="nf">PrimaryKey</span><span class="p">(</span><span class="n">t</span> <span class="p">=&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">ProductId</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Down</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nf">DropTable</span><span class="p">(</span><span class="s">"dbo.Products"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>This would become tedious and error prone as we start to add new entities though. A more efficient approach would be to create a custom SqlServerMigrationSqlGenerator and update our migration configuration to use this. Jumping right to the code:</p>
+
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo.Migrations</span>
+<span class="p">{</span>
+    <span class="k">internal</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Configuration</span> <span class="p">:</span> <span class="n">DbMigrationsConfiguration</span><span class="p">&lt;</span><span class="n">DataContext</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="nf">Configuration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">AutomaticMigrationsEnabled</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+            <span class="nf">SetSqlGenerator</span><span class="p">(</span><span class="s">"System.Data.SqlClient"</span><span class="p">,</span> <span class="k">new</span> <span class="nf">CustomSqlServerMigrationSqlGenerator</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">internal</span> <span class="k">class</span> <span class="nc">CustomSqlServerMigrationSqlGenerator</span> <span class="p">:</span> <span class="n">SqlServerMigrationSqlGenerator</span>
+    <span class="p">{</span>
+        <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Generate</span><span class="p">(</span><span class="n">AddColumnOperation</span> <span class="n">addColumnOperation</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">addColumnOperation</span><span class="p">.</span><span class="n">Column</span><span class="p">);</span>
+
+            <span class="k">base</span><span class="p">.</span><span class="nf">Generate</span><span class="p">(</span><span class="n">addColumnOperation</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">protected</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Generate</span><span class="p">(</span><span class="n">CreateTableOperation</span> <span class="n">createTableOperation</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">createTableOperation</span><span class="p">.</span><span class="n">Columns</span><span class="p">);</span>
+
+            <span class="k">base</span><span class="p">.</span><span class="nf">Generate</span><span class="p">(</span><span class="n">createTableOperation</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ColumnModel</span><span class="p">&gt;</span> <span class="n">columns</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="n">var</span> <span class="n">columnModel</span> <span class="k">in</span> <span class="n">columns</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">columnModel</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">PropertyModel</span> <span class="n">column</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">column</span><span class="p">.</span><span class="n">Name</span> <span class="p">==</span> <span class="s">"CreatedUtc"</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">column</span><span class="p">.</span><span class="n">DefaultValueSql</span> <span class="p">=</span> <span class="s">"GETUTCDATE()"</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Notice how CustomSqlServerMigrationSqlGenerator inherits from SqlServerMigrationSqlGenerator and overrides two Generate(…) methods. We then set our custom generator to the default for our project via SetSqlGenerator(“System.Data.SqlClient”, new CustomSqlServerMigrationSqlGenerator()).</p>
+
+<p>Lastly, we’ll update our local database and we’re done.</p>
+
+<pre class="cmd">PM&gt; Update-Database</pre>
+
+<p>Now, every time we create a new entity we inherit from EntityBase, when we update our database with migrations it will always add a <strong>CreatedUtc</strong> column with a default value of GETUTCDATE().</p>
+
+<p>You can find the demo source code at <a href="https://github.com/andy-mehalick/CreatedUtcColumnDemo" title="https://github.com/andy-mehalick/CreatedUtcColumnDemo">https://github.com/andy-mehalick/CreatedUtcColumnDemo</a>.</p>
+
+</article>
+
+<div id="disqus_thread"></div>
+
+<script>
+    //var disqus_developer = parseInt(@(Request.IsLocal ? 1 : 0));
+    var disqus_shortname = "andymehalick";
+    var disqus_identifier = "8";
+    var disqus_title = "EF6: Adding a Created Date/Time Column Automatically with Code First Migrations";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+              
+            </div>       
+        </div>
+    </main>
+  
+    <footer id="site-footer">
+    All site design and development by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a>.
+</footer>
+  
+    <div id="fb-root"></div>
+  
+  </body>
+
+</html>

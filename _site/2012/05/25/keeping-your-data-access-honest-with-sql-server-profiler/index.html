@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keeping Your Data Access Honest with SQL Server Profiler</title>
+  <meta name="author" content="Andy Mehalick">
+  <meta name="copyright" content="Andy Mehalick">
+  <meta name="description" content="I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and late...">
+  <meta itemprop="name" content="Keeping Your Data Access Honest with SQL Server Profiler">
+  <meta itemprop="description" content="I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and later Entity Framework were introduced I can honestly say I’ve been a happier developer. Writing data access code for a new project is usually fun the first day but it gets tedious and tiring quickly. By the end of each day you’ve written hundreds of lines of code that could and should be written for you or abstracted away by magic data access fairies.">
+  <meta itemprop="image" content="">
+  <meta property="og:title" content="Keeping Your Data Access Honest with SQL Server Profiler">
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/">
+  <meta property="og:image" content="">
+  <meta property="og:site_name" content="Andy Mehalick">
+  <meta property="og:description" content="I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and later Entity Framework were introduced I can honestly say I’ve been a happier developer. Writing data access code for a new project is usually fun the first day but it gets tedious and tiring quickly. By the end of each day you’ve written hundreds of lines of code that could and should be written for you or abstracted away by magic data access fairies.">
+  <meta property="fb:admins" content="">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400">
+  <link rel="canonical" href="https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/">
+  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="https://andy.mehalick.com/feed.xml">
+  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+  
+  <body>
+  
+    <header>
+    <nav>
+        <div class="page-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>        
+            <a id="rss" href="https://andy.mehalick.com/feed.xml" title="Subscribe to RSS"><img src="/content/images/rss-icon.png" alt="rss icon" width="32" height="32" /></a>
+            <br class="clearer"/>
+        </div>
+    </nav>  
+</header>
+  
+    <main id="main" class="page-width">
+        <div class="padded">
+            <div id="sidebar">
+                <img src="/content/images/photo.jpg" alt="Andy Mehalick" width="140" height="170" />
+            </div>
+            <div id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, Designer</h2>
+                <hr />
+            </div>
+            <div id="content">
+              
+              <article class="blog-post">
+    <header>
+        <h1 class="header"><a href="">Keeping Your Data Access Honest with SQL Server Profiler</a></h1>
+        <div class="subheader">
+            <time datetime="2012-05-25 00:00:00 +0300" pubdate>25 May 2012</time>   
+        </div>
+        <!--<ul class="social">
+            <li><div class="fb-like" data-href="" data-send="true" data-show-faces="false"></div></li>
+        </ul> -->
+        <br class="clearer" />
+    </header>
+    <p>I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and later Entity Framework were introduced I can honestly say I’ve been a happier developer. Writing data access code for a new project is usually fun the first day but it gets tedious and tiring quickly. By the end of each day you’ve written hundreds of lines of code that could and should be written for you or abstracted away by magic data access fairies.</p>
+
+<p>Despite understandable skepticism from some DBAs, modern ORMs do a great job and do lower the costs of developing and maintaining software. As a bonus they make software developers happy and that’s often the secret sauce in the success of a large software project.</p>
+
+<p>I’ve been working on an application for a number of years that started with LINQ to SQL and later moved to Entity Framework. Very early in the development lifecycle we spent a lot of time validating our data access. We learned how to adjust our LINQ statements to emit efficient SQL, we tuned our table indexes as necessary, and threw an occasional stored procedure into the mix when we needed a little heavy lifting done.</p>
+
+<p>It seems we may have started to put too much trust in ORM’ing in the last year or two because while evaluating a web page that was taking a few too many seconds to load I found something that came as a bit of a surprise: a page that had become very intimate with our database – in our case almost 500 SQL statements worth of intimacy with over a million table reads.</p>
+
+<p>What I relearned is that while ORMs like Entity Framework can generally be trusted they can make it easy to misuse. An important step in any database-centric software development process is to periodically evaluate your database access and validate it is behaving as expected. While many third-party tools exist to make this easy, chances are you already have a free[and powerful] one at your disposal: SQL Server Profiler. Profiling is fairly simple; just a matter of configuring a trace and you’re off and running.</p>
+
+<h2 id="get-started">Get Started</h2>
+
+<p>SQL Server Profiler has been included with SQL Server Management Studio since at least version 2000 and hasn’t changed to much over the years as far as I can tell. To access it from Management Studio simply select Tools &gt; SQL Server Profiler:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/5/sql-server-management-studio.png" alt="" /></p>
+
+<h2 id="events-selection">Events Selection</h2>
+
+<p>When you launch SQL Server Profiler you’ll first need to select your server. I’m going to assume you’ll be running application locally from Visual Studio; your SQL Server can be local or remote. Profiling tools will need to be installed and running on the database but in my experience this is the default.</p>
+
+<p>Now the fun part – a profile session is called a trace and has several properties we’ll need to configure. By default, Profiler sends a lot of information back so we’ll want to configure it to filter most of the noise out.</p>
+
+<p>You’ll notice on the Trace Properties &gt; Events Selection tab six events that we can trace, we’re not too concerned with audits or connections so deselect everything but RPC:Completed and SQL:BatchCompleted.</p>
+
+<p>They are a lot of columns that won’t be useful to us either, uncheck everything but TextData, CPU, Read, Write, Duration, and SPID (required).</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/5/profiler-events-selection.png" alt="" /></p>
+
+<h2 id="column-filters">Column Filters</h2>
+
+<p>To be sure we’re only seeing the databases we need and the SQL statements generated by our application we’ll need to filter our columns. Start by enabling the <em>Show all columns</em> checkbox and then click <em>Column Filters…</em></p>
+
+<p>Unless configured otherwise Visual Studio will connect to your database(s) within the context of your domain account; to see only the SQL that you and your application generate select NTUserName and enter your Windows domain username excluding the domain:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/5/nt-user-name.png" alt="" /></p>
+
+<p>In addition to the SQL statement executions and stored procedure calls Profiler shows a bit more information than we need and we can filter this out using TextData. There are ultimately four statements that are generated by LINQ to SQL and Entity Framework and they can all be added as filters:</p>
+
+<ul>
+  <li><strong>select %</strong></li>
+  <li><strong>declare %</strong></li>
+  <li><strong>exec dbo.%</strong></li>
+  <li><strong>exec sp_executesql %</strong></li>
+</ul>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/5/text-data.png" alt="" /></p>
+
+<p>Finally, if you have other applications that are interacting with your target server using your account you can add a filter on DatabaseName as well. If your application uses multiple database you can add them all.</p>
+
+<h2 id="run">Run</h2>
+
+<p>Now you’re ready, click <em>Run</em> and switch back to Visual Studio to start your application (with or without debugging). To look at single pages use Profile’s <em>Start</em>, <em>Pause</em>, and <em>Clear Window</em> buttons as you move through your application. In a future post I’ll describe how to interpret the output, save to XML, and export to Excel for analysis. Have fun</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/5/profile-output.png" alt="" /></p>
+
+</article>
+
+<div id="disqus_thread"></div>
+
+<script>
+    //var disqus_developer = parseInt(@(Request.IsLocal ? 1 : 0));
+    var disqus_shortname = "andymehalick";
+    var disqus_identifier = "5";
+    var disqus_title = "Keeping Your Data Access Honest with SQL Server Profiler";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+              
+            </div>       
+        </div>
+    </main>
+  
+    <footer id="site-footer">
+    All site design and development by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a>.
+</footer>
+  
+    <div id="fb-root"></div>
+  
+  </body>
+
+</html>

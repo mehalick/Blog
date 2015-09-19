@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fun with NUnit and ReSharper Templates</title>
+  <meta name="author" content="Andy Mehalick">
+  <meta name="copyright" content="Andy Mehalick">
+  <meta name="description" content="About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I c...">
+  <meta itemprop="name" content="Fun with NUnit and ReSharper Templates">
+  <meta itemprop="description" content="About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying a book or two on the subject, and making a focused exploration of the tools I’m already familiar with. Always a fan of efficiency tools in general and ReSharper specifically, I looked to see how this favorite tool could help me eek out a bit more productivity with TDD and my unit test framework of choice: NUnit. Enter ReSharper code templates.">
+  <meta itemprop="image" content="">
+  <meta property="og:title" content="Fun with NUnit and ReSharper Templates">
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/">
+  <meta property="og:image" content="">
+  <meta property="og:site_name" content="Andy Mehalick">
+  <meta property="og:description" content="About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying a book or two on the subject, and making a focused exploration of the tools I’m already familiar with. Always a fan of efficiency tools in general and ReSharper specifically, I looked to see how this favorite tool could help me eek out a bit more productivity with TDD and my unit test framework of choice: NUnit. Enter ReSharper code templates.">
+  <meta property="fb:admins" content="">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400">
+  <link rel="canonical" href="https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/">
+  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="https://andy.mehalick.com/feed.xml">
+  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+  
+  <body>
+  
+    <header>
+    <nav>
+        <div class="page-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>        
+            <a id="rss" href="https://andy.mehalick.com/feed.xml" title="Subscribe to RSS"><img src="/content/images/rss-icon.png" alt="rss icon" width="32" height="32" /></a>
+            <br class="clearer"/>
+        </div>
+    </nav>  
+</header>
+  
+    <main id="main" class="page-width">
+        <div class="padded">
+            <div id="sidebar">
+                <img src="/content/images/photo.jpg" alt="Andy Mehalick" width="140" height="170" />
+            </div>
+            <div id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, Designer</h2>
+                <hr />
+            </div>
+            <div id="content">
+              
+              <article class="blog-post">
+    <header>
+        <h1 class="header"><a href="">Fun with NUnit and ReSharper Templates</a></h1>
+        <div class="subheader">
+            <time datetime="2012-01-07 00:00:00 +0300" pubdate>7 January 2012</time>   
+        </div>
+        <!--<ul class="social">
+            <li><div class="fb-like" data-href="" data-send="true" data-show-faces="false"></div></li>
+        </ul> -->
+        <br class="clearer" />
+    </header>
+    <p>About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying a book or two on the subject, and making a focused exploration of the tools I’m already familiar with. Always a fan of efficiency tools in general and ReSharper specifically, I looked to see how this favorite tool could help me eek out a bit more productivity with TDD and my unit test framework of choice: NUnit. Enter <a href="http://www.jetbrains.com/resharper/features/code_templates.html">ReSharper code templates</a>.</p>
+
+<p>ReSharper has three flavors of code templates and in general they allow you to new-up code files or insert code from templates, automatically filling placeholders with variables either automatically or from user input. With NUnit the two I use most are file templates for creating test fixture class files and live templates for inserting new test methods.</p>
+
+<h2 id="test-fixture-file-template">Test Fixture File Template</h2>
+
+<p>Creating test fixture classes is a common occurrence and an ideal candidate for templates, especially when I noticed I was performing the same half dozen simple steps just to get started writing new tests:</p>
+
+<ol>
+  <li>add new class file to test project, rename</li>
+  <li>decorate with TestFixture and add NUnit reference</li>
+  <li>wrap class with ReSharper disable comments</li>
+  <li>add new test method and decorate with Test</li>
+</ol>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-05%209-18-18%20AM.png" alt="" /></p>
+
+<p>Aside: I find I favor the test naming convention introduced to me in <a href="http://tekpub.com/view/tdd/1">Roy Osherove’s TDD Master Class video from TekPub</a>: Method_Scenario_Expected(). ReSharper enjoys reminding me that it disapproves of underscored method names and an easy way to silence it is with its own disable comments: <font color="#008000">// ReSharper disable InconsistentNaming</font>. Alternatively you can <a href="http://atombrenner.blogspot.com/2010/07/how-to-change-resharper-naming-style.html">change ReSharper’s naming style for test methods</a> altogether but this only applies to your machine and your team members would need to do the same.</p>
+
+<h2 id="creating-a-file-template">Creating a File Template</h2>
+
+<p>You can access ReSharper’s file templates via ReSharper &gt; Templates Explorer… &gt; File Templates [tab] and you can import the templates I’ve linked to below or add you own. In this case I have a template simply called Test Fixture:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-26-29%20AM.png" alt="" /></p>
+
+<p>When creating templates you’ll notice how $PLACEHOLDERS$ can be used to dynamically insert environmental, solution, or project variables into your code or allow you to tab, tab, tab your way through completion:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-32-21%20AM.png" alt="" /></p>
+
+<p>Finally, creating a new class file from your template is easy: you can create it from within a code file via the ReSharper <a href="http://www.jetbrains.com/resharper/webhelp/Reference__Keyboard_Shortcuts.html">keyboard shortcut</a> <em>Ctrl+Alt+Insert</em> or from the VS project context menu: Add &gt; New from Template &gt; Test Fixture. Bam! Too easy.</p>
+
+<h2 id="test-method-live-template">Test Method Live Template</h2>
+
+<p>Live templates are born from VS’s code snippets feature but raised like Kobe beef and are equally delicious. I’ve long since replaced all my homegrown code snippets with live templates, it’s an easy exercise well-worth the effort. My live template for a Test method is quite simply:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-42-45%20AM.png" alt="" /></p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-44-32%20AM.png" alt="" /></p>
+
+<p>At this point you can simply start typing “test” in any class to expose the ReSharper live templates context menu and tab your way through to generate your test method stub.</p>
+
+<h2 id="import-templates">Import Templates</h2>
+
+<p>ReSharper allows you to import and export templates to share with others, these are the two I use most that you’re welcome to enjoy:</p>
+
+<ul>
+  <li><a href="//dl.dropboxusercontent.com/u/38696855/blog/2/nunit-file-template.DotSettings">NUnit Test Fixture File Template</a></li>
+  <li><a href="//dl.dropboxusercontent.com/u/38696855/blog/2/nunit-live-template.DotSettings">NUnit Test Method Live Template</a></li>
+</ul>
+
+</article>
+
+<div id="disqus_thread"></div>
+
+<script>
+    //var disqus_developer = parseInt(@(Request.IsLocal ? 1 : 0));
+    var disqus_shortname = "andymehalick";
+    var disqus_identifier = "2";
+    var disqus_title = "Fun with NUnit and ReSharper Templates";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+              
+            </div>       
+        </div>
+    </main>
+  
+    <footer id="site-footer">
+    All site design and development by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a>.
+</footer>
+  
+    <div id="fb-root"></div>
+  
+  </body>
+
+</html>

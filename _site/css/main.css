@@ -130,13 +130,12 @@ nav #rss {
   min-height: 400px;
   border-radius: 10px;
   margin-bottom: 2em; }
-
-#main #content {
-  padding: 1em 0; }
-
-#main #content ul,
-#main #content ol {
-  margin: 0 2em; }
+  #main #content {
+    padding: 1em 0; }
+    #main #content ul, #main #content ol {
+      margin: 0 2em 1em 2em; }
+    #main #content iframe {
+      margin-bottom: 1em; }
 
 #sidebar {
   float: right;

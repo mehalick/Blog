@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>An Introduction to Hgflow</title>
+  <meta name="author" content="Andy Mehalick">
+  <meta name="copyright" content="Andy Mehalick">
+  <meta name="description" content="Having bounced between a number of version control solutions the last five years I’m finally very comfortable enjoying the sole embrace of Mercurial (Hg). It...">
+  <meta itemprop="name" content="An Introduction to Hgflow">
+  <meta itemprop="description" content="Having bounced between a number of version control solutions the last five years I’m finally very comfortable enjoying the sole embrace of Mercurial (Hg). It’s easy to be a fan of distributed version control and not only does Hg work very well within my workflow but fits nicely with my tech stack (FogBugz + Kiln by day and Bitbucket + AppHarbor by night). Very recently I was introduced to hgflow having played with it for a few days across several projects I’ve become a big fan.">
+  <meta itemprop="image" content="">
+  <meta property="og:title" content="An Introduction to Hgflow">
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/">
+  <meta property="og:image" content="">
+  <meta property="og:site_name" content="Andy Mehalick">
+  <meta property="og:description" content="Having bounced between a number of version control solutions the last five years I’m finally very comfortable enjoying the sole embrace of Mercurial (Hg). It’s easy to be a fan of distributed version control and not only does Hg work very well within my workflow but fits nicely with my tech stack (FogBugz + Kiln by day and Bitbucket + AppHarbor by night). Very recently I was introduced to hgflow having played with it for a few days across several projects I’ve become a big fan.">
+  <meta property="fb:admins" content="">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400">
+  <link rel="canonical" href="https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/">
+  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="https://andy.mehalick.com/feed.xml">
+  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+  
+  <body>
+  
+    <header>
+    <nav>
+        <div class="page-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>        
+            <a id="rss" href="https://andy.mehalick.com/feed.xml" title="Subscribe to RSS"><img src="/content/images/rss-icon.png" alt="rss icon" width="32" height="32" /></a>
+            <br class="clearer"/>
+        </div>
+    </nav>  
+</header>
+  
+    <main id="main" class="page-width">
+        <div class="padded">
+            <div id="sidebar">
+                <img src="/content/images/photo.jpg" alt="Andy Mehalick" width="140" height="170" />
+            </div>
+            <div id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, Designer</h2>
+                <hr />
+            </div>
+            <div id="content">
+              
+              <article class="blog-post">
+    <header>
+        <h1 class="header"><a href="">An Introduction to Hgflow</a></h1>
+        <div class="subheader">
+            <time datetime="2011-12-24 00:00:00 +0300" pubdate>24 December 2011</time>   
+        </div>
+        <!--<ul class="social">
+            <li><div class="fb-like" data-href="" data-send="true" data-show-faces="false"></div></li>
+        </ul> -->
+        <br class="clearer" />
+    </header>
+    <p>Having bounced between a number of version control solutions the last five years I’m finally very comfortable enjoying the sole embrace of Mercurial (Hg). It’s easy to be a fan of distributed version control and not only does Hg work very well within my workflow but fits nicely with my tech stack (FogBugz + Kiln by day and Bitbucket + AppHarbor by night). Very recently I was introduced to hgflow having played with it for a few days across several projects I’ve become a big fan.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Hgflow is an open-source extension for Hg inspired by git-flow (<a href="http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/">Why aren’t you using git-flow?</a>) and built around Vincent Driessen’s popular <a href="http://nvie.com/posts/a-successful-git-branching-model">Git branching model</a>. In essence it formalizes the workflow around Driessen’s model and provides commands for branching and merging features, releases, and hotfixes within that model. For me it provided a very comfortable model to work within and a nice set of commands to provide the perfect amount of control and automation.</p>
+
+<p><a href="http://nvie.com/posts/a-successful-git-branching-model"><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/nvie-branching-model.jpg" alt="" /></a></p>
+
+<h2 id="download-and-install">Download and Install</h2>
+
+<p>The project is hosted on Bitbucket (<a href="https://bitbucket.org/yinwm/hgflow/overview">https://bitbucket.org/yinwm/hgflow/overview</a>), you can download the latest [currently] hgflow-v0.4.py from the downloads page (only 17KB!). I saved it directly to C:\Program Files (x86)\Kiln Client\hgflow-v0.4.py. Hgflow itself appears to have branched a few times and updated version appear to be available by <a href="https://bitbucket.org/yujiewu/hgflow/overview">others</a> but yinwm’s appears to be the original and most followed.</p>
+
+<p>The extension is a single Python file, to add it into Hg just update your hg ini file, mine is at: C:\Users\%USERNAME%\Mercurial.ini:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-22%2010-16-30%20AM.png" alt="" /></p>
+
+<h2 id="walkthrough">Walkthrough</h2>
+
+<p>For the following walkthrough I’m going to create a simple repository and demonstrate creating our first feature and release branch. I’ll be interacting with hgflow exclusively from the command line but I’ll show you screenshots from TortoiseHg as I go so you can visualize what is happening with the repository.</p>
+
+<p>Let’s start by creating a directory and initializing a repository and hgflow; I’ll go with the default branch name options which feel right to me:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-14-04%20PM.png" alt="" /></p>
+
+<p>This creates for us a <strong>default</strong> and <strong>develop</strong> branch and commits:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-17-07%20PM.png" alt="" /></p>
+
+<p>So now let’s say I’m tasked with creating a new feature we’re calling Strong Coffee, I’ll tell hgflow that I want to create a feature branch and the feature command branches for us and sets it as our working copy:</p>
+
+<pre class="cmd">hg flow feature start strong-coffee</pre>
+
+<p>I’ll now add a simple file (coffee.txt) and commit:</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-20-24%20PM.png" alt="" /></p>
+
+<p>Now that my feature is complete I will tell hgflow I am finished; this is where automation steps it up a notch by committing, merging with <strong>develop</strong> branch, and setting it as my working copy:</p>
+
+<pre class="cmd">hg flow feature finish strong-coffee</pre>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-22-19%20PM.png" alt="" /></p>
+
+<p>Now let’s say we fully integration test <strong>develop</strong> with our new Strong Coffee feature and are ready to push out the next release (version 0.1) of our project, we:</p>
+
+<pre class="cmd">hg flow release start 0.1</pre>
+
+<p>This is where we probably deploy to staging and acceptance test, when approved we finish the release:</p>
+
+<pre class="cmd">hg flow release finish 0.1</pre>
+
+<p>This moves our release to the <strong>default</strong> branch (a.k.a. production) and merges back into <strong>develop</strong> (not usually necessary but helpful in some situations).</p>
+
+<p><img src="//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-30-05%20PM.png" alt="" /></p>
+
+<p>As an aside, if you are using Bitbucket to host your source code (FREE) and AppHarbor to host the application (FREE) this step automatically runs your unit tests and if passing deploys the latest version for you (AUTOMATIC + FREE = CRAZY DELICIOUS). Seriously, if you have personal projects I strongly recommend Bitbucket + AppHarbor.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hgflow shouldn’t introduce any radical change to the standard source control workflow, it simply introduces a more formal vocabulary for describing branches and applies a nice model to the process. On top of that it adds a nice bit of automation and makes working with Hg even more enjoyable.</p>
+
+</article>
+
+<div id="disqus_thread"></div>
+
+<script>
+    //var disqus_developer = parseInt(@(Request.IsLocal ? 1 : 0));
+    var disqus_shortname = "andymehalick";
+    var disqus_identifier = "1";
+    var disqus_title = "An Introduction to Hgflow";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+              
+            </div>       
+        </div>
+    </main>
+  
+    <footer id="site-footer">
+    All site design and development by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a>.
+</footer>
+  
+    <div id="fb-root"></div>
+  
+  </body>
+
+</html>
