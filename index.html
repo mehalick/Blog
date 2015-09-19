@@ -2,22 +2,15 @@
 layout: default
 ---
 
-<div class="home">
+<p>Hi I'm Andy &mdash; a software developer and owner of <a style="color: #333;" href="http://www.orangejetpackstudios.com">Orange Jetpack Studios</a>, I'm currently living and working in beautiful sunny Kuwait. I am a Microsoft Certified Professional Developer and a recent Master of Software Engineering graduate from Pennsylvania State University.</p>
+<p>I have a passion for the elegance inherent in well-designed software solutions and the beauty that exists in the software we create. I enjoy working with and evangelizing all of the technologies and patterns that create harmony in my software development life and I enjoy sharing my experiences of discovery with others.</p>
+<p>Currently I build web and native mobile applications of all scale with the ASP.NET MVC, Entity Framework, SQL Azure, AngularJS, and the Xamarin platform.</p>
+<p><img src="/content/images/collage-1.png" width="930" height="300" alt="photo collage" /></p>
 
-  <h1 class="page-heading">Posts</h1>
+<h3 class="header">Blog</h3>
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-
-</div>
+<ol id="post-list">
+  {% for post in site.posts %}
+  <li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a> <span class="post-date">[{{ post.date | date: "%-d-%b-%Y" }}]</span></li>
+  {% endfor %}
+</ol>

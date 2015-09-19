@@ -2,19 +2,33 @@
 <html>
 
   {% include head.html %}
-
+  
   <body>
-
+  
     {% include header.html %}
-
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </div>
-
+  
+    <main id="main" class="page-width">
+        <div class="padded">
+            <div id="sidebar">
+                <img src="/content/images/photo.jpg" alt="Andy Mehalick" width="140" height="170" />
+            </div>
+            <div id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, Designer</h2>
+                <hr />
+            </div>
+            <div id="content">
+              
+              {{ content }}
+              
+            </div>       
+        </div>
+    </main>
+  
     {% include footer.html %}
-
+  
+    <div id="fb-root"></div>
+  
   </body>
 
 </html>
