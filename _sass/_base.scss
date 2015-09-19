@@ -1,21 +1,44 @@
+@import "_variables.scss";
+
 /* general  */
+
+html {
+    font-size: 62.5%;
+}
 
 body {
     margin: 0;
     padding: 0;
     background: transparent url('/content/images/page-background.png') center center;
-    font-family: Calibri, Verdana, Arial, Helvetica, sans-serif;
-    font-size: 1.1em;
+    font-family: Muli, sans-serif; 
     color: #333;
+    
+    > header,
+    > main, 
+    > footer {
+        font-size: 1.7rem;
+    }
 }
 
-h1, h2, h3 {
-    margin: 0;
+h1, h2, h3, h4, h5, h6 {
+    @extend .margin-bottom;
+}
+
+h1 {
+    font-size: 2.6rem;
+}
+
+h2 {
+    font-size: 2.2rem;
+}
+
+h3 {
+    font-size: 2.0rem;
 }
 
 p {
-    margin: 0 0 1em 0;
-    line-height: 1.5em;   
+    @extend .margin-bottom;
+    line-height: 2.6rem;   
 }
 
     p:last-child {
@@ -23,22 +46,22 @@ p {
     }
 
 a {
-    color: Blue;
-}
-
-    a:hover {
-        color: Red;
+    color: blue;
+    
+    &:hover {
+        color: red;
     }
-
-    a img {
+    
+    img {
         border: 0;
     }
+}
 
 hr {
     border: 0;
     height: 1px;
     background-color: #BFD9E5;
-    margin: 1em 0;
+    margin: 15px 0;
 }
 
 ul {
@@ -47,43 +70,54 @@ ul {
     list-style-type: square;
 }
 
+ol {
+    margin: 0 2em 1em 2em;
+}
+
 pre, code {
     font-family: monospace;
     line-height: 100%;
 }
 
-    pre.cmd {
-        margin: 2em 0;
-        padding: 8px;
-        font-size: 1.8em;
-        color: #900;
-        background-color: #FAF2F2;
-        border: 1px solid #CC7F7F;
-        border-radius: 4px;
-    }
+pre.cmd {
+    margin: 15px 0;
+    padding: 8px;
+    font-size: 2.2rem;
+    color: #900;
+    background-color: #FAF2F2;
+    border: 1px solid #CC7F7F;
+    border-radius: 2px;
+}
 
 table {
     border-collapse: collapse;
     width: 100%;
+    @extend .margin-bottom;   
+        
+    thead th {
+        text-align: left;
+        font-weight: bold;
+        background-color: #BFD9E5;
+    }
+    
+    thead th,
+    tbody td {
+        border: 1px solid #ddd;
+        vertical-align: top;
+        padding: 8px;
+    }
 }
 
-    table, table p {
-        font-size: 1em !important;
-    }
+table, table p {
+    font-size: 1.4rem !important;
+}
 
-        table th,
-        table td {
-            padding: 4px;
-        }
+iframe {
+    @extend .margin-bottom;
+}
 
-        table thead th {
-            text-align: left;
-            font-weight: bold;
-            background-color: #BFD9E5;
-        }
-
-        table thead th,
-        table tbody td {
-            border: 1px solid #ddd;
-            vertical-align: top;
-        }
+img {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}
