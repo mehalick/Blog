@@ -133,7 +133,11 @@ main {
     font-size: 1.2em; }
   main #site-photo {
     float: right;
-    margin: 0 0 15px 15px; }
+    margin: 0 0 15px 15px;
+    max-width: 70px; }
+    @media (min-width: 480px) {
+      main #site-photo {
+        max-width: 140px; } }
     main #site-photo > img {
       border-radius: 10px; }
 
