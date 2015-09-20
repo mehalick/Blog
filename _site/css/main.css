@@ -40,13 +40,11 @@ hr {
   background-color: #BFD9E5;
   margin: 15px 0; }
 
-ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: square; }
+ul, ol {
+  margin: 0 0 15px 0; }
 
-ol {
-  margin: 0 2em 1em 2em; }
+ul {
+  list-style-type: square; }
 
 pre, code {
   font-family: monospace;
@@ -91,6 +89,8 @@ nav {
   background: black;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5); }
   nav ul {
+    margin: 0;
+    padding: 0;
     list-style: none; }
     nav ul li {
       float: left;
