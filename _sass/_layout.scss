@@ -1,98 +1,106 @@
 @import "_variables.scss";
 
-.page-width {
-    max-width: 960px;
-    margin: 0 auto;
-}
-
 nav {
-    background: black url('/content/images/navigation-background.png') bottom center repeat-x;
+    background: black url('https://az808808.vo.msecnd.net/assets/nav-background-635783262550005826.png') bottom center repeat-x;
     min-height: 56px;
     margin-bottom: 15px;
-}
-
-    nav ul {
+    
+    ul {
         list-style: none;
-    }
-
-        nav ul li {
+        
+        li {
             float: left;
             margin: 0 12px 0 0;
             padding-left: 18px;
-            background: transparent url('/content/images/nav-bullet.png') left center no-repeat;
-        }
-
-            nav ul li:first-child {
+            background: transparent url('https://az808808.vo.msecnd.net/assets/nav-bullet-635783262672492885.png') left center no-repeat;
+            
+            &:first-child {
                 background: none;
                 padding-left: 0;
             }
-
-        nav ul a {
-            display: block;
-            padding: 16px 0;
-            color: white;
-            font-size: 1.2rem;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
+            
+            a {
+                display: block;
+                padding: 16px 0;
+                color: white;
+                font-size: 1.2rem;
+                text-decoration: none;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                
+                &:first-letter {
+                    font-size: 1.3em;
+                }
+                
+                &:hover,
+                &.selected {
+                    color: #BFD9E5;
+                }
+            }
         }
-
-            nav ul a:first-letter {
-                font-size: 1.3em;
-            }
-
-            nav ul a:hover,
-            nav ul a.selected {
-                color: #BFD9E5;
-            }
-
-    nav #rss {
+    }
+    
+    #rss {
         float: right;
         margin-top: 10px;
     }
+}
 
-#site-header {
+main {
+    font-size: 1.7rem;
     
-    h1, h2 {
-        margin: 0 0 5px 0;
-        font-weight: normal;
-        text-shadow: 2px 2px 5px #999;
+    > div {
+        background: rgba(255, 255, 255, 0.8);
+        min-height: 400px;
+        border-radius: 10px;
+        margin-bottom: 20px;  
     }
     
-    h1 {
-        font-family: 'Atomic Age', serif;
-        font-size: 3.5rem;
+    #site-header {
+    
+        h1, h2 {
+            margin: 0 0 5px 0;
+            font-weight: normal;
+            text-shadow: 2px 2px 5px #999;
+        }
+        
+        h1 {
+            font-family: 'Atomic Age', serif;
+            font-size: 3.5rem;
+        }
+    
+        h2 {
+            font-size: 1.2em;
+        }  
     }
-
-    h2 {
-        font-size: 1.2em;
-    }  
+    
+    #site-photo {
+        float: right;
+        margin: 0 0 15px 15px;
+        
+        > img {
+            border-radius: 10px;
+        }
+    }
 }
 
-#main {
-    background: white;
-    min-height: 400px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-#sidebar {
-    float: right;
-    margin: 0 0 15px 15px;
-}
-
-#site-footer {
+footer {
     font-size: 1.2rem;
     text-align: center;
     margin-bottom: 20px;
-}
 
-    #site-footer a {
-        color: #333 !important;
+    a {
         text-decoration: none;
     }
+}
 
 /* attributes */
+
+.page-width {
+    max-width: 990px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
 .padded {
     padding: 15px;
@@ -111,35 +119,13 @@ a.colorless {
 .blog-post {
     margin-bottom: 20px;
     
-    .subheader {
+    header {
+        h2 {
         margin-bottom: 15px;
+        font-size: 1.7rem;
+        font-weight: normal;
         color: #aaa;
-    }
-}
-
-/* media specific */
-
-@media all and (min-width: 960px) {
-    #main {
-        background: white url('/content/images/main-background.png') center center;
-    }
-}
-
-@media screen and (max-device-width: 480px) {
-    nav ul a {
-        font-size: 1.6em;
-    }
-
-    #site-header h1 {
-        font-size: 4em;
-    }
-
-    #site-header h2 {
-        font-size: 1.8em;
-    }
-
-    p {
-        font-size: 1.4em;
+        }      
     }
 }
 
