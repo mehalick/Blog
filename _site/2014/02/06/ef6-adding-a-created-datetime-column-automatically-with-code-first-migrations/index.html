@@ -18,7 +18,7 @@
   <meta property="og:image" content="">
   <meta property="og:site_name" content="Andy Mehalick">
   <meta property="og:description" content="Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:">
-  <link rel="stylesheet" href="/css/main.css?1442843664">
+  <link rel="stylesheet" href="/css/main.css?1453133517">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="canonical" href="https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/">
@@ -87,7 +87,7 @@
 
 <p>Now we’ll add our first entity and data context, notice the <strong>CreatedUtc</strong> property with data annotations:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">class</span> <span class="nc">Product</span>
     <span class="p">{</span>
@@ -102,11 +102,11 @@
     <span class="p">{</span>
         <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">product</span><span class="p">&gt;</span> <span class="n">Products</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Because we’ll ultimately want our <strong>CreatedUtc</strong> property on all entities let’s extract an abstract base class (EntityBase) and have Product inherit from it:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">class</span> <span class="nc">Product</span> <span class="p">:</span> <span class="n">EntityBase</span>
     <span class="p">{</span>
@@ -124,7 +124,7 @@
     <span class="p">{</span>
         <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">product</span><span class="p">&gt;</span> <span class="n">Products</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Now we’ll enable migrations and create a single migration to create our Products table:</p>
 
@@ -138,7 +138,8 @@
 
 <p>We now want to ensure that when we update our database via code first migrations  our <strong>CreatedUtc</strong> property gets a default value, in this case GETUTCDATE(). One option would be to adjust the migration class manually, for each entity we <em>could</em> update CreateTable(), notice the addition of defaultValueSql: “GETUTCDATE()”.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">AddProduct</span> <span class="p">:</span> <span class="n">DbMigration</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    
+<span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">AddProduct</span> <span class="p">:</span> <span class="n">DbMigration</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Up</span><span class="p">()</span>
     <span class="p">{</span>
@@ -158,11 +159,11 @@
     <span class="p">{</span>
         <span class="nf">DropTable</span><span class="p">(</span><span class="s">"dbo.Products"</span><span class="p">);</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>This would become tedious and error prone as we start to add new entities though. A more efficient approach would be to create a custom SqlServerMigrationSqlGenerator and update our migration configuration to use this. Jumping right to the code:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo.Migrations</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">CreatedUtcColumnDemo.Migrations</span>
 <span class="p">{</span>
     <span class="k">internal</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Configuration</span> <span class="p">:</span> <span class="n">DbMigrationsConfiguration</span><span class="p">&lt;</span><span class="n">DataContext</span><span class="p">&gt;</span>
     <span class="p">{</span>
@@ -205,7 +206,7 @@
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Notice how CustomSqlServerMigrationSqlGenerator inherits from SqlServerMigrationSqlGenerator and overrides two Generate(…) methods. We then set our custom generator to the default for our project via SetSqlGenerator(“System.Data.SqlClient”, new CustomSqlServerMigrationSqlGenerator()).</p>
 

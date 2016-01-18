@@ -18,7 +18,7 @@
   <meta property="og:image" content="">
   <meta property="og:site_name" content="Andy Mehalick">
   <meta property="og:description" content="It’s day #1 on a new project demanding my favorite requirement: localization yay! The yay emphasize is mine because localization presents some thorny technical challenges that often pull along a trailer load of complexity. Framework tools make many of the localization tasks a breeze but there’s always that one piece just beyond .NET’s reach: storing localized text in a database. Since I’ve spent far too many hours (days?) wrestling with lookup table and lookup tables for lookup table solutions it’s time to start this project off with a simple and elegant solution – one that plays nice with Entity Framework and maybe even brings its own UI to the party.">
-  <link rel="stylesheet" href="/css/main.css?1442843664">
+  <link rel="stylesheet" href="/css/main.css?1453133517">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="canonical" href="https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/">
@@ -91,7 +91,7 @@
 
 <p>To start things off new-up a fresh ASP.NET MVC web application. You can play along at home or download a working demo at: <a href="https://github.com/andy-mehalick/OrangeJetpack.LocalizationDemo">https://github.com/andy-mehalick/OrangeJetpack.LocalizationDemo</a>. Next we’ll add our simple EF POCO and DbContext classes:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Planet</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Planet</span>
 <span class="p">{</span>
     <span class="p">[</span><span class="n">Key</span><span class="p">,</span> <span class="nf">DatabaseGenerated</span><span class="p">(</span><span class="n">DatabaseGeneratedOption</span><span class="p">.</span><span class="n">Identity</span><span class="p">)]</span>
     <span class="k">public</span> <span class="kt">int</span> <span class="n">PlanetId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
@@ -103,7 +103,7 @@
 <span class="k">public</span> <span class="k">class</span> <span class="nc">PlanetsContext</span> <span class="p">:</span> <span class="n">DbContext</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="n">DbSet</span><span class="p">&lt;</span><span class="n">planet</span><span class="p">&gt;</span> <span class="n">Planets</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>We’ll then let code first migrations create our local db with some Powershell in Package Manager Console:</p>
 
@@ -115,7 +115,7 @@
 
 <p>Finally, let’s add a HomeController with Index() and scaffold a list view.</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="n">PlanetsContext</span> <span class="n">_db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">PlanetsContext</span><span class="p">();</span>
 
@@ -125,7 +125,7 @@
 
         <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="n">planets</span><span class="p">);</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Snap your fingers to add some sample data and you should see:</p>
 
@@ -141,28 +141,28 @@
 
 <p>This package will add a LocalizationLanguages property to app settings, let’s add the language codes for English, Russian, and Japanese:</p>
 
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;configuration&gt;</span>
     <span class="nt">&lt;appSettings&gt;</span>
         <span class="nt">&lt;add</span> <span class="na">key=</span><span class="s">"LocalizationLanguages"</span> <span class="na">value=</span><span class="s">"en,ru,ja"</span> <span class="nt">/&gt;</span>
     <span class="nt">&lt;/appSettings&gt;</span>
-<span class="nt">&lt;/configuration&gt;</span></code></pre></div>
+<span class="nt">&lt;/configuration&gt;</span></code></pre></figure>
 
 <p>Finally, let’s update Planet to indicate it is localizable and that Planet.Name is localized – we can do this by implementing ILocalizable and decorating Name with LocalizedAttribute:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Planet</span> <span class="p">:</span> <span class="n">ILocalizable</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">Planet</span> <span class="p">:</span> <span class="n">ILocalizable</span>
 <span class="p">{</span>
     <span class="p">[</span><span class="n">Key</span><span class="p">,</span> <span class="nf">DatabaseGenerated</span><span class="p">(</span><span class="n">DatabaseGeneratedOption</span><span class="p">.</span><span class="n">Identity</span><span class="p">)]</span>
     <span class="k">public</span> <span class="kt">int</span> <span class="n">PlanetId</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 
     <span class="p">[</span><span class="n">Required</span><span class="p">,</span> <span class="n">Localized</span><span class="p">]</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>This now generously grants us access to an IEnumerable<ilocalizeable>.Localize() extension method. This method accepts a language code and a list of properties to localize.</ilocalizeable></p>
 
 <p>Back to HomeController.Index(), add an optional langCode input parameter and change _db.Planets.ToList() to _db.Planets.Localize(langCode, I =&gt; i.Name):</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">HomeController</span> <span class="p">:</span> <span class="n">Controller</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="n">PlanetsContext</span> <span class="n">_db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">PlanetsContext</span><span class="p">();</span>
 
@@ -172,7 +172,7 @@
 
         <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="n">planets</span><span class="p">);</span>
     <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></figure>
 
 <p>Of course we could get language code from the user’s web browser or a profile setting but let’s keep it simple for now. If we omit a language code or use an unsupported one it will default to the first language in our app settings, “en” by default. Let’s run it again passing in the language code for Russian:</p>
 
@@ -186,7 +186,7 @@
 
 <p>Finally, one bonus of our extension method Localize() is its support for multiple properties; if Planet had additional localized properties we could pass them in as a params[] list:</p>
 
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">_db</span><span class="p">.</span><span class="n">Planets</span><span class="p">.</span><span class="nf">Localize</span><span class="p">(</span><span class="n">langCode</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Description</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Atmosphere</span><span class="p">);</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">_db</span><span class="p">.</span><span class="n">Planets</span><span class="p">.</span><span class="nf">Localize</span><span class="p">(</span><span class="n">langCode</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Description</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Atmosphere</span><span class="p">);</span></code></pre></figure>
 
 <h2 id="conclusion">Conclusion</h2>
 

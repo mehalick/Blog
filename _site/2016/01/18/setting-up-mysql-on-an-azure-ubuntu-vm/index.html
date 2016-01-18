@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setting Up MySQL on an Azure Ubuntu VM</title>
+  <meta name="author" content="Andy Mehalick">
+  <meta name="copyright" content="Andy Mehalick">
+  <meta name="description" content="DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, a...">
+  <meta itemprop="name" content="Setting Up MySQL on an Azure Ubuntu VM">
+  <meta itemprop="description" content="DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck">
+  <meta itemprop="image" content="">
+  <meta property="og:title" content="Setting Up MySQL on an Azure Ubuntu VM">
+  <meta property="og:type" content="blog">
+  <meta property="og:url" content="https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/">
+  <meta property="og:image" content="">
+  <meta property="og:site_name" content="Andy Mehalick">
+  <meta property="og:description" content="DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck">
+  <link rel="stylesheet" href="/css/main.css?1453133517">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="canonical" href="https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/">
+  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="http://feeds.feedburner.com/AndyMehalick">
+  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  <script type="text/javascript">
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments);
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+        m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    
+    ga('create', 'UA-28045940-1', 'auto');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');    
+  </script>
+</head>
+
+
+<body>
+    
+    <nav>
+        <div class="page-width">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>        
+            <a id="rss" href="http://feeds.feedburner.com/AndyMehalick" title="Subscribe to RSS">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-square fa-stack-2x"></i>
+                    <i class="fa fa-rss fa-stack-1x"></i>
+                </span>
+            </a>
+            <div class="clearfix"></div>
+        </div>
+    </nav> 
+    
+    <main class="page-width">
+        <div class="padded">
+            <div id="site-photo">
+                <img src="https://az808808.vo.msecnd.net/assets/andy-mehalick-v1-280x280-635783259977684363.jpg" alt="Andy Mehalick" width="140" height="140" />
+            </div>
+            <header id="site-header">
+                <h1>Andy Mehalick</h1>
+                <h2>Software Architect, Engineer, UX Designer</h2>
+                <hr />
+            </header>
+            <div id="content">               
+                <article class="blog-post">
+    <header>
+        <h1>Setting Up MySQL on an Azure Ubuntu VM</h1>
+        <h2><time datetime="2016-01-18 00:00:00 +0300" pubdate>18 January 2016</time></h2>
+    </header>
+    <p>DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck</p>
+
+<p>That said, the following is what I did to distance myself from ClearDB and run my own MySQL server on an Azure VM. This approach uses the new Azure Resource Manager VMs (not their “classic” VMs) and their new DSx VMs because if it’s more expensive it must be better, right? &lt;cracks knuckles&gt; Let’s get started…</p>
+
+<h2 id="create-azure-vm">Create Azure VM</h2>
+
+<p>It all starts in the Azure portal, the new one because we’re too cool for “classic”. You’ll basically want to File &gt; New… Virtual Machine &gt; Ubuntu Server</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_16-46-24-635887216536189869.png" alt="" /></p>
+
+<p>I more-or-less fill out the required fields and that’s enough information for Azure. Regarding size, I’m picking the DS2 Standard VM which is 2 core, 7GB RAM, 14GB local SSD storage for $115/month. I’m only hosting WordPress databases so while 14GB of storage isn’t much it’s more than I’ll need for a while.</p>
+
+<h2 id="setting-dns-name">Setting DNS Name</h2>
+
+<p>Unlike classic VMs, setting a DNS name is now an extra, optional step. No problem, just click the Public IP value &gt; Configuration and claim your my-awesome-server.somewhere.cloudapp.azure.com DNS name:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_17-42-33-635887251711322229.png" alt="" /></p>
+
+<h2 id="punching-holes-in-the-firewall">Punching Holes in the Firewall</h2>
+
+<p>This took some hunting to find but setting endpoints and opening ports is available by finding the Network Security Group for your Resource Group.</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-06-57-635887265593141497.png" alt="" /></p>
+
+<p>From here just add an inbound security rule for TCP to allow MySQL default port 3306. You can, and perhaps should, get fancy with nonstandard ports and SSH port fowarding in Linux but I’ll leave that step to the experts.</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-12-46-635887268724337210.png" alt="" /></p>
+
+<h2 id="connect-to-your-vm">Connect to Your VM</h2>
+
+<p>On Windows using <a href="http://puttyssh.org/download.html">PuTTY</a> seems like a reasonable way to connect to your shiny new VM and all it really took was installing the client and connecting via your machine’s host name:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-20-02-635887273999155340.png" alt="" /></p>
+
+<p>If you see something like this you are in good shape:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-20-52-635887274235247152.png" alt="" /></p>
+
+<h2 id="install-mysql">Install MySQL</h2>
+
+<p>First, switch to root user:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>sudo su -</code></pre></figure>
+
+<p>Install system updates and patches:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>apt-get update</code></pre></figure>
+
+<p>And install MySQL…</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>apt-get -y install mysql-server</code></pre></figure>
+
+<p>You’ll need a root password:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-33-22-635887280490440994.png" alt="" /></p>
+
+<p>And yeah that’s it. Maybe Linux isn’t as bad as all the Windows kids are saying.</p>
+
+<h2 id="mysql-bind-address">MySQL Bind Address</h2>
+
+<p>I spent almost all of my StackOverflow time wrestling with this one. To get MySQL to accept connections on anything other than 127.0.0.1 you need to update its config. You can use nano (Notepad with less features?):</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>nano /etc/mysql/my.cnf</code></pre></figure>
+
+<p>Then update bind-address to either 0.0.0.0 (probably less secure) or the actual IP of the machine. I don’t know what I’m doing so I chose the former:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-35-27-635887283768552709.png" alt="" /></p>
+
+<p>When you’re done you’ll want to restart the MySQL service:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>service mysql restart</code></pre></figure>
+
+<h2 id="testing-port-3306">Testing Port 3306</h2>
+
+<p>At some point you might want to test that port 3306 is open on the VM and in Azure. On the VM:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>netstat -anltp|grep :3306</code></pre></figure>
+
+<p>You should see something like:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-43-20-635887286101217696.png" alt="" /></p>
+
+<p>You can then test port 3306 online using a tool like <a href="http://www.yougetsignal.com/tools/open-ports/">Port Forwarding Tester</a>:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-47-36-635887289089610912.png" alt="" /></p>
+
+<h2 id="create-database-and-user-with-remote-access">Create Database and User with Remote Access</h2>
+
+<p>First we’ll sign into MySQL with the root user account:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">$ </span>mysql -u root -p</code></pre></figure>
+
+<p>Then we’ll create a database, create a user, and grant remote access to that user:</p>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">mysql&gt; </span>create database testdb;
+<span class="gp">mysql&gt; </span>create user <span class="s1">'mysqluser'</span>@<span class="s1">'localhost'</span> identitied by <span class="s1">'password'</span>;
+<span class="gp">mysql&gt; </span>grant all on testdb.<span class="k">*</span> to <span class="s1">'mysqluser'</span>@<span class="s1">'%'</span> identified by <span class="s1">'password'</span>;</code></pre></figure>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-56-21-635887294953754340.png" alt="" /></p>
+
+<h2 id="test-database-connection">Test Database Connection</h2>
+
+<p>Finally, let’s test that we can connect to our database using our new remote user account, I’m using MySQL Workbench to set up a new connection to test:</p>
+
+<p><img src="https://andy.azureedge.net/blog/2016-01-18_18-57-39-635887295850100631.png" alt="" /></p>
+
+<h2 id="done">DONE</h2>
+
+<p>So really that’s it, not too bad even with the zero Linux and MySQL that I had. Hope that helps…</p>
+
+<h2 id="references">References</h2>
+
+<p>I did have a lot of help, here are my favorite posts that got me started and ultimately allowed me to figure this out:</p>
+
+<ul>
+  <li><a href="https://azure.microsoft.com/en-us/blog/create-your-own-dedicated-mysql-server-for-your-azure-websites/">Create your own dedicated MySQL Server for your Azure Websites</a></li>
+  <li><a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-install-mysql/">How to install MySQL on Azure</a></li>
+  <li><a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-mysql-use-opensuse/">Install MySQL on a virtual machine running OpenSUSE Linux in Azure</a></li>
+  <li><a href="https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-optimize-mysql-perf/">Optimizing MySQL Performance on Azure Linux VMs</a></li>
+</ul>
+
+</article>
+
+<div id="disqus_thread"></div>
+
+<script>
+    //var disqus_developer = parseInt(@(Request.IsLocal ? 1 : 0));
+    var disqus_shortname = "andymehalick";
+    var disqus_identifier = "9";
+    var disqus_title = "Setting Up MySQL on an Azure Ubuntu VM";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>           
+            </div>       
+        </div>
+    </main>
+    
+    <footer>
+        <div class="page-width">
+            Site content and theme by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a> | Hosted with <a href="http://jekyllrb.com/">Jekyll</a> on <a href="http://azure.microsoft.com/en-us/">Microsoft Azure</a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
