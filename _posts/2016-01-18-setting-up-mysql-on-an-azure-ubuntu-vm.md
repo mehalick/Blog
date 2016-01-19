@@ -5,6 +5,8 @@ date: 2016-01-18
 post_id: 9
 ---
 
+![](https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg)
+
 DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I'm not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can't promise anything will work nor that you won't burn your house down in the process. Good luck
 
 That said, the following is what I did to distance myself from ClearDB and run my own MySQL server on an Azure VM. This approach uses the new Azure Resource Manager VMs (not their "classic" VMs) and their new DSx VMs because if it's more expensive it must be better, right? &lt;cracks knuckles&gt; Let's get started...
@@ -129,7 +131,7 @@ Finally, let's test that we can connect to our database using our new remote use
 
 ## DONE
 
-So really that's it, not too bad even with the zero Linux and MySQL that I had. Hope that helps...
+So really that's it, not too bad even with the zero Linux and MySQL experience that I had. Hope that helps and if you have any questions or advice just let me know...
 
 ## References
 

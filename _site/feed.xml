@@ -5,13 +5,15 @@
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
     <link>https://andy.mehalick.com/</link>
     <atom:link href="https://andy.mehalick.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Jan 2016 19:11:57 +0300</pubDate>
-    <lastBuildDate>Mon, 18 Jan 2016 19:11:57 +0300</lastBuildDate>
+    <pubDate>Tue, 19 Jan 2016 10:53:09 +0300</pubDate>
+    <lastBuildDate>Tue, 19 Jan 2016 10:53:09 +0300</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
         <title>Setting Up MySQL on an Azure Ubuntu VM</title>
-        <description>&lt;p&gt;DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck&lt;/p&gt;
 
 &lt;p&gt;That said, the following is what I did to distance myself from ClearDB and run my own MySQL server on an Azure VM. This approach uses the new Azure Resource Manager VMs (not their “classic” VMs) and their new DSx VMs because if it’s more expensive it must be better, right? &amp;lt;cracks knuckles&amp;gt; Let’s get started…&lt;/p&gt;
 
@@ -119,7 +121,7 @@
 
 &lt;h2 id=&quot;done&quot;&gt;DONE&lt;/h2&gt;
 
-&lt;p&gt;So really that’s it, not too bad even with the zero Linux and MySQL that I had. Hope that helps…&lt;/p&gt;
+&lt;p&gt;So really that’s it, not too bad even with the zero Linux and MySQL experience that I had. Hope that helps and if you have any questions or advice just let me know…&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
