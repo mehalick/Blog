@@ -117,7 +117,7 @@ Then we'll create a database, create a user, and grant remote access to that use
 
 {% highlight shell %}
 mysql> create database testdb;
-mysql> create user 'mysqluser'@'localhost' identitied by 'password';
+mysql> create user 'mysqluser'@'localhost' identified by 'password';
 mysql> grant all on testdb.* to 'mysqluser'@'%' identified by 'password';
 {% endhighlight %}
 
