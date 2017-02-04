@@ -5,8 +5,8 @@
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
     <link>https://andy.mehalick.com/</link>
     <atom:link href="https://andy.mehalick.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 04 Feb 2017 11:25:53 +0300</pubDate>
-    <lastBuildDate>Sat, 04 Feb 2017 11:25:53 +0300</lastBuildDate>
+    <pubDate>Sat, 04 Feb 2017 12:03:51 +0300</pubDate>
+    <lastBuildDate>Sat, 04 Feb 2017 12:03:51 +0300</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
     
       <item>
@@ -145,7 +145,7 @@
         <title>EF6: Adding a Created Date/Time Column Automatically with Code First Migrations</title>
         <description>&lt;p&gt;Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/assets/2-6-2014-12-07-35-pm-636217934497128297.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2-6-2014-12-07-35-pm-636217949810973800.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I’m using UTC dates so I don’t have to worry about the time zone of the server where this ultimately lives and calling the column &lt;strong&gt;CreatedUtc&lt;/strong&gt; because it’s concise but clear.&lt;/p&gt;
 
@@ -202,7 +202,7 @@
 
 &lt;p&gt;At this point our solution looks like:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/assets/2-6-2014-11-52-49-am-636217934473979216.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2-6-2014-11-52-49-am-636217949804428170.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;We now want to ensure that when we update our database via code first migrations  our &lt;strong&gt;CreatedUtc&lt;/strong&gt; property gets a default value, in this case GETUTCDATE(). One option would be to adjust the migration class manually, for each entity we &lt;em&gt;could&lt;/em&gt; update CreateTable(), notice the addition of defaultValueSql: “GETUTCDATE()”.&lt;/p&gt;
 
@@ -299,13 +299,13 @@
 
 &lt;p&gt;My requirements are simple: I’m using EF code first and will need to store entities having multilanguage properties… and I want to work with a super-simple, elegant, unobtrusive API that reads like poetry. Spoiler alert — we’re bringing JSON to the party along with my new favorite NuGet package (ok dislaimer I wrote it).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/localized-property.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/localized-property-636217948871506770.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Let’s jump in — this tutorial will ditch the too-popular generic lookup table approach and store localized text for entities as key/value serialized JSON. Our JSON is simple, readable, and searchable. We’ll then use some simple extension methods from the NuGet package &lt;a href=&quot;https://www.nuget.org/packages/OrangeJetpack.Localization&quot;&gt;OrangeJetpack.Localization&lt;/a&gt; to make getting and setting our localized text a breeze.&lt;/p&gt;
 
 &lt;p&gt;To peak ahead just a bit we’ll be using a regular EF POCO model and code-first migrations. We’ll work with an entity &lt;strong&gt;Planet&lt;/strong&gt; having a &lt;strong&gt;PlanetId&lt;/strong&gt; and a &lt;strong&gt;Name&lt;/strong&gt; property that will eventually be localized to English, Russian, and Japanese. Ultimately it will look like this in our database:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%207-15-38%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/8-28-2013-8-54-38-pm-636217948862861091.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;setup&quot;&gt;Setup&lt;/h2&gt;
 
@@ -349,7 +349,7 @@
 
 &lt;p&gt;Snap your fingers to add some sample data and you should see:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%207-36-35%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/8-28-2013-7-36-35-pm-636217948851575515.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Eesh, close but let’s now show the localized content only.&lt;/p&gt;
 
@@ -396,11 +396,11 @@
 
 &lt;p&gt;Of course we could get language code from the user’s web browser or a profile setting but let’s keep it simple for now. If we omit a language code or use an unsupported one it will default to the first language in our app settings, “en” by default. Let’s run it again passing in the language code for Russian:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%207-59-35%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/8-28-2013-7-59-35-pm-636217948858550811.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Here’s what it would look like with no language, Japanese, or an unknown language:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dl.dropboxusercontent.com/u/38696855/blog/7/8-28-2013%208-54-38%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/8-28-2013-8-54-38-pm-636217948862861091.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;multiple-localized-properties&quot;&gt;Multiple Localized Properties&lt;/h2&gt;
 
@@ -435,7 +435,7 @@
 
 &lt;p&gt;SQL Server Profiler has been included with SQL Server Management Studio since at least version 2000 and hasn’t changed to much over the years as far as I can tell. To access it from Management Studio simply select Tools &amp;gt; SQL Server Profiler:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/sql-server-management-studio.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/sql-server-management-studio-636217947849891195.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;events-selection&quot;&gt;Events Selection&lt;/h2&gt;
 
@@ -447,7 +447,7 @@
 
 &lt;p&gt;They are a lot of columns that won’t be useful to us either, uncheck everything but TextData, CPU, Read, Write, Duration, and SPID (required).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/profiler-events-selection.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/profiler-events-selection-636217947841384633.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;column-filters&quot;&gt;Column Filters&lt;/h2&gt;
 
@@ -455,7 +455,7 @@
 
 &lt;p&gt;Unless configured otherwise Visual Studio will connect to your database(s) within the context of your domain account; to see only the SQL that you and your application generate select NTUserName and enter your Windows domain username excluding the domain:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/nt-user-name.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/nt-user-name-636217947827014503.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;In addition to the SQL statement executions and stored procedure calls Profiler shows a bit more information than we need and we can filter this out using TextData. There are ultimately four statements that are generated by LINQ to SQL and Entity Framework and they can all be added as filters:&lt;/p&gt;
 
@@ -466,7 +466,7 @@
   &lt;li&gt;&lt;strong&gt;exec sp_executesql %&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/text-data.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/text-data-636217947858636756.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Finally, if you have other applications that are interacting with your target server using your account you can add a filter on DatabaseName as well. If your application uses multiple database you can add them all.&lt;/p&gt;
 
@@ -474,7 +474,7 @@
 
 &lt;p&gt;Now you’re ready, click &lt;em&gt;Run&lt;/em&gt; and switch back to Visual Studio to start your application (with or without debugging). To look at single pages use Profile’s &lt;em&gt;Start&lt;/em&gt;, &lt;em&gt;Pause&lt;/em&gt;, and &lt;em&gt;Clear Window&lt;/em&gt; buttons as you move through your application. In a future post I’ll describe how to interpret the output, save to XML, and export to Excel for analysis. Have fun&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/5/profile-output.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/profile-output-636217947831217908.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 25 May 2012 00:00:00 +0300</pubDate>
         <link>https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
@@ -747,7 +747,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;So let’s say you start up a new feature branch and make a couple of commits only to realize you’ve made some really bad design choices. There are many reasons why you should want to preserve all commits, good or bad; but let’s ignore those for now and proceed with our strip anyways. In our example let’s assume there are problems with changeset 11 (and subsequently 12):&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/strip-commits-before.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/strip-commits-before-636217950924844916.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Simply execute &lt;strong&gt;hg strip&lt;/strong&gt; with the revision number to want to remove; all higher revisions in the branch will be removed and revisions numbers in other branches will be reset:&lt;/p&gt;
 
@@ -755,31 +755,31 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;You’ll be left with the branch structure below, notice how changeset 13 was renumbered down to 11:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/strip-commits-after.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/strip-commits-after-636217950916380477.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Stripped changesets will be stored in “.hg/strip-bundle” and can be restored if necessary; the existing revision numbers will be preserved and your restored commits will get new revision numbers from there. You’ll need to find the bundle file name and execute something like:&lt;/p&gt;
 
 &lt;pre class=&quot;cmd&quot;&gt;hg unbundle .hg/strip-backup/0e5dd67a89f4-backup.hg&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/strip-commits-unbundled.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/strip-commits-unbundled-636217950931211165.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;transplant&quot;&gt;Transplant&lt;/h2&gt;
 
 &lt;p&gt;Transplant is a command that copies one or more changesets from one branch to another. I use this command occasionally when I’ve made very simple changes to a development branch that I later decide need to be pushed out to say a release or default branch. Assume you want to copy changesets 10 and 11 from the develop branch to the release branch:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/transplant-before.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/transplant-before-636217950944779307.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Start by updating your local working directory to the branch that will receive the changesets (release) and then execute transplant by passing in the name of the source branch (develop) and one or more revision numbers:&lt;/p&gt;
 
 &lt;pre class=&quot;cmd&quot;&gt;hg transplant –b develop 10 11&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/transplant-after.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/transplant-after-636217950938090795.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;enabling-strip-and-transplant&quot;&gt;Enabling Strip and Transplant&lt;/h2&gt;
 
 &lt;p&gt;Both commands are part of extensions that are distributed with Mercurial but will need to be enabled. Strip is included with &lt;a href=&quot;http://mercurial.selenic.com/wiki/MqExtension&quot;&gt;Mercurial Queues Extensions&lt;/a&gt; and transplant in its own &lt;a href=&quot;http://mercurial.selenic.com/wiki/TransplantExtension&quot;&gt;Transplant Extension&lt;/a&gt;. Simply add them to your Mercurial.ini file:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/3/2012-02-22%2010-24-46%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-02-22-10-24-46-pm-636217950899937804.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 22 Feb 2012 00:00:00 +0300</pubDate>
         <link>https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</link>
@@ -805,7 +805,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
   &lt;li&gt;add new test method and decorate with Test&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-05%209-18-18%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-01-05-9-18-18-am-636217952061762594.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Aside: I find I favor the test naming convention introduced to me in &lt;a href=&quot;http://tekpub.com/view/tdd/1&quot;&gt;Roy Osherove’s TDD Master Class video from TekPub&lt;/a&gt;: Method_Scenario_Expected(). ReSharper enjoys reminding me that it disapproves of underscored method names and an easy way to silence it is with its own disable comments: &lt;font color=&quot;#008000&quot;&gt;// ReSharper disable InconsistentNaming&lt;/font&gt;. Alternatively you can &lt;a href=&quot;http://atombrenner.blogspot.com/2010/07/how-to-change-resharper-naming-style.html&quot;&gt;change ReSharper’s naming style for test methods&lt;/a&gt; altogether but this only applies to your machine and your team members would need to do the same.&lt;/p&gt;
 
@@ -813,11 +813,11 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;You can access ReSharper’s file templates via ReSharper &amp;gt; Templates Explorer… &amp;gt; File Templates [tab] and you can import the templates I’ve linked to below or add you own. In this case I have a template simply called Test Fixture:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-26-29%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-01-07-11-26-29-am-636217952069529322.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;When creating templates you’ll notice how $PLACEHOLDERS$ can be used to dynamically insert environmental, solution, or project variables into your code or allow you to tab, tab, tab your way through completion:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-32-21%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-01-07-11-32-21-am-636217952077895851.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Finally, creating a new class file from your template is easy: you can create it from within a code file via the ReSharper &lt;a href=&quot;http://www.jetbrains.com/resharper/webhelp/Reference__Keyboard_Shortcuts.html&quot;&gt;keyboard shortcut&lt;/a&gt; &lt;em&gt;Ctrl+Alt+Insert&lt;/em&gt; or from the VS project context menu: Add &amp;gt; New from Template &amp;gt; Test Fixture. Bam! Too easy.&lt;/p&gt;
 
@@ -825,9 +825,9 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;Live templates are born from VS’s code snippets feature but raised like Kobe beef and are equally delicious. I’ve long since replaced all my homegrown code snippets with live templates, it’s an easy exercise well-worth the effort. My live template for a Test method is quite simply:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-42-45%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-01-07-11-42-45-am-636217952084607013.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/2012-01-07%2011-44-32%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-01-07-11-44-32-am-636217952091141113.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;At this point you can simply start typing “test” in any class to expose the ReSharper live templates context menu and tab your way through to generate your test method stub.&lt;/p&gt;
 
@@ -836,8 +836,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;p&gt;ReSharper allows you to import and export templates to share with others, these are the two I use most that you’re welcome to enjoy:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/nunit-file-template.DotSettings&quot;&gt;NUnit Test Fixture File Template&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;//dl.dropboxusercontent.com/u/38696855/blog/2/nunit-live-template.DotSettings&quot;&gt;NUnit Test Method Live Template&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://andy.azureedge.net/blog/nunit-file-template-636217953372931148.dotsettings&quot;&gt;NUnit Test Fixture File Template&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://andy.azureedge.net/blog/nunit-live-template-636217953395742482.dotsettings&quot;&gt;NUnit Test Method Live Template&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 07 Jan 2012 00:00:00 +0300</pubDate>
@@ -855,7 +855,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;Hgflow is an open-source extension for Hg inspired by git-flow (&lt;a href=&quot;http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/&quot;&gt;Why aren’t you using git-flow?&lt;/a&gt;) and built around Vincent Driessen’s popular &lt;a href=&quot;http://nvie.com/posts/a-successful-git-branching-model&quot;&gt;Git branching model&lt;/a&gt;. In essence it formalizes the workflow around Driessen’s model and provides commands for branching and merging features, releases, and hotfixes within that model. For me it provided a very comfortable model to work within and a nice set of commands to provide the perfect amount of control and automation.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://nvie.com/posts/a-successful-git-branching-model&quot;&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/nvie-branching-model.jpg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://nvie.com/posts/a-successful-git-branching-model&quot;&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/nvie-branching-model-636217954118887779.jpg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;download-and-install&quot;&gt;Download and Install&lt;/h2&gt;
 
@@ -863,7 +863,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;The extension is a single Python file, to add it into Hg just update your hg ini file, mine is at: C:\Users\%USERNAME%\Mercurial.ini:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-22%2010-16-30%20AM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2011-12-22-10-16-30-am-636217954078314415.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;walkthrough&quot;&gt;Walkthrough&lt;/h2&gt;
 
@@ -871,11 +871,11 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;Let’s start by creating a directory and initializing a repository and hgflow; I’ll go with the default branch name options which feel right to me:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-14-04%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2011-12-26-4-14-04-pm-636217954094919318.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This creates for us a &lt;strong&gt;default&lt;/strong&gt; and &lt;strong&gt;develop&lt;/strong&gt; branch and commits:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-17-07%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2011-12-26-4-17-07-pm-636217954100114945.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;So now let’s say I’m tasked with creating a new feature we’re calling Strong Coffee, I’ll tell hgflow that I want to create a feature branch and the feature command branches for us and sets it as our working copy:&lt;/p&gt;
 
@@ -883,13 +883,13 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;I’ll now add a simple file (coffee.txt) and commit:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-20-24%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2011-12-26-4-20-24-pm-636217954106376336.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now that my feature is complete I will tell hgflow I am finished; this is where automation steps it up a notch by committing, merging with &lt;strong&gt;develop&lt;/strong&gt; branch, and setting it as my working copy:&lt;/p&gt;
 
 &lt;pre class=&quot;cmd&quot;&gt;hg flow feature finish strong-coffee&lt;/pre&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-22-19%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2011-12-26-4-22-19-pm-636217954109774859.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now let’s say we fully integration test &lt;strong&gt;develop&lt;/strong&gt; with our new Strong Coffee feature and are ready to push out the next release (version 0.1) of our project, we:&lt;/p&gt;
 
@@ -901,7 +901,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;This moves our release to the &lt;strong&gt;default&lt;/strong&gt; branch (a.k.a. production) and merges back into &lt;strong&gt;develop&lt;/strong&gt; (not usually necessary but helpful in some situations).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-30-05%20PM.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2011-12-26-4-30-05-pm-636217954113694592.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As an aside, if you are using Bitbucket to host your source code (FREE) and AppHarbor to host the application (FREE) this step automatically runs your unit tests and if passing deploys the latest version for you (AUTOMATIC + FREE = CRAZY DELICIOUS). Seriously, if you have personal projects I strongly recommend Bitbucket + AppHarbor.&lt;/p&gt;
 

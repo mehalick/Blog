@@ -11,7 +11,7 @@ Having bounced between a number of version control solutions the last five years
 
 Hgflow is an open-source extension for Hg inspired by git-flow ([Why aren’t you using git-flow?](http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/)) and built around Vincent Driessen’s popular [Git branching model](http://nvie.com/posts/a-successful-git-branching-model). In essence it formalizes the workflow around Driessen’s model and provides commands for branching and merging features, releases, and hotfixes within that model. For me it provided a very comfortable model to work within and a nice set of commands to provide the perfect amount of control and automation.
 
-[![](//dl.dropboxusercontent.com/u/38696855/blog/1/nvie-branching-model.jpg)](http://nvie.com/posts/a-successful-git-branching-model)
+[![](https://andy.azureedge.net/blog/nvie-branching-model-636217954118887779.jpg)](http://nvie.com/posts/a-successful-git-branching-model)
 
 ## Download and Install
 
@@ -19,7 +19,7 @@ The project is hosted on Bitbucket ([https://bitbucket.org/yinwm/hgflow/overview
 
 The extension is a single Python file, to add it into Hg just update your hg ini file, mine is at: C:\Users\%USERNAME%\Mercurial.ini:
 
-![](//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-22%2010-16-30%20AM.png)
+![](https://andy.azureedge.net/blog/2011-12-22-10-16-30-am-636217954078314415.png)
 
 ## Walkthrough
 
@@ -27,11 +27,11 @@ For the following walkthrough I’m going to create a simple repository and demo
 
 Let’s start by creating a directory and initializing a repository and hgflow; I’ll go with the default branch name options which feel right to me:
 
-![](//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-14-04%20PM.png)
+![](https://andy.azureedge.net/blog/2011-12-26-4-14-04-pm-636217954094919318.png)
 
 This creates for us a **default** and **develop** branch and commits:
 
-![](//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-17-07%20PM.png)
+![](https://andy.azureedge.net/blog/2011-12-26-4-17-07-pm-636217954100114945.png)
 
 So now let’s say I’m tasked with creating a new feature we’re calling Strong Coffee, I’ll tell hgflow that I want to create a feature branch and the feature command branches for us and sets it as our working copy:
 
@@ -39,13 +39,13 @@ So now let’s say I’m tasked with creating a new feature we’re calling Stro
 
 I’ll now add a simple file (coffee.txt) and commit:
 
-![](//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-20-24%20PM.png)
+![](https://andy.azureedge.net/blog/2011-12-26-4-20-24-pm-636217954106376336.png)
 
 Now that my feature is complete I will tell hgflow I am finished; this is where automation steps it up a notch by committing, merging with **develop** branch, and setting it as my working copy:
 
 <pre class="cmd">hg flow feature finish strong-coffee</pre>
 
-![](//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-22-19%20PM.png)
+![](https://andy.azureedge.net/blog/2011-12-26-4-22-19-pm-636217954109774859.png)
 
 Now let’s say we fully integration test **develop** with our new Strong Coffee feature and are ready to push out the next release (version 0.1) of our project, we:
 
@@ -57,7 +57,7 @@ This is where we probably deploy to staging and acceptance test, when approved w
 
 This moves our release to the **default** branch (a.k.a. production) and merges back into **develop** (not usually necessary but helpful in some situations).
 
-![](//dl.dropboxusercontent.com/u/38696855/blog/1/2011-12-26%204-30-05%20PM.png)
+![](https://andy.azureedge.net/blog/2011-12-26-4-30-05-pm-636217954113694592.png)
 
 As an aside, if you are using Bitbucket to host your source code (FREE) and AppHarbor to host the application (FREE) this step automatically runs your unit tests and if passing deploys the latest version for you (AUTOMATIC + FREE = CRAZY DELICIOUS). Seriously, if you have personal projects I strongly recommend Bitbucket + AppHarbor.
 
