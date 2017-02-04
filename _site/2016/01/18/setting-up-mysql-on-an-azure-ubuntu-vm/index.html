@@ -172,7 +172,7 @@
 <p>Then we’ll create a database, create a user, and grant remote access to that user:</p>
 
 <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="gp">mysql&gt; </span>create database testdb;
-<span class="gp">mysql&gt; </span>create user <span class="s1">'mysqluser'</span>@<span class="s1">'localhost'</span> identitied by <span class="s1">'password'</span>;
+<span class="gp">mysql&gt; </span>create user <span class="s1">'mysqluser'</span>@<span class="s1">'localhost'</span> identified by <span class="s1">'password'</span>;
 <span class="gp">mysql&gt; </span>grant all on testdb.<span class="k">*</span> to <span class="s1">'mysqluser'</span>@<span class="s1">'%'</span> identified by <span class="s1">'password'</span>;</code></pre></figure>
 
 <p><img src="https://andy.azureedge.net/blog/2016-01-18_18-56-21-635887294953754340.png" alt="" /></p>

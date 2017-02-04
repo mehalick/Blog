@@ -121,7 +121,7 @@
 
     <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">var</span> <span class="n">planets</span> <span class="p">=</span> <span class="n">_db</span><span class="p">.</span><span class="n">Planets</span><span class="p">.</span><span class="nf">ToList</span><span class="p">();</span>
+        <span class="kt">var</span> <span class="n">planets</span> <span class="p">=</span> <span class="n">_db</span><span class="p">.</span><span class="n">Planets</span><span class="p">.</span><span class="nf">ToList</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="n">planets</span><span class="p">);</span>
     <span class="p">}</span>
@@ -158,7 +158,7 @@
     <span class="k">public</span> <span class="kt">string</span> <span class="n">Name</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>This now generously grants us access to an IEnumerable<ilocalizeable>.Localize() extension method. This method accepts a language code and a list of properties to localize.</ilocalizeable></p>
+<p>This now generously grants us access to an IEnumerable<ILocalizeable>.Localize() extension method. This method accepts a language code and a list of properties to localize.</ILocalizeable></p>
 
 <p>Back to HomeController.Index(), add an optional langCode input parameter and change _db.Planets.ToList() to _db.Planets.Localize(langCode, I =&gt; i.Name):</p>
 
@@ -168,7 +168,7 @@
 
     <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">(</span><span class="kt">string</span> <span class="n">langCode</span> <span class="p">=</span> <span class="s">"en"</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="n">var</span> <span class="n">planets</span> <span class="p">=</span> <span class="n">_db</span><span class="p">.</span><span class="n">Planets</span><span class="p">.</span><span class="nf">Localize</span><span class="p">(</span><span class="n">langCode</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">planets</span> <span class="p">=</span> <span class="n">_db</span><span class="p">.</span><span class="n">Planets</span><span class="p">.</span><span class="nf">Localize</span><span class="p">(</span><span class="n">langCode</span><span class="p">,</span> <span class="n">i</span> <span class="p">=&gt;</span> <span class="n">i</span><span class="p">.</span><span class="n">Name</span><span class="p">);</span>
 
         <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="n">planets</span><span class="p">);</span>
     <span class="p">}</span>

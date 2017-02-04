@@ -77,7 +77,7 @@
     </header>
     <p>Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:</p>
 
-<p><img src="https://dl.dropboxusercontent.com/u/38696855/blog/8/2-6-2014%2012-07-35%20PM.png" alt="" /></p>
+<p><img src="https://andy.azureedge.net/assets/2-6-2014-12-07-35-pm-636217934497128297.png" alt="" /></p>
 
 <p>I’m using UTC dates so I don’t have to worry about the time zone of the server where this ultimately lives and calling the column <strong>CreatedUtc</strong> because it’s concise but clear.</p>
 
@@ -134,7 +134,7 @@
 
 <p>At this point our solution looks like:</p>
 
-<p><img src="https://dl.dropboxusercontent.com/u/38696855/blog/8/2-6-2014%2011-52-49%20AM.png" alt="" /></p>
+<p><img src="https://andy.azureedge.net/assets/2-6-2014-11-52-49-am-636217934473979216.png" alt="" /></p>
 
 <p>We now want to ensure that when we update our database via code first migrations  our <strong>CreatedUtc</strong> property gets a default value, in this case GETUTCDATE(). One option would be to adjust the migration class manually, for each entity we <em>could</em> update CreateTable(), notice the addition of defaultValueSql: “GETUTCDATE()”.</p>
 
@@ -192,7 +192,7 @@
 
         <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ColumnModel</span><span class="p">&gt;</span> <span class="n">columns</span><span class="p">)</span>
         <span class="p">{</span>
-            <span class="k">foreach</span> <span class="p">(</span><span class="n">var</span> <span class="n">columnModel</span> <span class="k">in</span> <span class="n">columns</span><span class="p">)</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">columnModel</span> <span class="k">in</span> <span class="n">columns</span><span class="p">)</span>
             <span class="p">{</span>
                 <span class="nf">SetCreatedUtcColumn</span><span class="p">(</span><span class="n">columnModel</span><span class="p">);</span>
             <span class="p">}</span>
