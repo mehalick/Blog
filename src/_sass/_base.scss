@@ -9,7 +9,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background: transparent url('https://az808808.vo.msecnd.net/assets/page-background-635783262300817767.png') center center;
+    background: transparent url('https://andy.azureedge.net/assets/page-background-635783262300817767.png') center center;
     font-family: Muli, sans-serif; 
     color: #333;
 }
@@ -59,12 +59,28 @@ hr {
 }
 
 ul, ol {
-    margin: 0 0 15px 0;
+    @extend .margin-bottom; 
+ 
+    li { 
+        margin-bottom: 12px; 
+ 
+        &::last-child { 
+            margin-bottom: 0; 
+        } 
+    } 
 }
 
 ul {
     list-style-type: square;
 }
+
+aside { 
+    @extend .margin-bottom; 
+    background: #fff; 
+    padding: 16px; 
+    font-size: 90%; 
+    border-left: 8px solid #BFD9E5; 
+} 
 
 pre, code {
     font-family: monospace;
@@ -81,7 +97,7 @@ pre.cmd {
     border-radius: 2px;
 }
 
-table {
+table.table {
     border-collapse: collapse;
     width: 100%;
     @extend .margin-bottom;   

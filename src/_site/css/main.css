@@ -1,5 +1,5 @@
-.margin-bottom, h1, h2, h3, h4, h5, h6, p, table, iframe {
-  margin: 0 0 25px 0; }
+.margin-bottom, h1, h2, h3, h4, h5, h6, p, ul, ol, aside, table.table, iframe {
+  margin: 0 0 2.6rem 0; }
 
 /* general  */
 html {
@@ -8,7 +8,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: transparent url("https://az808808.vo.msecnd.net/assets/page-background-635783262300817767.png") center center;
+  background: transparent url("https://andy.azureedge.net/assets/page-background-635783262300817767.png") center center;
   font-family: Muli, sans-serif;
   color: #333; }
 
@@ -40,11 +40,19 @@ hr {
   background-color: #BFD9E5;
   margin: 15px 0; }
 
-ul, ol {
-  margin: 0 0 15px 0; }
+ul li, ol li {
+  margin-bottom: 12px; }
+  ul li::last-child, ol li::last-child {
+    margin-bottom: 0; }
 
 ul {
   list-style-type: square; }
+
+aside {
+  background: #fff;
+  padding: 16px;
+  font-size: 90%;
+  border-left: 8px solid #BFD9E5; }
 
 pre, code {
   font-family: monospace;
@@ -59,15 +67,15 @@ pre.cmd {
   border: 1px solid #CC7F7F;
   border-radius: 2px; }
 
-table {
+table.table {
   border-collapse: collapse;
   width: 100%; }
-  table thead th {
+  table.table thead th {
     text-align: left;
     font-weight: bold;
     background-color: #BFD9E5; }
-  table thead th,
-  table tbody td {
+  table.table thead th,
+  table.table tbody td {
     border: 1px solid #ddd;
     vertical-align: top;
     padding: 8px; }
@@ -80,8 +88,8 @@ img {
   max-width: 100%;
   height: auto; }
 
-.margin-bottom, h1, h2, h3, h4, h5, h6, p, table, iframe {
-  margin: 0 0 25px 0; }
+.margin-bottom, h1, h2, h3, h4, h5, h6, p, ul, ol, aside, table.table, iframe {
+  margin: 0 0 2.6rem 0; }
 
 nav {
   min-height: 50px;
@@ -96,7 +104,8 @@ nav {
       float: left;
       margin: 0 12px 0 0;
       padding-left: 18px;
-      background: transparent url("https://az808808.vo.msecnd.net/assets/nav-bullet-635783262672492885.png") left center no-repeat; }
+      background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6"><style>.st0{fill:#BFD9E5;}</style><path class="st0" d="M0 0h6v6H0z"/></svg>') left center no-repeat;
+      background-size: 6px; }
       nav ul li:first-child {
         background: none;
         padding-left: 0; }
@@ -114,11 +123,10 @@ nav {
           color: #BFD9E5; }
   nav #rss {
     float: right;
-    margin-top: 12px; }
-    nav #rss .fa-square {
-      color: #F78C28; }
-    nav #rss .fa-rss {
-      color: white; }
+    margin-top: 14px; }
+    nav #rss svg {
+      width: 24px;
+      height: 24px; }
 
 main {
   font-size: 1.7rem; }

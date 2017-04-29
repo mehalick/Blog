@@ -15,7 +15,8 @@ nav {
             float: left;
             margin: 0 12px 0 0;
             padding-left: 18px;
-            background: transparent url('https://az808808.vo.msecnd.net/assets/nav-bullet-635783262672492885.png') left center no-repeat;
+            background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6"><style>.st0{fill:#BFD9E5;}</style><path class="st0" d="M0 0h6v6H0z"/></svg>') left center no-repeat; 
+            background-size: 6px; 
             
             &:first-child {
                 background: none;
@@ -45,15 +46,12 @@ nav {
     
     #rss {
         float: right;
-        margin-top: 12px;    
-        
-        .fa-square {
-            color: #F78C28;
-        }
-        
-        .fa-rss {
-            color: white;
-        }
+        margin-top: 14px; 
+ 
+        svg { 
+            width: 24px; 
+            height: 24px; 
+        } 
     }
 }
 

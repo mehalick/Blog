@@ -3,11 +3,11 @@
   <channel>
     <title>Andy Mehalick</title>
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
-    <link>https://andy.mehalick.com/</link>
-    <atom:link href="https://andy.mehalick.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 04 Feb 2017 12:03:51 +0300</pubDate>
-    <lastBuildDate>Sat, 04 Feb 2017 12:03:51 +0300</lastBuildDate>
-    <generator>Jekyll v3.4.0</generator>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 29 Apr 2017 10:39:10 +0300</pubDate>
+    <lastBuildDate>Sat, 29 Apr 2017 10:39:10 +0300</lastBuildDate>
+    <generator>Jekyll v3.4.2</generator>
     
       <item>
         <title>Setting Up MySQL on an Azure Ubuntu VM</title>
@@ -135,8 +135,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 18 Jan 2016 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</guid>
+        <link>http://localhost:4000/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</guid>
         
         
       </item>
@@ -260,7 +260,7 @@
 
         &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IEnumerable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ColumnModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
         &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columnModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;foreach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columnModel&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
                 &lt;span class=&quot;nf&quot;&gt;SetCreatedUtcColumn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columnModel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
             &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -287,8 +287,8 @@
 &lt;p&gt;You can find the demo source code at &lt;a href=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot; title=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot;&gt;https://github.com/andy-mehalick/CreatedUtcColumnDemo&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 06 Feb 2014 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</guid>
+        <link>http://localhost:4000/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</link>
+        <guid isPermaLink="true">http://localhost:4000/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</guid>
         
         
       </item>
@@ -341,7 +341,7 @@
 
     &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -378,7 +378,7 @@
     &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;This now generously grants us access to an IEnumerable&lt;ILocalizeable&gt;.Localize() extension method. This method accepts a language code and a list of properties to localize.&lt;/ILocalizeable&gt;&lt;/p&gt;
+&lt;p&gt;This now generously grants us access to an IEnumerable&lt;ilocalizeable&gt;.Localize() extension method. This method accepts a language code and a list of properties to localize.&lt;/ilocalizeable&gt;&lt;/p&gt;
 
 &lt;p&gt;Back to HomeController.Index(), add an optional langCode input parameter and change _db.Planets.ToList() to _db.Planets.Localize(langCode, I =&amp;gt; i.Name):&lt;/p&gt;
 
@@ -388,7 +388,7 @@
 
     &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ActionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Index&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;langCode&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;en&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kt&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Localize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;langCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Localize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;langCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
         &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;View&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;planets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
@@ -413,8 +413,8 @@
 &lt;p&gt;That’s it for now, in Part 2 we’ll look at adding and updating our localizable entities with the included editor template for MVC and eventually we’ll dig deeper in OrangeJetpack.Localization implementation. If you want to jump ahead you can find the project at &lt;a href=&quot;https://github.com/andy-mehalick/OrangeJetpack.Localization&quot;&gt;https://github.com/andy-mehalick/OrangeJetpack.Localization&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sat, 07 Sep 2013 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</guid>
+        <link>http://localhost:4000/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</link>
+        <guid isPermaLink="true">http://localhost:4000/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</guid>
         
         
       </item>
@@ -477,8 +477,8 @@
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/profile-output-636217947831217908.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 25 May 2012 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</guid>
+        <link>http://localhost:4000/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
+        <guid isPermaLink="true">http://localhost:4000/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</guid>
         
         
       </item>
@@ -731,8 +731,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;/table&gt;
 </description>
         <pubDate>Tue, 28 Feb 2012 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2012/02/28/tdd-code-kata/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2012/02/28/tdd-code-kata/</guid>
+        <link>http://localhost:4000/2012/02/28/tdd-code-kata/</link>
+        <guid isPermaLink="true">http://localhost:4000/2012/02/28/tdd-code-kata/</guid>
         
         
       </item>
@@ -782,8 +782,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-02-22-10-24-46-pm-636217950899937804.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 22 Feb 2012 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</guid>
+        <link>http://localhost:4000/2012/02/22/hg-strip-and-transplant/</link>
+        <guid isPermaLink="true">http://localhost:4000/2012/02/22/hg-strip-and-transplant/</guid>
         
         
       </item>
@@ -841,8 +841,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 07 Jan 2012 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/</guid>
+        <link>http://localhost:4000/2012/01/07/fun-with-nunit-and-resharper-templates/</link>
+        <guid isPermaLink="true">http://localhost:4000/2012/01/07/fun-with-nunit-and-resharper-templates/</guid>
         
         
       </item>
@@ -910,8 +910,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;p&gt;Hgflow shouldn’t introduce any radical change to the standard source control workflow, it simply introduces a more formal vocabulary for describing branches and applies a nice model to the process. On top of that it adds a nice bit of automation and makes working with Hg even more enjoyable.&lt;/p&gt;
 </description>
         <pubDate>Sat, 24 Dec 2011 00:00:00 +0300</pubDate>
-        <link>https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/</link>
-        <guid isPermaLink="true">https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/</guid>
+        <link>http://localhost:4000/2011/12/24/an-introduction-to-hgflow/</link>
+        <guid isPermaLink="true">http://localhost:4000/2011/12/24/an-introduction-to-hgflow/</guid>
         
         
       </item>
