@@ -185,9 +185,9 @@ a.colorless {
 
 /* blog post items */
 .blog-post {
-  margin-bottom: 20px; }
+  margin-bottom: 5.2rem; }
   .blog-post header h2 {
-    margin-bottom: 15px;
+    margin-bottom: 1.7rem;
     font-size: 1.7rem;
     font-weight: normal;
     color: #aaa; }
@@ -202,8 +202,17 @@ a.colorless {
   #post-list .post-date {
     color: #999; }
 
+.highlight {
+  margin: 0 0 2.6rem 0;
+  padding: 16px; }
+  .highlight .err {
+    border: none !important; }
+
 .highlight .hll {
   background-color: #ffffcc; }
+
+.highlight {
+  background: #ffffff; }
 
 .highlight .c {
   color: #008000; }
@@ -217,6 +226,10 @@ a.colorless {
   color: #0000ff; }
 
 /* Keyword */
+.highlight .ch {
+  color: #008000; }
+
+/* Comment.Hashbang */
 .highlight .cm {
   color: #008000; }
 
@@ -225,6 +238,10 @@ a.colorless {
   color: #0000ff; }
 
 /* Comment.Preproc */
+.highlight .cpf {
+  color: #008000; }
+
+/* Comment.PreprocFile */
 .highlight .c1 {
   color: #008000; }
 
@@ -289,6 +306,10 @@ a.colorless {
   color: #0000ff; }
 
 /* Operator.Word */
+.highlight .sa {
+  color: #a31515; }
+
+/* Literal.String.Affix */
 .highlight .sb {
   color: #a31515; }
 
@@ -297,6 +318,10 @@ a.colorless {
   color: #a31515; }
 
 /* Literal.String.Char */
+.highlight .dl {
+  color: #a31515; }
+
+/* Literal.String.Delimiter */
 .highlight .sd {
   color: #a31515; }
 
