@@ -13,13 +13,13 @@
   <meta itemprop="image" content="">
   <meta property="og:title" content="ASP.NET Core Deployment Versioning with Git and Kudu">
   <meta property="og:type" content="blog">
-  <meta property="og:url" content="http://localhost:4000/2017/04/29/title/">
+  <meta property="og:url" content="http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/">
   <meta property="og:image" content="">
   <meta property="og:site_name" content="Andy Mehalick">
   <meta property="og:description" content="">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
-  <link rel="canonical" href="http://localhost:4000/2017/04/29/title/">
+  <link rel="canonical" href="http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/">
   <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="http://feeds.feedburner.com/AndyMehalick">
   <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
@@ -34,7 +34,7 @@
     
     ga('create', 'UA-28045940-1', 'auto');
     ga('require', 'displayfeatures');
-    //ga('send', 'pageview');    
+    ga('send', 'pageview');    
   </script>
 </head>
 
@@ -65,37 +65,36 @@
                 <article class="blog-post">
     <header>
         <h1>ASP.NET Core Deployment Versioning with Git and Kudu</h1>
-        <h2><time datetime="2017-04-29 00:00:00 +0300" pubdate>29 April 2017</time></h2>
+        <h2><time datetime="2017-05-10 00:00:00 +0300" pubdate>10 May 2017</time></h2>
     </header>
-    <p><img src="https://andy.azureedge.net/blog/crab-636290654374654034.jpg" alt="" /></p>
+    <p><img src="https://andy.azureedge.net/blog/crab-636301801571668026.jpg" alt="" /></p>
 
-<p>While there are lots of fancy and elaborate ways to version ASP.NET apps and their deployments, sometimes I just want an easy way to look at any website and know the codebase Git commit and deployment time. Here’s an easy way using Kudu’s post deployment actions and Git deployment in an ASP.NET Core app.</p>
+<p>While there’s no shortage of fancy and elaborate ways to add version and deployment metadata into ASP.NET apps you already have an easy option if you’re using Git and Azure’s Kudu deployment. With a simple script and a few extra bits added to your ASP.NET Core project you can easily add version and deployment data directly into your pages:</p>
 
-<p>We’ll be using Git automated deployment orchestrated by Kudu in Azure along with Kudu’s <a href="https://github.com/projectkudu/kudu/wiki/Post-Deployment-Action-Hooks">post deployment action hooks</a>.</p>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"MyApp"</span> <span class="na">data-version=</span><span class="s">"8e879f1"</span> <span class="na">data-deployment=</span><span class="s">"2017-05-10 10:21:14Z"</span> <span class="nt">/&gt;</span> 
+</code></pre>
+</div>
 
-<p>First things first, our ultimate goal will be to create a version.json file at the root of our site with as little or as many details regarding our Git automated deployment as we choose to add. In this example we’ll be creating something like:</p>
+<p>We’re assuming you’re already set up with Git automated deployment in Azure using <a href="https://github.com/projectkudu/kudu/wiki">Kudu</a>. If not perhaps you should be, it’s a quick and easy way to get automated deployment working with ASP.NET, ASP.NET Core, Node, PHP, and basic websites using Git repositories hosted in GitHub, Bitbucket, and Azure.</p>
+
+<p>The first thing we’ll need to do it extend our out-of-box Kudu deployment to add a version file to our site each time a deployment completes. We can use a simple JSON file with some commit info and our deployment date:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="nt">"DeployUtc"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2017-04-29 14:11:34Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"ShortHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2ae789e"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"FullHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2ae789ec8a791a99a5ae40210fd5240a478f2c6c"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"DeployUtc"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2017-05-10 10:21:14Z"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ShortHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"8e879f1"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"FullHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"8e879f1c8a791a99a5ae40210fd5240a478f2c6c"</span><span class="p">,</span><span class="w">
     </span><span class="nt">"Subject"</span><span class="p">:</span><span class="w">  </span><span class="s2">"some commit message here..."</span><span class="p">,</span><span class="w">
     </span><span class="nt">"Name"</span><span class="p">:</span><span class="w">  </span><span class="s2">"Andy Mehalick"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"Email"</span><span class="p">:</span><span class="w">  </span><span class="s2">"andy.mehalick@orangejetpack.com"</span><span class="w">
+    </span><span class="nt">"Email"</span><span class="p">:</span><span class="w">  </span><span class="s2">"mehalick@gmail.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 </div>
 
+<p>We really only need the first two properties but the rest might be useful in other scenarios.</p>
+
 <h2 id="post-deployment-action-hook">Post Deployment Action Hook</h2>
 
-<p>While there are a few ways to upload post deployment scripts and/or configure custom locations we’ll use a .deployment config to set a location local in our Git repository, this will ensure everything is source controlled. So, we’ll create a .deployment file at the root of our repo with a single setting:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>[<span class="n">config</span>]
-<span class="n">SCM_POST_DEPLOYMENT_ACTIONS_PATH</span> = <span class="n">deploy</span>\<span class="n">PostDeploymentActions</span>\
-</code></pre>
-</div>
-
-<p>Next, create PowerShell script deploy\PostDeploymentActions\Set-GitAppVersion.ps1 that Kudu will call after every Git deployment:</p>
+<p>To create our <strong>version.json</strong> file we’ll add a <a href="https://github.com/projectkudu/kudu/wiki/Post-Deployment-Action-Hooks">post deployment action hook</a> into our Kudu deployment. This is just a simple script that Kudu will know to run with each deployment. Kudu can use a variety of script types and in this case we’ll use PowerShell:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="nv">$o</span> <span class="o">=</span> @<span class="o">{}</span>
 <span class="nv">$o</span>.DeployUtc <span class="o">=</span> <span class="nb">Get-Date</span> -format u;
@@ -108,6 +107,19 @@
 <span class="nv">$o</span> | ConvertTo-Json | <span class="nb">Out-File</span> <span class="s2">"D:</span><span class="se">\h</span><span class="s2">ome</span><span class="se">\s</span><span class="s2">ite</span><span class="se">\w</span><span class="s2">wwroot</span><span class="se">\v</span><span class="s2">ersion.json"</span>;
 </code></pre>
 </div>
+
+<p>Our script executes git.exe in Azure and writes the details from the last commit to our JSON file. If you’d like to write more commit info to your JSON you can see what’s available via Git’s <a href="https://git-scm.com/docs/pretty-formats">pretty formats doc</a>.</p>
+
+<p>We’ll save the above script as <strong>Set-GitAppVersion.ps1</strong> and while we could simply upload it to Kudu it’s better to save it into our existing Git repository and then just tell Kudu where to find it.</p>
+
+<p>First, save this file as ~\deploy\PostDeploymentActions\Set-GitAppVersion.ps1 and then create a ~\.deployment file with the following setting:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[<span class="n">config</span>]
+<span class="n">SCM_POST_DEPLOYMENT_ACTIONS_PATH</span> = <span class="n">deploy</span>\<span class="n">PostDeploymentActions</span>\
+</code></pre>
+</div>
+
+<p>This sets us up nicely for future post deployment scripts as well, anything added to our deploy\PostDeploymentActions\ folder will get executed automatically by Kudu after each deployment.</p>
 
 <p>To see everything in action you’ll need to set up Git automated deployment using GitHub, Bitbucket, or even Azure directly if you want. Once you’re set up and a deployment has been triggered you’ll be able to see a log of you post deployment scripts.</p>
 
@@ -123,9 +135,9 @@
 
 <p><img src="https://andy.azureedge.net/blog/2017-04-29_13-14-40-636290577131373014.png" alt="" /></p>
 
-<h2 id="reading-deploy-file">Reading Deploy File</h2>
+<h2 id="reading-our-version-deployment-file">Reading our Version Deployment File</h2>
 
-<p>In our web app I want to embed or show only the Git commit short hash, a.k.a. our “version”, and the deployment date and time. To support this let’s create a simple model:</p>
+<p>Our ASP.NET app will read version.json and write some or all of the data into our pages. In this example we’ll use the Git short hash as our version along with our deployment date/time, so let’s create a simple model that we can use:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AppVersion</span>
 <span class="p">{</span>
@@ -135,7 +147,7 @@
 </code></pre>
 </div>
 
-<p>Next we’ll create a single property service to read and make version.json available to our views:</p>
+<p>We can read version.json with a service that uses ASP.NET Core’s IHostingEnvironment to find our file at the root of our app:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AppVersionService</span> <span class="p">:</span> <span class="n">IAppVersionService</span>
 <span class="p">{</span>
@@ -176,7 +188,7 @@
 </code></pre>
 </div>
 
-<p>We’re exposing <strong>AppVersion</strong> as a property because we’ll configure <strong>AppVersionService</strong> as a singleton in our app’s Startup.cs:</p>
+<p>So that we only have to read and deserialize version.json once we can set AppVersionService up as a singleton in Startup.cs:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
@@ -189,19 +201,29 @@
 
 <h2 id="embedding-or-displaying-our-version">Embedding or Displaying our Version</h2>
 
-<p>How or where you embed or display your version details is completely up to you, but I’ll provide a few examples. All will exist in _Layout.cshtml and accessed via our AppVersionService exposed with dependency injection:</p>
+<p>And finally,.. you can access AppVersionService directly in _Layout.cshtml or in any view using ASP.NET Core’s dependency injection:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">@inject</span> <span class="n">IAppVersionService</span> <span class="n">AppVersionService</span>
 <span class="err">@</span><span class="p">{</span>
-    <span class="n">var</span> <span class="n">shortHash</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">;</span>
+    <span class="n">var</span> <span class="n">shortHash</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">.</span><span class="n">ShortHash</span><span class="p">;</span>
     <span class="n">var</span> <span class="n">deployUtc</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">.</span><span class="n">DeployUtc</span><span class="p">.</span><span class="nf">ToString</span><span class="p">(</span><span class="s">"u"</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre>
 </div>
 
+<p>How you embed or display your version metadata is entirely up to you, here’s a few ideas:</p>
+
+<h3 id="html5-data--attibutes">HTML5 Data-* Attibutes</h3>
+
+<p>My favorite option is appending our data as HTML5 data-* attributes on the application-name meta tag. This feels semantically legit and makes it easy to find and read:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"MyApp"</span> <span class="na">data-version=</span><span class="s">"8e879f1"</span> <span class="na">data-deployment=</span><span class="s">"2017-05-10 10:21:14Z"</span> <span class="nt">/&gt;</span>
+</code></pre>
+</div>
+
 <h3 id="json-data-blocks">JSON Data Blocks</h3>
 
-<p>Probably my favorite for embedding:</p>
+<p>This option is clean and readable as well, just use a JSON data block:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">id=</span><span class="s">"version"</span> <span class="na">type=</span><span class="s">"application/json"</span><span class="nt">&gt;</span>
     <span class="p">{</span> 
@@ -212,26 +234,18 @@
 </code></pre>
 </div>
 
-<h3 id="html5-data--attibutes">HTML5 Data-* Attibutes</h3>
-
-<p>Another option would be HTML data-* attributes on the html attribute:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;html</span> <span class="na">data-version-short-hash=</span><span class="s">"@shortHash"</span> <span class="na">data-version-deploy-utc=</span><span class="s">"@deployUtc"</span><span class="nt">&gt;</span>
-</code></pre>
-</div>
-
 <h3 id="html-meta-tags">HTML Meta Tags</h3>
 
-<p>Or some custom-named meta tags:</p>
+<p>Or perhaps some custom meta tags:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:ShortHash"</span> <span class="na">content=</span><span class="s">"shortHash"</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:DeployUtc"</span> <span class="na">content=</span><span class="s">"deployUtc"</span> <span class="nt">/&gt;</span>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:ShortHash"</span> <span class="na">content=</span><span class="s">"@shortHash"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:DeployUtc"</span> <span class="na">content=</span><span class="s">"@deployUtc"</span> <span class="nt">/&gt;</span>
 </code></pre>
 </div>
 
 <h3 id="microdata">Microdata</h3>
 
-<p>If you want to display your version and deployment data perhaps use microdata:</p>
+<p>If you plan to show version data in the footer of your site perhaps use microdata:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;footer</span> <span class="na">itemscope</span> <span class="na">itemtype=</span><span class="s">"http://schema.org/SoftwareApplication"</span><span class="nt">&gt;</span>
     <span class="ni">&amp;copy;</span> Git App Version Demo | 
@@ -242,11 +256,9 @@
 </code></pre>
 </div>
 
-<p>How you choose to embed or display is really up to how and if you need to read it programmatically and/or your preferences for markup semantics.</p>
+<h2 id="sample-code-and-demo">Sample Code and Demo</h2>
 
-<h2 id="conclusion">Conclusion</h2>
-
-<p>You can find a sample project on GitHub at []() and a demo on Azure at <a href="https://gitappversion.azurewebsites.net/">https://gitappversion.azurewebsites.net</a>.</p>
+<p>You can find a sample project on GitHub at <a href="https://github.com/mehalick/GitAppVersion">https://github.com/mehalick/GitAppVersion</a> and a demo on Azure at <a href="https://gitappversion.azurewebsites.net/">https://gitappversion.azurewebsites.net</a>.</p>
 
 </article>
 

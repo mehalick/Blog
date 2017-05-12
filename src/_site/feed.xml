@@ -5,41 +5,40 @@
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 29 Apr 2017 16:26:03 +0300</pubDate>
-    <lastBuildDate>Sat, 29 Apr 2017 16:26:03 +0300</lastBuildDate>
+    <pubDate>Fri, 12 May 2017 13:02:50 +0300</pubDate>
+    <lastBuildDate>Fri, 12 May 2017 13:02:50 +0300</lastBuildDate>
     <generator>Jekyll v3.4.2</generator>
     
       <item>
         <title>ASP.NET Core Deployment Versioning with Git and Kudu</title>
-        <description>&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/crab-636290654374654034.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/crab-636301801571668026.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;While there are lots of fancy and elaborate ways to version ASP.NET apps and their deployments, sometimes I just want an easy way to look at any website and know the codebase Git commit and deployment time. Here’s an easy way using Kudu’s post deployment actions and Git deployment in an ASP.NET Core app.&lt;/p&gt;
+&lt;p&gt;While there’s no shortage of fancy and elaborate ways to add version and deployment metadata into ASP.NET apps you already have an easy option if you’re using Git and Azure’s Kudu deployment. With a simple script and a few extra bits added to your ASP.NET Core project you can easily add version and deployment data directly into your pages:&lt;/p&gt;
 
-&lt;p&gt;We’ll be using Git automated deployment orchestrated by Kudu in Azure along with Kudu’s &lt;a href=&quot;https://github.com/projectkudu/kudu/wiki/Post-Deployment-Action-Hooks&quot;&gt;post deployment action hooks&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;application-name&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;MyApp&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-version=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;8e879f1&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-deployment=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2017-05-10 10:21:14Z&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;First things first, our ultimate goal will be to create a version.json file at the root of our site with as little or as many details regarding our Git automated deployment as we choose to add. In this example we’ll be creating something like:&lt;/p&gt;
+&lt;p&gt;We’re assuming you’re already set up with Git automated deployment in Azure using &lt;a href=&quot;https://github.com/projectkudu/kudu/wiki&quot;&gt;Kudu&lt;/a&gt;. If not perhaps you should be, it’s a quick and easy way to get automated deployment working with ASP.NET, ASP.NET Core, Node, PHP, and basic websites using Git repositories hosted in GitHub, Bitbucket, and Azure.&lt;/p&gt;
+
+&lt;p&gt;The first thing we’ll need to do it extend our out-of-box Kudu deployment to add a version file to our site each time a deployment completes. We can use a simple JSON file with some commit info and our deployment date:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;DeployUtc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2017-04-29 14:11:34Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;ShortHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2ae789e&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;FullHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2ae789ec8a791a99a5ae40210fd5240a478f2c6c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;DeployUtc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2017-05-10 10:21:14Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;ShortHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8e879f1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;FullHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8e879f1c8a791a99a5ae40210fd5240a478f2c6c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;Subject&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;some commit message here...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;Name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy Mehalick&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;Email&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;andy.mehalick@orangejetpack.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;Email&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mehalick@gmail.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;We really only need the first two properties but the rest might be useful in other scenarios.&lt;/p&gt;
+
 &lt;h2 id=&quot;post-deployment-action-hook&quot;&gt;Post Deployment Action Hook&lt;/h2&gt;
 
-&lt;p&gt;While there are a few ways to upload post deployment scripts and/or configure custom locations we’ll use a .deployment config to set a location local in our Git repository, this will ensure everything is source controlled. So, we’ll create a .deployment file at the root of our repo with a single setting:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;]
-&lt;span class=&quot;n&quot;&gt;SCM_POST_DEPLOYMENT_ACTIONS_PATH&lt;/span&gt; = &lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;PostDeploymentActions&lt;/span&gt;\
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Next, create PowerShell script deploy\PostDeploymentActions\Set-GitAppVersion.ps1 that Kudu will call after every Git deployment:&lt;/p&gt;
+&lt;p&gt;To create our &lt;strong&gt;version.json&lt;/strong&gt; file we’ll add a &lt;a href=&quot;https://github.com/projectkudu/kudu/wiki/Post-Deployment-Action-Hooks&quot;&gt;post deployment action hook&lt;/a&gt; into our Kudu deployment. This is just a simple script that Kudu will know to run with each deployment. Kudu can use a variety of script types and in this case we’ll use PowerShell:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; @&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.DeployUtc &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Get-Date&lt;/span&gt; -format u;
@@ -52,6 +51,19 @@
 &lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt; | ConvertTo-Json | &lt;span class=&quot;nb&quot;&gt;Out-File&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;D:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ome&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ite&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\w&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;wwroot&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\v&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ersion.json&quot;&lt;/span&gt;;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;p&gt;Our script executes git.exe in Azure and writes the details from the last commit to our JSON file. If you’d like to write more commit info to your JSON you can see what’s available via Git’s &lt;a href=&quot;https://git-scm.com/docs/pretty-formats&quot;&gt;pretty formats doc&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We’ll save the above script as &lt;strong&gt;Set-GitAppVersion.ps1&lt;/strong&gt; and while we could simply upload it to Kudu it’s better to save it into our existing Git repository and then just tell Kudu where to find it.&lt;/p&gt;
+
+&lt;p&gt;First, save this file as ~\deploy\PostDeploymentActions\Set-GitAppVersion.ps1 and then create a ~\.deployment file with the following setting:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;]
+&lt;span class=&quot;n&quot;&gt;SCM_POST_DEPLOYMENT_ACTIONS_PATH&lt;/span&gt; = &lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;\&lt;span class=&quot;n&quot;&gt;PostDeploymentActions&lt;/span&gt;\
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This sets us up nicely for future post deployment scripts as well, anything added to our deploy\PostDeploymentActions\ folder will get executed automatically by Kudu after each deployment.&lt;/p&gt;
 
 &lt;p&gt;To see everything in action you’ll need to set up Git automated deployment using GitHub, Bitbucket, or even Azure directly if you want. Once you’re set up and a deployment has been triggered you’ll be able to see a log of you post deployment scripts.&lt;/p&gt;
 
@@ -67,9 +79,9 @@
 
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2017-04-29_13-14-40-636290577131373014.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;reading-deploy-file&quot;&gt;Reading Deploy File&lt;/h2&gt;
+&lt;h2 id=&quot;reading-our-version-deployment-file&quot;&gt;Reading our Version Deployment File&lt;/h2&gt;
 
-&lt;p&gt;In our web app I want to embed or show only the Git commit short hash, a.k.a. our “version”, and the deployment date and time. To support this let’s create a simple model:&lt;/p&gt;
+&lt;p&gt;Our ASP.NET app will read version.json and write some or all of the data into our pages. In this example we’ll use the Git short hash as our version along with our deployment date/time, so let’s create a simple model that we can use:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppVersion&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -79,7 +91,7 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Next we’ll create a single property service to read and make version.json available to our views:&lt;/p&gt;
+&lt;p&gt;We can read version.json with a service that uses ASP.NET Core’s IHostingEnvironment to find our file at the root of our app:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AppVersionService&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IAppVersionService&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -120,7 +132,7 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;We’re exposing &lt;strong&gt;AppVersion&lt;/strong&gt; as a property because we’ll configure &lt;strong&gt;AppVersionService&lt;/strong&gt; as a singleton in our app’s Startup.cs:&lt;/p&gt;
+&lt;p&gt;So that we only have to read and deserialize version.json once we can set AppVersionService up as a singleton in Startup.cs:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ConfigureServices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IServiceCollection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -133,19 +145,29 @@
 
 &lt;h2 id=&quot;embedding-or-displaying-our-version&quot;&gt;Embedding or Displaying our Version&lt;/h2&gt;
 
-&lt;p&gt;How or where you embed or display your version details is completely up to you, but I’ll provide a few examples. All will exist in _Layout.cshtml and accessed via our AppVersionService exposed with dependency injection:&lt;/p&gt;
+&lt;p&gt;And finally,.. you can access AppVersionService directly in _Layout.cshtml or in any view using ASP.NET Core’s dependency injection:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;@inject&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IAppVersionService&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AppVersionService&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shortHash&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AppVersionService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AppVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shortHash&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AppVersionService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AppVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ShortHash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deployUtc&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AppVersionService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AppVersion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DeployUtc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ToString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;u&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;How you embed or display your version metadata is entirely up to you, here’s a few ideas:&lt;/p&gt;
+
+&lt;h3 id=&quot;html5-data--attibutes&quot;&gt;HTML5 Data-* Attibutes&lt;/h3&gt;
+
+&lt;p&gt;My favorite option is appending our data as HTML5 data-* attributes on the application-name meta tag. This feels semantically legit and makes it easy to find and read:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;application-name&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;MyApp&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-version=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;8e879f1&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-deployment=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2017-05-10 10:21:14Z&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;h3 id=&quot;json-data-blocks&quot;&gt;JSON Data Blocks&lt;/h3&gt;
 
-&lt;p&gt;Probably my favorite for embedding:&lt;/p&gt;
+&lt;p&gt;This option is clean and readable as well, just use a JSON data block:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;application/json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
@@ -156,26 +178,18 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h3 id=&quot;html5-data--attibutes&quot;&gt;HTML5 Data-* Attibutes&lt;/h3&gt;
-
-&lt;p&gt;Another option would be HTML data-* attributes on the html attribute:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-version-short-hash=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@shortHash&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-version-deploy-utc=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@deployUtc&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
 &lt;h3 id=&quot;html-meta-tags&quot;&gt;HTML Meta Tags&lt;/h3&gt;
 
-&lt;p&gt;Or some custom-named meta tags:&lt;/p&gt;
+&lt;p&gt;Or perhaps some custom meta tags:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version:ShortHash&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;shortHash&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version:DeployUtc&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;deployUtc&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version:ShortHash&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@shortHash&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version:DeployUtc&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;@deployUtc&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 &lt;h3 id=&quot;microdata&quot;&gt;Microdata&lt;/h3&gt;
 
-&lt;p&gt;If you want to display your version and deployment data perhaps use microdata:&lt;/p&gt;
+&lt;p&gt;If you plan to show version data in the footer of your site perhaps use microdata:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;footer&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;itemscope&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;itemtype=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://schema.org/SoftwareApplication&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;ni&quot;&gt;&amp;amp;copy;&lt;/span&gt; Git App Version Demo | 
@@ -186,15 +200,13 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;How you choose to embed or display is really up to how and if you need to read it programmatically and/or your preferences for markup semantics.&lt;/p&gt;
+&lt;h2 id=&quot;sample-code-and-demo&quot;&gt;Sample Code and Demo&lt;/h2&gt;
 
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;You can find a sample project on GitHub at []() and a demo on Azure at &lt;a href=&quot;https://gitappversion.azurewebsites.net/&quot;&gt;https://gitappversion.azurewebsites.net&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can find a sample project on GitHub at &lt;a href=&quot;https://github.com/mehalick/GitAppVersion&quot;&gt;https://github.com/mehalick/GitAppVersion&lt;/a&gt; and a demo on Azure at &lt;a href=&quot;https://gitappversion.azurewebsites.net/&quot;&gt;https://gitappversion.azurewebsites.net&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 29 Apr 2017 00:00:00 +0300</pubDate>
-        <link>http://localhost:4000/2017/04/29/title/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/04/29/title/</guid>
+        <pubDate>Wed, 10 May 2017 00:00:00 +0300</pubDate>
+        <link>http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</guid>
         
         
       </item>
