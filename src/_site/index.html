@@ -13,28 +13,29 @@
   <meta itemprop="image" content="">
   <meta property="og:title" content="Andy Mehalick">
   <meta property="og:type" content="blog">
-  <meta property="og:url" content="https://andy.mehalick.com/">
+  <meta property="og:url" content="http://localhost:4000/">
   <meta property="og:image" content="">
   <meta property="og:site_name" content="Andy Mehalick">
   <meta property="og:description" content="A software development process and technology blog; a look at the tools and techniques for building better software.">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
-  <link rel="canonical" href="https://andy.mehalick.com/">
+  <link rel="canonical" href="http://localhost:4000/">
   <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="http://feeds.feedburner.com/AndyMehalick">
   <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   <script>
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-            (i[r].q = i[r].q || []).push(arguments);
-        }, i[r].l = 1 * new Date(); a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-        m.parentNode.insertBefore(a, m);
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-    
-    ga('create', 'UA-28045940-1', 'auto');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');    
+    if (document.location.host === "andy.mehalick.com") {
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+    }
   </script>
 </head>
 
@@ -62,9 +63,9 @@
                 <hr />
             </header>
             <div id="content">               
-                <p>Hi I'm Andy &mdash; founder and CTO of <a class="colorless" href="https://www.orangejetpack.com/">Orange Jetpack</a>, I'm currently living and working in beautiful sunny Kuwait. I am a Microsoft Certified Professional Developer and a recent Master of Software Engineering graduate from Pennsylvania State University.</p> 
+                <p>Hi I'm Andy &mdash; founder and managing director <a class="colorless" href="https://www.orangejetpack.com/">Orange Jetpack</a>, I'm currently living and working in beautiful sunny Kuwait. I am a Microsoft Certified Professional Developer and a recent Master of Software Engineering graduate from Pennsylvania State University.</p> 
 <p>I have a passion for the elegance inherent in well-designed software solutions and the beauty that exists in the software we create. I enjoy working with and evangelizing all of the technologies and patterns that create harmony in my software development life and I enjoy sharing my experiences of discovery with others.</p>
-<p>Currently I build cloud-based web and mobile applications of all scale with the ASP.NET Core, Entity Framework, SQL Azure, DocumentDB, Redis, Service Bus, Angular, React, and Ionic.</p> 
+<p>Currently I build cloud-based web and mobile applications of all scale with the ASP.NET Core, Entity Framework, SQL Azure, Cosmos DB, Redis, Service Bus, Angular, React, and Ionic.</p> 
 <p><img src="https://andy.azureedge.net/assets/collage-1-635783261389926820.png" width="930" height="300" alt="photo collage" /></p>
 
 <h3 class="header">Blog</h3>
