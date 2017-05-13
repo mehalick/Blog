@@ -1,8 +1,8 @@
 <head itemscope itemref="http://schema.org/Blog">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title itemprop="title">{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="author" itemprop="author" content="Andy Mehalick">
   <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
   <meta name="description" itemprop="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
