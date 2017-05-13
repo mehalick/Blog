@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "ASP.NET Core Deployment Versioning with Git and Kudu"
-date: 2017-05-10
 post_id: 10
+date: 2017-05-10
+title: ASP.NET Core Deployment Versioning with Git and Kudu
+excerpt: How to add deployment version metadata to ASP.NET Core websites using Git and Microsoft Azure and Kudu.
 ---
 
 {:.image-lead}
