@@ -35,7 +35,9 @@ This creates for us a **default** and **develop** branch and commits:
 
 So now let’s say I’m tasked with creating a new feature we’re calling Strong Coffee, I’ll tell hgflow that I want to create a feature branch and the feature command branches for us and sets it as our working copy:
 
-<pre class="cmd">hg flow feature start strong-coffee</pre>
+```shell
+hg flow feature start strong-coffee
+```
 
 I’ll now add a simple file (coffee.txt) and commit:
 
@@ -43,17 +45,23 @@ I’ll now add a simple file (coffee.txt) and commit:
 
 Now that my feature is complete I will tell hgflow I am finished; this is where automation steps it up a notch by committing, merging with **develop** branch, and setting it as my working copy:
 
-<pre class="cmd">hg flow feature finish strong-coffee</pre>
+```
+hg flow feature finish strong-coffee
+```
 
 ![](https://andy.azureedge.net/blog/2011-12-26-4-22-19-pm-636217954109774859.png)
 
 Now let’s say we fully integration test **develop** with our new Strong Coffee feature and are ready to push out the next release (version 0.1) of our project, we:
 
-<pre class="cmd">hg flow release start 0.1</pre>
+```
+hg flow release start 0.1
+```
 
 This is where we probably deploy to staging and acceptance test, when approved we finish the release:
 
-<pre class="cmd">hg flow release finish 0.1</pre>
+```
+hg flow release finish 0.1
+```
 
 This moves our release to the **default** branch (a.k.a. production) and merges back into **develop** (not usually necessary but helpful in some situations).
 

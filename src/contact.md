@@ -37,15 +37,17 @@ permalink: /contact/
 
 <p>Questions or comments? Send me an email or find me online, I would love to hear from you.</p>
 
+<!--sse-->
 <ul id="contact-list">
-    <li><a title="Email" href="mailto:andy.mehalick@orangejetpack.com"><i class="fa fa-fw fa-envelope"></i></a></li>
-    <li><a title="LinkedIn" href="http://kw.linkedin.com/in/andymehalick"><i class="fa fa-fw fa-linkedin"></i></a>
-    <li><a title="GitHub" href="https://github.com/andy-mehalick"><i class="fa fa-fw fa-github"></i></a>
-    <li><a title="Bitbucket" href="https://bitbucket.org/mehalick"><i class="fa fa-fw fa-bitbucket"></i></a>
-    <li><a title="Stack Overflow" href="http://stackoverflow.com/users/98736/andy-mehalick"><i class="fa fa-fw fa-stack-overflow"></i></a>
-    <li><a title="Facebook" href="https://www.facebook.com/andy.mehalick"><i class="fa fa-fw fa-facebook"></i></a>
-    <li><a title="Instagram" href="http://instagram.com/andymehalick"><i class="fa fa-fw fa-instagram"></i></a>
-    <li><a title="Twitter" href="https://twitter.com/AndyMehalick"><i class="fa fa-fw fa-twitter"></i></a>
-    <li><a title="Vimeo" href="https://vimeo.com/andymehalick"><i class="fa fa-fw fa-vimeo"></i></a>
-    <li><a title="Last.fm" href="http://www.last.fm/user/AndyM3Kt"><i class="fa fa-fw fa-lastfm"></i></a>
+    <li><a title="Email" href="mailto:mehalick@gmail.com"><i class="fa fa-fw fa-envelope"></i></a></li>
+    <li><a title="LinkedIn" href="http://kw.linkedin.com/in/andymehalick"><i class="fa fa-fw fa-linkedin"></i></a></li>
+    <li><a title="GitHub" href="https://github.com/mehalick"><i class="fa fa-fw fa-github"></i></a></li>
+    <li><a title="Bitbucket" href="https://bitbucket.org/mehalick"><i class="fa fa-fw fa-bitbucket"></i></a></li>
+    <li><a title="Stack Overflow" href="http://stackoverflow.com/users/98736/andy-mehalick"><i class="fa fa-fw fa-stack-overflow"></i></a></li>
+    <li><a title="Facebook" href="https://www.facebook.com/andy.mehalick"><i class="fa fa-fw fa-facebook"></i></a></li>
+    <li><a title="Instagram" href="http://instagram.com/andymehalick"><i class="fa fa-fw fa-instagram"></i></a></li>
+    <li><a title="Twitter" href="https://twitter.com/AndyMehalick"><i class="fa fa-fw fa-twitter"></i></a></li>
+    <li><a title="Vimeo" href="https://vimeo.com/andymehalick"><i class="fa fa-fw fa-vimeo"></i></a></li>
+    <li><a title="Last.fm" href="http://www.last.fm/user/AndyM3Kt"><i class="fa fa-fw fa-lastfm"></i></a></li>
 </ul>
+<!--/sse-->

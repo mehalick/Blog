@@ -17,7 +17,9 @@ So let’s say you start up a new feature branch and make a couple of commits on
 
 Simply execute **hg strip** with the revision number to want to remove; all higher revisions in the branch will be removed and revisions numbers in other branches will be reset:
 
-<pre class="cmd">hg strip 11</pre>
+```shell
+hg strip 11
+```
 
 You’ll be left with the branch structure below, notice how changeset 13 was renumbered down to 11:
 
@@ -25,7 +27,9 @@ You’ll be left with the branch structure below, notice how changeset 13 was re
 
 Stripped changesets will be stored in “.hg/strip-bundle” and can be restored if necessary; the existing revision numbers will be preserved and your restored commits will get new revision numbers from there. You’ll need to find the bundle file name and execute something like:
 
-<pre class="cmd">hg unbundle .hg/strip-backup/0e5dd67a89f4-backup.hg</pre>
+```shell
+hg unbundle .hg/strip-backup/0e5dd67a89f4-backup.hg
+```
 
 ![](https://andy.azureedge.net/blog/strip-commits-unbundled-636217950931211165.png)
 
@@ -37,7 +41,9 @@ Transplant is a command that copies one or more changesets from one branch to an
 
 Start by updating your local working directory to the branch that will receive the changesets (release) and then execute transplant by passing in the name of the source branch (develop) and one or more revision numbers:
 
-<pre class="cmd">hg transplant –b develop 10 11</pre>
+```shell
+hg transplant –b develop 10 11
+```
 
 ![](https://andy.azureedge.net/blog/transplant-after-636217950938090795.png)
 

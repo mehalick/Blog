@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head itemscope itemref="http://schema.org/Blog">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ASP.NET Core Deployment Versioning with Git and Kudu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" itemprop="author" content="Andy Mehalick">
-  <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
-  <meta name="description" itemprop="description" content="How to add deployment version metadata to ASP.NET Core websites using Git, Microsoft Azure, and Kudu.">
-  <meta itemprop="name" content="ASP.NET Core Deployment Versioning with Git and Kudu">
-  <meta itemprop="image" content="">
-  <meta property="og:title" content="ASP.NET Core Deployment Versioning with Git and Kudu">
-  <meta property="og:type" content="blog">
-  <meta property="og:url" content="https://andy.mehalick.com/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/">
-  <meta property="og:image" content="">
-  <meta property="og:site_name" content="Andy Mehalick">
-  <meta property="og:description" content="How to add deployment version metadata to ASP.NET Core websites using Git, Microsoft Azure, and Kudu.">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
-  <link rel="canonical" href="https://andy.mehalick.com/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/">
-  <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="http://feeds.feedburner.com/AndyMehalick">
-  <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-  <script>
-    if (document.location.host === "andy.mehalick.com") {
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments);
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-            m.parentNode.insertBefore(a, m);
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-        ga('create', 'UA-28045940-1', 'auto');
-        ga('require', 'displayfeatures');
-        ga('send', 'pageview');
-    }
-  </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" itemprop="author" content="Andy Mehalick">
+    <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
+    <meta name="description" itemprop="description" content="How to add deployment version metadata to ASP.NET Core websites using Git, Microsoft Azure, and Kudu.">
+    <meta itemprop="name" content="ASP.NET Core Deployment Versioning with Git and Kudu">
+    <meta itemprop="image" content="">
+    <meta property="og:title" content="ASP.NET Core Deployment Versioning with Git and Kudu">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/">
+    <meta property="og:image" content="">
+    <meta property="og:site_name" content="Andy Mehalick">
+    <meta property="og:description" content="How to add deployment version metadata to ASP.NET Core websites using Git, Microsoft Azure, and Kudu.">
+    <title>ASP.NET Core Deployment Versioning with Git and Kudu</title>
+    <link rel="dns-prefetch" href="//andy.azureedge.net">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" integrity="sha256-N1K43s+8twRa+tzzoF3V8EgssdDiZ6kd9r8Rfgg8kZU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha256-Afz2ZJtXw+OuaPX10lZHY7fN1+FuTE/KdCs+j7WZTGc=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/">
+    <link rel="alternate" type="application/rss+xml" title="Andy Mehalick" href="https://feeds.feedburner.com/AndyMehalick">
+    <link rel="me" type="text/html" href="https://plus.google.com/113902592100905338618">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <script>
+        if (document.location.host === "andy.mehalick.com") {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+                m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-28045940-1', 'auto');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+        }
+    </script>
 </head>
-
 <body>  
     <nav>
         <div class="page-width">
@@ -45,7 +48,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/contact/">Contact</a></li>
             </ul>        
-            <a id="rss" href="http://feeds.feedburner.com/AndyMehalick" title="Subscribe to RSS">
+            <a id="rss" href="https://feeds.feedburner.com/AndyMehalick" title="Subscribe to RSS">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><style>.st0{fill:#F78C28;} .st1{fill:#FFFFFF;}</style><path class="st0" d="M0 0h28v28H0z"/><g><path class="st1" d="M18.2 9.8C14.4 6 9.4 3.9 4 3.9v4c4.3 0 8.4 1.7 11.4 4.7s4.7 7.1 4.7 11.4h4c0-5.4-2.1-10.4-5.9-14.2z"/><path class="st1" d="M3.9 10.6v4c5.2 0 9.5 4.2 9.5 9.5h4c0-7.5-6.1-13.5-13.5-13.5z"/><circle class="st1" cx="6.7" cy="21.3" r="2.8"/></g></svg> 
             </a>
             <div class="clearfix"></div>
@@ -71,24 +74,22 @@
 
 <p>While there’s no shortage of fancy and elaborate ways to add version and deployment metadata into ASP.NET apps you already have an easy option if you’re using Git and Azure’s Kudu deployment. With a simple script and a few extra bits added to your ASP.NET Core project you can easily add version and deployment data directly into your pages:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"MyApp"</span> <span class="na">data-version=</span><span class="s">"8e879f1"</span> <span class="na">data-deployment=</span><span class="s">"2017-05-10 10:21:14Z"</span> <span class="nt">/&gt;</span> 
-</code></pre>
-</div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"MyApp"</span> <span class="na">data-version=</span><span class="s">"8e879f1"</span> <span class="na">data-deployment=</span><span class="s">"2017-05-10 10:21:14Z"</span> <span class="nt">/&gt;</span> 
+</code></pre></div></div>
 
 <p>We’re assuming you’re already set up with Git automated deployment in Azure using <a href="https://github.com/projectkudu/kudu/wiki">Kudu</a>. If not perhaps you should be, it’s a quick and easy way to get automated deployment working with ASP.NET, ASP.NET Core, Node, PHP, and basic websites using Git repositories hosted in GitHub, Bitbucket, and Azure.</p>
 
 <p>The first thing we’ll need to do it extend our out-of-box Kudu deployment to add a version file to our site each time a deployment completes. We can use a simple JSON file with some commit info and our deployment date:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="nt">"DeployUtc"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2017-05-10 10:21:14Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"ShortHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"8e879f1"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"FullHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"8e879f1c8a791a99a5ae40210fd5240a478f2c6c"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"Subject"</span><span class="p">:</span><span class="w">  </span><span class="s2">"some commit message here..."</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"Name"</span><span class="p">:</span><span class="w">  </span><span class="s2">"Andy Mehalick"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"Email"</span><span class="p">:</span><span class="w">  </span><span class="s2">"mehalick@gmail.com"</span><span class="w">
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"DeployUtc"</span><span class="p">:</span><span class="w">  </span><span class="s2">"2017-05-10 10:21:14Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ShortHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"8e879f1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"FullHash"</span><span class="p">:</span><span class="w">  </span><span class="s2">"8e879f1c8a791a99a5ae40210fd5240a478f2c6c"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Subject"</span><span class="p">:</span><span class="w">  </span><span class="s2">"some commit message here..."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Name"</span><span class="p">:</span><span class="w">  </span><span class="s2">"Andy Mehalick"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Email"</span><span class="p">:</span><span class="w">  </span><span class="s2">"mehalick@gmail.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <p>We really only need the first two properties but the rest might be useful in other scenarios.</p>
 
@@ -96,7 +97,7 @@
 
 <p>To create our <strong>version.json</strong> file we’ll add a <a href="https://github.com/projectkudu/kudu/wiki/Post-Deployment-Action-Hooks">post deployment action hook</a> into our Kudu deployment. This is just a simple script that Kudu will know to run with each deployment. Kudu can use a variety of script types and in this case we’ll use PowerShell:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nv">$o</span> <span class="o">=</span> @<span class="o">{}</span>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$o</span> <span class="o">=</span> @<span class="o">{}</span>
 <span class="nv">$o</span>.DeployUtc <span class="o">=</span> <span class="nb">Get-Date</span> -format u;
 <span class="nv">$o</span>.ShortHash <span class="o">=</span> git.exe log -1 --pretty<span class="o">=</span>format:%h;
 <span class="nv">$o</span>.FullHash <span class="o">=</span> git.exe log -1 --pretty<span class="o">=</span>format:%H;
@@ -104,9 +105,8 @@
 <span class="nv">$o</span>.Name <span class="o">=</span> git.exe log -1 --pretty<span class="o">=</span>format:%cn;
 <span class="nv">$o</span>.Email <span class="o">=</span> git.exe log -1 --pretty<span class="o">=</span>format:%ce;
 
-<span class="nv">$o</span> | ConvertTo-Json | <span class="nb">Out-File</span> <span class="s2">"D:</span><span class="se">\h</span><span class="s2">ome</span><span class="se">\s</span><span class="s2">ite</span><span class="se">\w</span><span class="s2">wwroot</span><span class="se">\v</span><span class="s2">ersion.json"</span>;
-</code></pre>
-</div>
+<span class="nv">$o</span> | <span class="nb">ConvertTo-Json</span> | <span class="nb">Out-File</span> <span class="s2">"D:\home\site\wwwroot\version.json"</span>;
+</code></pre></div></div>
 
 <p>Our script executes git.exe in Azure and writes the details from the last commit to our JSON file. If you’d like to write more commit info to your JSON you can see what’s available via Git’s <a href="https://git-scm.com/docs/pretty-formats">pretty formats doc</a>.</p>
 
@@ -114,10 +114,9 @@
 
 <p>First, save this file as ~\deploy\PostDeploymentActions\Set-GitAppVersion.ps1 and then create a ~\.deployment file with the following setting:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[<span class="n">config</span>]
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[<span class="n">config</span>]
 <span class="n">SCM_POST_DEPLOYMENT_ACTIONS_PATH</span> = <span class="n">deploy</span>\<span class="n">PostDeploymentActions</span>\
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This sets us up nicely for future post deployment scripts as well, anything added to our deploy\PostDeploymentActions\ folder will get executed automatically by Kudu after each deployment.</p>
 
@@ -139,17 +138,16 @@
 
 <p>Our ASP.NET app will read version.json and write some or all of the data into our pages. In this example we’ll use the Git short hash as our version along with our deployment date/time, so let’s create a simple model that we can use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AppVersion</span>
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AppVersion</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">string</span> <span class="n">ShortHash</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="s">"000000"</span><span class="p">;</span>
     <span class="k">public</span> <span class="n">DateTime</span> <span class="n">DeployUtc</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>We can read version.json with a service that uses ASP.NET Core’s IHostingEnvironment to find our file at the root of our app:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AppVersionService</span> <span class="p">:</span> <span class="n">IAppVersionService</span>
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AppVersionService</span> <span class="p">:</span> <span class="n">IAppVersionService</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="n">IHostingEnvironment</span> <span class="n">_hostingEnvironment</span><span class="p">;</span>
 
@@ -168,14 +166,14 @@
                 <span class="k">return</span> <span class="n">_appVersion</span><span class="p">;</span>
             <span class="p">}</span>
 
-            <span class="n">var</span> <span class="n">path</span> <span class="p">=</span> <span class="n">Path</span><span class="p">.</span><span class="nf">Combine</span><span class="p">(</span><span class="n">_hostingEnvironment</span><span class="p">.</span><span class="n">WebRootPath</span><span class="p">,</span> <span class="s">"version.json"</span><span class="p">);</span>
+            <span class="kt">var</span> <span class="n">path</span> <span class="p">=</span> <span class="n">Path</span><span class="p">.</span><span class="nf">Combine</span><span class="p">(</span><span class="n">_hostingEnvironment</span><span class="p">.</span><span class="n">WebRootPath</span><span class="p">,</span> <span class="s">"version.json"</span><span class="p">);</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">path</span> <span class="p">==</span> <span class="k">null</span> <span class="p">||</span> <span class="p">!</span><span class="n">File</span><span class="p">.</span><span class="nf">Exists</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
             <span class="p">{</span>
                 <span class="n">_appVersion</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">AppVersion</span><span class="p">();</span>
             <span class="p">}</span>
             <span class="k">else</span>
             <span class="p">{</span>
-                <span class="k">using</span> <span class="p">(</span><span class="n">var</span> <span class="n">sr</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">OpenText</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+                <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">sr</span> <span class="p">=</span> <span class="n">File</span><span class="p">.</span><span class="nf">OpenText</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
                 <span class="p">{</span>
                     <span class="n">_appVersion</span> <span class="p">=</span> <span class="n">JsonConvert</span><span class="p">.</span><span class="n">DeserializeObject</span><span class="p">&lt;</span><span class="n">AppVersion</span><span class="p">&gt;(</span><span class="n">sr</span><span class="p">.</span><span class="nf">ReadToEnd</span><span class="p">());</span>
                 <span class="p">}</span>
@@ -185,31 +183,28 @@
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So that we only have to read and deserialize version.json once we can set AppVersionService up as a singleton in Startup.cs:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// ...
-</span>
+    <span class="c1">// ...</span>
+
     <span class="n">services</span><span class="p">.</span><span class="n">AddSingleton</span><span class="p">&lt;</span><span class="n">IAppVersionService</span><span class="p">,</span> <span class="n">AppVersionService</span><span class="p">&gt;();</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="embedding-or-displaying-our-version">Embedding or Displaying our Version</h2>
 
 <p>And finally,.. you can access AppVersionService directly in _Layout.cshtml or in any view using ASP.NET Core’s dependency injection:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="n">@inject</span> <span class="n">IAppVersionService</span> <span class="n">AppVersionService</span>
+<div class="language-cs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">@inject</span> <span class="n">IAppVersionService</span> <span class="n">AppVersionService</span>
 <span class="err">@</span><span class="p">{</span>
-    <span class="n">var</span> <span class="n">shortHash</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">.</span><span class="n">ShortHash</span><span class="p">;</span>
-    <span class="n">var</span> <span class="n">deployUtc</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">.</span><span class="n">DeployUtc</span><span class="p">.</span><span class="nf">ToString</span><span class="p">(</span><span class="s">"u"</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">shortHash</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">.</span><span class="n">ShortHash</span><span class="p">;</span>
+    <span class="kt">var</span> <span class="n">deployUtc</span> <span class="p">=</span> <span class="n">AppVersionService</span><span class="p">.</span><span class="n">AppVersion</span><span class="p">.</span><span class="n">DeployUtc</span><span class="p">.</span><span class="nf">ToString</span><span class="p">(</span><span class="s">"u"</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>How you embed or display your version metadata is entirely up to you, here’s a few ideas:</p>
 
@@ -217,44 +212,40 @@
 
 <p>My favorite option is appending our data as HTML5 data-* attributes on the application-name meta tag. This feels semantically legit and makes it easy to find and read:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"MyApp"</span> <span class="na">data-version=</span><span class="s">"8e879f1"</span> <span class="na">data-deployment=</span><span class="s">"2017-05-10 10:21:14Z"</span> <span class="nt">/&gt;</span>
-</code></pre>
-</div>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"MyApp"</span> <span class="na">data-version=</span><span class="s">"8e879f1"</span> <span class="na">data-deployment=</span><span class="s">"2017-05-10 10:21:14Z"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
 
 <h3 id="json-data-blocks">JSON Data Blocks</h3>
 
 <p>This option is clean and readable as well, just use a JSON data block:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">id=</span><span class="s">"version"</span> <span class="na">type=</span><span class="s">"application/json"</span><span class="nt">&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">id=</span><span class="s">"version"</span> <span class="na">type=</span><span class="s">"application/json"</span><span class="nt">&gt;</span>
     <span class="p">{</span> 
-        <span class="s2">"ShortHash"</span><span class="err">:</span> <span class="s2">"@shortHash"</span><span class="p">,</span>
-        <span class="s2">"DeployUtc"</span><span class="err">:</span> <span class="s2">"@deployUtc"</span>
+        <span class="s2">"ShortHash"</span><span class="p">:</span> <span class="s2">"@shortHash"</span><span class="p">,</span>
+        <span class="s2">"DeployUtc"</span><span class="p">:</span> <span class="s2">"@deployUtc"</span>
     <span class="p">}</span>
 <span class="nt">&lt;/script&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="html-meta-tags">HTML Meta Tags</h3>
 
 <p>Or perhaps some custom meta tags:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:ShortHash"</span> <span class="na">content=</span><span class="s">"@shortHash"</span> <span class="nt">/&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:ShortHash"</span> <span class="na">content=</span><span class="s">"@shortHash"</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"version:DeployUtc"</span> <span class="na">content=</span><span class="s">"@deployUtc"</span> <span class="nt">/&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="microdata">Microdata</h3>
 
 <p>If you plan to show version data in the footer of your site perhaps use microdata:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;footer</span> <span class="na">itemscope</span> <span class="na">itemtype=</span><span class="s">"http://schema.org/SoftwareApplication"</span><span class="nt">&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;footer</span> <span class="na">itemscope</span> <span class="na">itemtype=</span><span class="s">"http://schema.org/SoftwareApplication"</span><span class="nt">&gt;</span>
     <span class="ni">&amp;copy;</span> Git App Version Demo | 
     Version: 
         <span class="nt">&lt;span</span> <span class="na">itemprop=</span><span class="s">"softwareVersion"</span><span class="nt">&gt;</span>@shortHash<span class="nt">&lt;/span&gt;</span> 
         <span class="nt">&lt;time</span> <span class="na">itemprop=</span><span class="s">"startDate"</span> <span class="na">datetime=</span><span class="s">"@deployUtc"</span><span class="nt">&gt;</span>@deployUtc<span class="nt">&lt;/time&gt;</span>
 <span class="nt">&lt;/footer&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="sample-code-and-demo">Sample Code and Demo</h2>
 
@@ -263,6 +254,11 @@
 </article>
 
 <div id="disqus_thread"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/prism.min.js" integrity="sha256-jc6y1s/Y+F+78EgCT/lI2lyU7ys+PFYrRSJ6q8/R8+o=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.js" integrity="sha256-Iqd4m4d2q0jp2soWB0guIxt6LXCyqSQ2RkD5G/Pnd0g=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" integrity="sha256-31Ef0tfMJHz4mcBYno6PKR2Iz5qPHPJLxIzej2AGl6c=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" integrity="sha256-v1Nxmv1+jRfdNuwdLgHXmAzZwADayhxn95rA7sJAg0c=" crossorigin="anonymous"></script>
 
 <script>
     if (document.location.host === "andy.mehalick.com") {

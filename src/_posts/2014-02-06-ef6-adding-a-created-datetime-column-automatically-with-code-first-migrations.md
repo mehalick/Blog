@@ -13,11 +13,13 @@ I’m using UTC dates so I don’t have to worry about the time zone of the serv
 
 So let’s get started, I’ll create a new class library in Visual Studio called CreatedUtcColumnDemo and immediately add Entity Framework via Nuget.
 
-<pre class="cmd">PM> Install-Package EntityFramework</pre>
+```shell
+> Install-Package EntityFramework
+```
 
 Now we’ll add our first entity and data context, notice the **CreatedUtc** property with data annotations:
 
-{% highlight csharp %}
+```csharp
 namespace CreatedUtcColumnDemo
 {
     public class Product
@@ -34,11 +36,11 @@ namespace CreatedUtcColumnDemo
         public DbSet<product> Products { get; set; }
     }
 }
-{% endhighlight %}
+```
 
 Because we’ll ultimately want our **CreatedUtc** property on all entities let’s extract an abstract base class (EntityBase) and have Product inherit from it:
 
-{% highlight csharp %}
+```csharp
 namespace CreatedUtcColumnDemo
 {
     public class Product : EntityBase
@@ -58,13 +60,17 @@ namespace CreatedUtcColumnDemo
         public DbSet<product> Products { get; set; }
     }
 }
-{% endhighlight %}
+```
 
 Now we’ll enable migrations and create a single migration to create our Products table:
 
-<pre class="cmd">PM> Enable-Migrations</pre>
+```shell
+> Enable-Migrations
+```
 
-<pre class="cmd">PM> Add-Migration AddProduct</pre>
+```shell
+> Add-Migration AddProduct
+```
 
 At this point our solution looks like:
 
@@ -72,7 +78,7 @@ At this point our solution looks like:
 
 We now want to ensure that when we update our database via code first migrations  our **CreatedUtc** property gets a default value, in this case GETUTCDATE(). One option would be to adjust the migration class manually, for each entity we _could_ update CreateTable(), notice the addition of defaultValueSql: "GETUTCDATE()".
 
-{% highlight csharp %}    
+```csharp    
 public partial class AddProduct : DbMigration
 {
     public override void Up()
@@ -94,11 +100,11 @@ public partial class AddProduct : DbMigration
         DropTable("dbo.Products");
     }
 }
-{% endhighlight %}
+```
 
 This would become tedious and error prone as we start to add new entities though. A more efficient approach would be to create a custom SqlServerMigrationSqlGenerator and update our migration configuration to use this. Jumping right to the code:
 
-{% highlight csharp %}
+```csharp
 namespace CreatedUtcColumnDemo.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<DataContext>
@@ -143,13 +149,15 @@ namespace CreatedUtcColumnDemo.Migrations
         }
     }
 }
-{% endhighlight %}
+```
 
 Notice how CustomSqlServerMigrationSqlGenerator inherits from SqlServerMigrationSqlGenerator and overrides two Generate(…) methods. We then set our custom generator to the default for our project via SetSqlGenerator("System.Data.SqlClient", new CustomSqlServerMigrationSqlGenerator()).
 
 Lastly, we’ll update our local database and we’re done.
 
-<pre class="cmd">PM> Update-Database</pre>
+```shell
+> Update-Database
+```
 
 Now, every time we create a new entity we inherit from EntityBase, when we update our database with migrations it will always add a **CreatedUtc** column with a default value of GETUTCDATE().
 

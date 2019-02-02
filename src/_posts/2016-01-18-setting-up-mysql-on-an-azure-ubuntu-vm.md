@@ -49,21 +49,21 @@ If you see something like this you are in good shape:
 
 First, switch to root user:
 
-{% highlight shell %}
+```shell
 $ sudo su -
-{% endhighlight %}
+```
 
 Install system updates and patches:
 
-{% highlight shell %}
+```shell
 $ apt-get update
-{% endhighlight %}
+```
 
 And install MySQL...
 
-{% highlight shell %}
+```shell
 $ apt-get -y install mysql-server
-{% endhighlight %}
+```
 
 You'll need a root password:
 
@@ -75,9 +75,9 @@ And yeah that's it. Maybe Linux isn't as bad as all the Windows kids are saying.
 
 I spent almost all of my StackOverflow time wrestling with this one. To get MySQL to accept connections on anything other than 127.0.0.1 you need to update its config. You can use nano (Notepad with less features?):
 
-{% highlight shell %}
+```shell
 $ nano /etc/mysql/my.cnf
-{% endhighlight %}
+```
 
 Then update bind-address to either 0.0.0.0 (probably less secure) or the actual IP of the machine. I don't know what I'm doing so I chose the former:
 
@@ -85,17 +85,17 @@ Then update bind-address to either 0.0.0.0 (probably less secure) or the actual 
 
 When you're done you'll want to restart the MySQL service:
 
-{% highlight shell %}
+```shell
 $ service mysql restart
-{% endhighlight %}
+```
 
 ## Testing Port 3306
 
 At some point you might want to test that port 3306 is open on the VM and in Azure. On the VM:
 
-{% highlight shell %}
+```shell
 $ netstat -anltp|grep :3306
-{% endhighlight %}
+```
 
 You should see something like:
 
@@ -109,17 +109,17 @@ You can then test port 3306 online using a tool like [Port Forwarding Tester](ht
 
 First we'll sign into MySQL with the root user account:
 
-{% highlight shell %}
+```shell
 $ mysql -u root -p
-{% endhighlight %}
+```
 
 Then we'll create a database, create a user, and grant remote access to that user:
 
-{% highlight shell %}
+```shell
 mysql> create database testdb;
 mysql> create user 'mysqluser'@'localhost' identified by 'password';
 mysql> grant all on testdb.* to 'mysqluser'@'%' identified by 'password';
-{% endhighlight %}
+```
 
 ![](https://andy.azureedge.net/blog/2016-01-18_18-56-21-635887294953754340.png)
 
