@@ -5,7 +5,7 @@ date: 2012-02-28
 post_id: 4
 ---
 
-The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with [Roy Osherove's TekPub video series](https://tekpub.com/productions/tdd) followed by his book [The Art of Unit Testing](https://www.manning.com/osherove/) I was aware of this [string calculator TDD kata](https://osherove.com/tdd-kata-1) and knew that’s where I wanted to start.
+The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with [Roy Osherove's TekPub video series](https://tekpub.com/productions/tdd) followed by his book [The Art of Unit Testing](https://www.manning.com/osherove/) I was aware of this [string calculator TDD kata](https://osherove.com/tdd-kata-1) and knew that's where I wanted to start.
 
 Working remotely in a +8 hour time zone made it easy to tack an extra 30 minutes onto my work day and commit to waking up my fingers and brain with a daily code kata first thing in the morning. I decided to keep a log of my progress and note any shortcuts or approaches I learned along the way. I wanted to not only exercise my TDD skills but also my efficiency with Visual Studio and ReSharper.
 
@@ -43,10 +43,10 @@ The following screencast is my recording of the final kata on day 20 with my TDD
 
 <td colspan="2">
 
-<p>I didn’t count this as an official day, I just spent time learning keyboard shortcuts and how to navigate Visual Studio without a mouse. I learned the existing keyboard shortcuts:</p>
+<p>I didn't count this as an official day, I just spent time learning keyboard shortcuts and how to navigate Visual Studio without a mouse. I learned the existing keyboard shortcuts:</p>
 
 <p>Ctrl-Shift-N – New Project<br/>
-Ctrl-R, V – ReSharper’s Introduce Variable</p>
+Ctrl-R, V – ReSharper's Introduce Variable</p>
 
 <p>… and created some new ones:</p>
 
@@ -81,7 +81,7 @@ Ctrl-R, Ctrl-A – Run Tests Again</p>
 
 <td>Steps 1 – 3 and started 4</td>
 
-<td>Alt-\ – ReSharper’s Navigate Members</td>
+<td>Alt-\ – ReSharper's Navigate Members</td>
 
 </tr>
 
@@ -91,7 +91,7 @@ Ctrl-R, Ctrl-A – Run Tests Again</p>
 
 <td>Steps 1 – 3 and started 4</td>
 
-<td>Ctrl-R, P – ReSharper’s Introduce Parameter</td>
+<td>Ctrl-R, P – ReSharper's Introduce Parameter</td>
 
 </tr>
 
@@ -101,7 +101,7 @@ Ctrl-R, Ctrl-A – Run Tests Again</p>
 
 <td>Steps 1 – 4 </td>
 
-<td>Ctrl-R, V – ReSharper’s Introduce Variable</td>
+<td>Ctrl-R, V – ReSharper's Introduce Variable</td>
 
 </tr>
 

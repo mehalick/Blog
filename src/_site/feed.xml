@@ -3,10 +3,10 @@
   <channel>
     <title>Andy Mehalick</title>
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 30 Jul 2019 08:00:36 +0200</pubDate>
-    <lastBuildDate>Tue, 30 Jul 2019 08:00:36 +0200</lastBuildDate>
+    <link>https://andy.mehalick.com/</link>
+    <atom:link href="https://andy.mehalick.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 30 Jul 2019 08:07:50 +0200</pubDate>
+    <lastBuildDate>Tue, 30 Jul 2019 08:07:50 +0200</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -193,8 +193,8 @@
 &lt;p&gt;You can find a sample project on GitHub at &lt;a href=&quot;https://github.com/mehalick/GitAppVersion&quot;&gt;https://github.com/mehalick/GitAppVersion&lt;/a&gt; and a demo on Azure at &lt;a href=&quot;https://gitappversion.azurewebsites.net/&quot;&gt;https://gitappversion.azurewebsites.net&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Wed, 10 May 2017 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</guid>
+        <link>https://andy.mehalick.com/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</guid>
         
         
       </item>
@@ -333,8 +333,8 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 18 Jan 2016 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</guid>
+        <link>https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</guid>
         
         
       </item>
@@ -492,8 +492,8 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 &lt;p&gt;You can find the demo source code at &lt;a href=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot; title=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot;&gt;https://github.com/andy-mehalick/CreatedUtcColumnDemo&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 06 Feb 2014 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</link>
-        <guid isPermaLink="true">http://localhost:4000/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</guid>
+        <link>https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</guid>
         
         
       </item>
@@ -631,13 +631,13 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;&lt;strike&gt;That’s it for now, in Part 2 we’ll look at adding and updating our localizable entities with the included editor template for MVC and eventually we’ll dig deeper in OrangeJetpack.Localization implementation. If you want to jump ahead you can find the project at [https://github.com/andy-mehalick/OrangeJetpack.Localization](https://github.com/andy-mehalick/OrangeJetpack.Localization).&lt;/strike&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strike&gt;That's it for now, in Part 2 we'll look at adding and updating our localizable entities with the included editor template for MVC and eventually we'll dig deeper in OrangeJetpack.Localization implementation. If you want to jump ahead you can find the project at [https://github.com/andy-mehalick/OrangeJetpack.Localization](https://github.com/andy-mehalick/OrangeJetpack.Localization).&lt;/strike&gt;&lt;/p&gt;
 
 &lt;p&gt;For more information and a better approach to localization be sure to check out &lt;a href=&quot;https://xaki.io&quot;&gt;Xaki&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sat, 07 Sep 2013 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</link>
-        <guid isPermaLink="true">http://localhost:4000/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</guid>
+        <link>https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</guid>
         
         
       </item>
@@ -700,8 +700,8 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/profile-output-636217947831217908.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 25 May 2012 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
-        <guid isPermaLink="true">http://localhost:4000/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</guid>
+        <link>https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</guid>
         
         
       </item>
@@ -746,10 +746,10 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 
 &lt;td colspan=&quot;2&quot;&gt;
 
-&lt;p&gt;I didn’t count this as an official day, I just spent time learning keyboard shortcuts and how to navigate Visual Studio without a mouse. I learned the existing keyboard shortcuts:&lt;/p&gt;
+&lt;p&gt;I didn't count this as an official day, I just spent time learning keyboard shortcuts and how to navigate Visual Studio without a mouse. I learned the existing keyboard shortcuts:&lt;/p&gt;
 
 &lt;p&gt;Ctrl-Shift-N – New Project&lt;br /&gt;
-Ctrl-R, V – ReSharper’s Introduce Variable&lt;/p&gt;
+Ctrl-R, V – ReSharper's Introduce Variable&lt;/p&gt;
 
 &lt;p&gt;… and created some new ones:&lt;/p&gt;
 
@@ -784,7 +784,7 @@ Ctrl-R, Ctrl-A – Run Tests Again&lt;/p&gt;
 
 &lt;td&gt;Steps 1 – 3 and started 4&lt;/td&gt;
 
-&lt;td&gt;Alt-\ – ReSharper’s Navigate Members&lt;/td&gt;
+&lt;td&gt;Alt-\ – ReSharper's Navigate Members&lt;/td&gt;
 
 &lt;/tr&gt;
 
@@ -794,7 +794,7 @@ Ctrl-R, Ctrl-A – Run Tests Again&lt;/p&gt;
 
 &lt;td&gt;Steps 1 – 3 and started 4&lt;/td&gt;
 
-&lt;td&gt;Ctrl-R, P – ReSharper’s Introduce Parameter&lt;/td&gt;
+&lt;td&gt;Ctrl-R, P – ReSharper's Introduce Parameter&lt;/td&gt;
 
 &lt;/tr&gt;
 
@@ -804,7 +804,7 @@ Ctrl-R, Ctrl-A – Run Tests Again&lt;/p&gt;
 
 &lt;td&gt;Steps 1 – 4 &lt;/td&gt;
 
-&lt;td&gt;Ctrl-R, V – ReSharper’s Introduce Variable&lt;/td&gt;
+&lt;td&gt;Ctrl-R, V – ReSharper's Introduce Variable&lt;/td&gt;
 
 &lt;/tr&gt;
 
@@ -954,8 +954,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;/table&gt;
 </description>
         <pubDate>Tue, 28 Feb 2012 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2012/02/28/tdd-code-kata/</link>
-        <guid isPermaLink="true">http://localhost:4000/2012/02/28/tdd-code-kata/</guid>
+        <link>https://andy.mehalick.com/2012/02/28/tdd-code-kata/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/02/28/tdd-code-kata/</guid>
         
         
       </item>
@@ -1008,8 +1008,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-02-22-10-24-46-pm-636217950899937804.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 22 Feb 2012 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2012/02/22/hg-strip-and-transplant/</link>
-        <guid isPermaLink="true">http://localhost:4000/2012/02/22/hg-strip-and-transplant/</guid>
+        <link>https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/02/22/hg-strip-and-transplant/</guid>
         
         
       </item>
@@ -1067,8 +1067,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 07 Jan 2012 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2012/01/07/fun-with-nunit-and-resharper-templates/</link>
-        <guid isPermaLink="true">http://localhost:4000/2012/01/07/fun-with-nunit-and-resharper-templates/</guid>
+        <link>https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/</guid>
         
         
       </item>
@@ -1140,8 +1140,8 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 &lt;p&gt;Hgflow shouldn’t introduce any radical change to the standard source control workflow, it simply introduces a more formal vocabulary for describing branches and applies a nice model to the process. On top of that it adds a nice bit of automation and makes working with Hg even more enjoyable.&lt;/p&gt;
 </description>
         <pubDate>Sat, 24 Dec 2011 00:00:00 +0100</pubDate>
-        <link>http://localhost:4000/2011/12/24/an-introduction-to-hgflow/</link>
-        <guid isPermaLink="true">http://localhost:4000/2011/12/24/an-introduction-to-hgflow/</guid>
+        <link>https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/</link>
+        <guid isPermaLink="true">https://andy.mehalick.com/2011/12/24/an-introduction-to-hgflow/</guid>
         
         
       </item>

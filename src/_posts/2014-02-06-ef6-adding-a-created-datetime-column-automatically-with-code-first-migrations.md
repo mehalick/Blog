@@ -5,19 +5,19 @@ date: 2014-02-06
 post_id: 8
 ---
 
-Here’s a quick one, I’m using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:
+Here's a quick one, I'm using EF6 code first migrations and I want to add a created date/time column to every table in the database. I want it to have a default value of GETUTCDATE() and ultimately look like:
 
 ![](https://andy.azureedge.net/blog/2-6-2014-12-07-35-pm-636217949810973800.png)
 
-I’m using UTC dates so I don’t have to worry about the time zone of the server where this ultimately lives and calling the column **CreatedUtc** because it’s concise but clear.
+I'm using UTC dates so I don't have to worry about the time zone of the server where this ultimately lives and calling the column **CreatedUtc** because it's concise but clear.
 
-So let’s get started, I’ll create a new class library in Visual Studio called CreatedUtcColumnDemo and immediately add Entity Framework via Nuget.
+So let's get started, I'll create a new class library in Visual Studio called CreatedUtcColumnDemo and immediately add Entity Framework via Nuget.
 
 ```shell
 > Install-Package EntityFramework
 ```
 
-Now we’ll add our first entity and data context, notice the **CreatedUtc** property with data annotations:
+Now we'll add our first entity and data context, notice the **CreatedUtc** property with data annotations:
 
 ```csharp
 namespace CreatedUtcColumnDemo
@@ -38,7 +38,7 @@ namespace CreatedUtcColumnDemo
 }
 ```
 
-Because we’ll ultimately want our **CreatedUtc** property on all entities let’s extract an abstract base class (EntityBase) and have Product inherit from it:
+Because we'll ultimately want our **CreatedUtc** property on all entities let's extract an abstract base class (EntityBase) and have Product inherit from it:
 
 ```csharp
 namespace CreatedUtcColumnDemo
@@ -62,7 +62,7 @@ namespace CreatedUtcColumnDemo
 }
 ```
 
-Now we’ll enable migrations and create a single migration to create our Products table:
+Now we'll enable migrations and create a single migration to create our Products table:
 
 ```shell
 > Enable-Migrations
@@ -153,7 +153,7 @@ namespace CreatedUtcColumnDemo.Migrations
 
 Notice how CustomSqlServerMigrationSqlGenerator inherits from SqlServerMigrationSqlGenerator and overrides two Generate(…) methods. We then set our custom generator to the default for our project via SetSqlGenerator("System.Data.SqlClient", new CustomSqlServerMigrationSqlGenerator()).
 
-Lastly, we’ll update our local database and we’re done.
+Lastly, we'll update our local database and we're done.
 
 ```shell
 > Update-Database
