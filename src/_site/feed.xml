@@ -5,9 +5,9 @@
     <description>A software development process and technology blog; a look at the tools and techniques for building better software.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 Feb 2019 17:47:59 +0300</pubDate>
-    <lastBuildDate>Sat, 02 Feb 2019 17:47:59 +0300</lastBuildDate>
-    <generator>Jekyll v3.8.5</generator>
+    <pubDate>Tue, 30 Jul 2019 08:00:36 +0200</pubDate>
+    <lastBuildDate>Tue, 30 Jul 2019 08:00:36 +0200</lastBuildDate>
+    <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>ASP.NET Core Deployment Versioning with Git and Kudu</title>
@@ -23,12 +23,12 @@
 &lt;p&gt;The first thing we’ll need to do it extend our out-of-box Kudu deployment to add a version file to our site each time a deployment completes. We can use a simple JSON file with some commit info and our deployment date:&lt;/p&gt;
 
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;DeployUtc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2017-05-10 10:21:14Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ShortHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8e879f1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;FullHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8e879f1c8a791a99a5ae40210fd5240a478f2c6c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Subject&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;some commit message here...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy Mehalick&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Email&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mehalick@gmail.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;DeployUtc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2017-05-10 10:21:14Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;ShortHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8e879f1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;FullHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;8e879f1c8a791a99a5ae40210fd5240a478f2c6c&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;Subject&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;some commit message here...&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;Name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Andy Mehalick&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;Email&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mehalick@gmail.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -38,16 +38,16 @@
 
 &lt;p&gt;To create our &lt;strong&gt;version.json&lt;/strong&gt; file we’ll add a &lt;a href=&quot;https://github.com/projectkudu/kudu/wiki/Post-Deployment-Action-Hooks&quot;&gt;post deployment action hook&lt;/a&gt; into our Kudu deployment. This is just a simple script that Kudu will know to run with each deployment. Kudu can use a variety of script types and in this case we’ll use PowerShell:&lt;/p&gt;
 
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; @&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.DeployUtc &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Get-Date&lt;/span&gt; -format u;
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.ShortHash &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; git.exe log -1 --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:%h;
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.FullHash &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; git.exe log -1 --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:%H;
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.Subject &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; git.exe log -1 --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:%s;
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.Name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; git.exe log -1 --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:%cn;
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;.Email &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; git.exe log -1 --pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;format:%ce;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;DeployUtc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-Date&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-format&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ShortHash&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;git.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;format:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;FullHash&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;git.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;format:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Subject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;git.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;format:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;git.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;format:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Email&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;git.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--pretty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;format:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
-&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;ConvertTo-Json&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;Out-File&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;D:\home\site\wwwroot\version.json&quot;&lt;/span&gt;;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ConvertTo-Json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Out-File&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;D:\home\site\wwwroot\version.json&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Our script executes git.exe in Azure and writes the details from the last commit to our JSON file. If you’d like to write more commit info to your JSON you can see what’s available via Git’s &lt;a href=&quot;https://git-scm.com/docs/pretty-formats&quot;&gt;pretty formats doc&lt;/a&gt;.&lt;/p&gt;
 
@@ -162,8 +162,8 @@
 
 &lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;version&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;application/json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; 
-        &lt;span class=&quot;s2&quot;&gt;&quot;ShortHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;@shortHash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;DeployUtc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;@deployUtc&quot;&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ShortHash&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@shortHash&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;DeployUtc&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@deployUtc&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -192,7 +192,7 @@
 
 &lt;p&gt;You can find a sample project on GitHub at &lt;a href=&quot;https://github.com/mehalick/GitAppVersion&quot;&gt;https://github.com/mehalick/GitAppVersion&lt;/a&gt; and a demo on Azure at &lt;a href=&quot;https://gitappversion.azurewebsites.net/&quot;&gt;https://gitappversion.azurewebsites.net&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 10 May 2017 00:00:00 +0300</pubDate>
+        <pubDate>Wed, 10 May 2017 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</link>
         <guid isPermaLink="true">http://localhost:4000/2017/05/10/asp-net-core-deployment-versioning-with-git-and-kudu/</guid>
         
@@ -332,7 +332,7 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
   &lt;li&gt;&lt;a href=&quot;https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-optimize-mysql-perf/&quot;&gt;Optimizing MySQL Performance on Azure Linux VMs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Mon, 18 Jan 2016 00:00:00 +0300</pubDate>
+        <pubDate>Mon, 18 Jan 2016 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</link>
         <guid isPermaLink="true">http://localhost:4000/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/</guid>
         
@@ -491,7 +491,7 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 
 &lt;p&gt;You can find the demo source code at &lt;a href=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot; title=&quot;https://github.com/andy-mehalick/CreatedUtcColumnDemo&quot;&gt;https://github.com/andy-mehalick/CreatedUtcColumnDemo&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 06 Feb 2014 00:00:00 +0300</pubDate>
+        <pubDate>Thu, 06 Feb 2014 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</link>
         <guid isPermaLink="true">http://localhost:4000/2014/02/06/ef6-adding-a-created-datetime-column-automatically-with-code-first-migrations/</guid>
         
@@ -635,7 +635,7 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 
 &lt;p&gt;For more information and a better approach to localization be sure to check out &lt;a href=&quot;https://xaki.io&quot;&gt;Xaki&lt;/a&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 07 Sep 2013 00:00:00 +0300</pubDate>
+        <pubDate>Sat, 07 Sep 2013 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</link>
         <guid isPermaLink="true">http://localhost:4000/2013/09/07/localizing-entity-framework-poco-properties-with-json-part-1/</guid>
         
@@ -699,7 +699,7 @@ mysql&amp;gt; grant all on testdb.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/profile-output-636217947831217908.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 25 May 2012 00:00:00 +0300</pubDate>
+        <pubDate>Fri, 25 May 2012 00:00:00 +0200</pubDate>
         <link>http://localhost:4000/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</link>
         <guid isPermaLink="true">http://localhost:4000/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/</guid>
         
@@ -953,7 +953,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;/table&gt;
 </description>
-        <pubDate>Tue, 28 Feb 2012 00:00:00 +0300</pubDate>
+        <pubDate>Tue, 28 Feb 2012 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/2012/02/28/tdd-code-kata/</link>
         <guid isPermaLink="true">http://localhost:4000/2012/02/28/tdd-code-kata/</guid>
         
@@ -1007,7 +1007,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;&lt;img src=&quot;https://andy.azureedge.net/blog/2012-02-22-10-24-46-pm-636217950899937804.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 22 Feb 2012 00:00:00 +0300</pubDate>
+        <pubDate>Wed, 22 Feb 2012 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/2012/02/22/hg-strip-and-transplant/</link>
         <guid isPermaLink="true">http://localhost:4000/2012/02/22/hg-strip-and-transplant/</guid>
         
@@ -1066,7 +1066,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
   &lt;li&gt;&lt;a href=&quot;https://andy.azureedge.net/blog/nunit-live-template-636217953395742482.dotsettings&quot;&gt;NUnit Test Method Live Template&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Sat, 07 Jan 2012 00:00:00 +0300</pubDate>
+        <pubDate>Sat, 07 Jan 2012 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/2012/01/07/fun-with-nunit-and-resharper-templates/</link>
         <guid isPermaLink="true">http://localhost:4000/2012/01/07/fun-with-nunit-and-resharper-templates/</guid>
         
@@ -1139,7 +1139,7 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 
 &lt;p&gt;Hgflow shouldn’t introduce any radical change to the standard source control workflow, it simply introduces a more formal vocabulary for describing branches and applies a nice model to the process. On top of that it adds a nice bit of automation and makes working with Hg even more enjoyable.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 24 Dec 2011 00:00:00 +0300</pubDate>
+        <pubDate>Sat, 24 Dec 2011 00:00:00 +0100</pubDate>
         <link>http://localhost:4000/2011/12/24/an-introduction-to-hgflow/</link>
         <guid isPermaLink="true">http://localhost:4000/2011/12/24/an-introduction-to-hgflow/</guid>
         
