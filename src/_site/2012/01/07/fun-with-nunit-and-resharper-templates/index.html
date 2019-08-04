@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head itemscope itemref="http://schema.org/Blog">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" itemprop="author" content="Andy Mehalick">
-    <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
-    <meta name="description" itemprop="description" content="About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying...">
-    <meta itemprop="name" content="Fun with NUnit and ReSharper Templates">
-    <meta itemprop="image" content="">
+    <meta name="author" content="Andy Mehalick">
+    <meta name="copyright" content="Andy Mehalick">
+    <meta name="description" content="About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying...">
     <meta property="og:title" content="Fun with NUnit and ReSharper Templates">
     <meta property="og:type" content="blog">
     <meta property="og:url" content="https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/">
@@ -25,20 +23,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
     <link rel="stylesheet" href="/css/main.css">
+    
     <script>
-        if (document.location.host === "andy.mehalick.com") {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments);
-                }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-28045940-1', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-        }
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
     </script>
+    
 </head>
 <body>  
     <nav>
@@ -64,11 +62,34 @@
                 <hr />
             </header>
             <div id="content">               
-                <article class="blog-post">
+                <script type="application/ld+json">
+{
+    "@context":"http://schema.org",
+    "@type": "BlogPosting",
+    "image": "",
+    "url": "https://andy.mehalick.com/2012/01/07/fun-with-nunit-and-resharper-templates/",
+    "headline": "Fun with NUnit and ReSharper Templates",
+    "dateCreated": "2012-01-07T00:00:00+01:00",
+    "datePublished": "2012-01-07T00:00:00+01:00",
+    "dateModified": "2012-01-07T00:00:00+01:00",
+    "inLanguage": "en-US",
+    "isFamilyFriendly": "true",
+    "copyrightYear": "2012",
+    "copyrightHolder": "Andy Mehalick",
+    "author": {
+        "@type": "Person",
+        "name": "Andy Mehalick",
+        "url": "https://andy.mehalick.com"
+    }
+}
+</script>
+
+<article class="blog-post">
     <header>
         <h1>Fun with NUnit and ReSharper Templates</h1>
-        <h2><time datetime="2012-01-07 00:00:00 +0100" pubdate>7 January 2012</time></h2>
+        <h2><time datetime="2012-01-07T00:00:00+01:00" pubdate>7 January 2012</time></h2>
     </header>
+    
     <p>About six months ago I took a fairly deep dive into test-drive development (TDD); part of that process involved gobbling up as many training resources as I could download, buying a book or two on the subject, and making a focused exploration of the tools I’m already familiar with. Always a fan of efficiency tools in general and ReSharper specifically, I looked to see how this favorite tool could help me eek out a bit more productivity with TDD and my unit test framework of choice: NUnit. Enter <a href="http://www.jetbrains.com/resharper/features/code_templates.html">ReSharper code templates</a>.</p>
 
 <p>ReSharper has three flavors of code templates and in general they allow you to new-up code files or insert code from templates, automatically filling placeholders with variables either automatically or from user input. With NUnit the two I use most are file templates for creating test fixture class files and live templates for inserting new test methods.</p>
@@ -128,16 +149,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" integrity="sha256-31Ef0tfMJHz4mcBYno6PKR2Iz5qPHPJLxIzej2AGl6c=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" integrity="sha256-v1Nxmv1+jRfdNuwdLgHXmAzZwADayhxn95rA7sJAg0c=" crossorigin="anonymous"></script>
 
-<script>
-    if (document.location.host === "andy.mehalick.com") {
-        var disqus_identifier = "2";
-        var disqus_title = "Fun with NUnit and ReSharper Templates";
-        (function () {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//andymehalick.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    }
+
+<script>  
+    var disqus_identifier = "2";
+    var disqus_title = "Fun with NUnit and ReSharper Templates";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//andymehalick.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
            
             </div>       

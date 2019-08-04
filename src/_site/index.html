@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head itemscope itemref="http://schema.org/Blog">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" itemprop="author" content="Andy Mehalick">
-    <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
-    <meta name="description" itemprop="description" content="A software development process and technology blog; a look at the tools and techniques for building better software.">
-    <meta itemprop="name" content="Andy Mehalick">
-    <meta itemprop="image" content="">
+    <meta name="author" content="Andy Mehalick">
+    <meta name="copyright" content="Andy Mehalick">
+    <meta name="description" content="A software development process and technology blog; a look at the tools and techniques for building better software.">
     <meta property="og:title" content="Andy Mehalick">
     <meta property="og:type" content="blog">
     <meta property="og:url" content="https://andy.mehalick.com/">
@@ -25,20 +23,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
     <link rel="stylesheet" href="/css/main.css">
+    
     <script>
-        if (document.location.host === "andy.mehalick.com") {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments);
-                }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-28045940-1', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-        }
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
     </script>
+    
 </head>
 <body>  
     <nav>
@@ -64,7 +62,57 @@
                 <hr />
             </header>
             <div id="content">               
-                <p>Hi I'm Andy &mdash; I'm currently the CTO of a software services company in beautiful sunny Kuwait.</p> 
+                <script type="application/ld+json">
+{
+    "@context": "http://www.schema.org",
+    "@type": "Person",
+    "@id": "https://andy.mehalick.com/#person",
+    "name": "Andy Mehalick",
+    "alternateName": "Andrew Mehalick",
+    "nationality": "American",
+    "birthPlace" : {
+        "@type": "Place",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Willimantic",
+            "addressRegion": "Connecticut",
+            "addressCountry": "US"
+        }
+    },
+    "alumniOf": [
+        {
+            "@type": "CollegeOrUniversity",
+            "name": "Pennsylvania State University"
+        },
+        {
+            "@type": "CollegeOrUniversity",
+            "name": "University at Buffalo"
+        }
+    ],
+    "gender": "Male",
+    "description": "Software Engineer",
+    "jobTitle": "Chief Technology Officer",
+    "worksFor": [
+        {
+            "@type": "Organization",
+            "name": "Bilbayt"
+        }
+    ],
+    "url": "https://andy.mehalick.com",
+    "image": "",
+    "sameAs": [
+        "https://www.linkedin.com/in/andymehalick/",
+        "https://github.com/mehalick",
+        "http://stackoverflow.com/users/98736/andy-mehalick",
+        "https://www.facebook.com/andy.mehalick",
+        "https://instagram.com/andymehalick",
+        "https://twitter.com/AndyMehalick",
+        "https://vimeo.com/andymehalick"
+    ]
+}
+</script>
+
+<p>Hi I'm Andy &mdash; I'm currently the CTO of a software services company in beautiful sunny Kuwait.</p> 
 <p>I've spent my career as a software engineer and designer and I've built and managed teams, led developer training, founded user groups, and presented at conferences.</p>
 <p>I have a passion for the elegance inherent in well-designed software solutions and the beauty that exists in the software we create. I enjoy working with and evangelizing all of the technologies and patterns that create harmony in my software development life and I enjoy sharing my experiences with others.</p> 
 <p>You'll currently find me building cloud-native software solutions with Azure and .NET Core.</p>

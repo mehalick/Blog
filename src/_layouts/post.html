@@ -2,11 +2,36 @@
 layout: default
 ---
 
+<script type="application/ld+json">
+{
+    "@context":"http://schema.org",
+    "@type": "BlogPosting",
+    "image": "{% if page.image %}{{ page.image }}{% else %}{{ site.image }}{% endif %}",
+    "url": "{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}",
+    "headline": "{{ page.title }}",
+    "dateCreated": "{{ page.date | date_to_xmlschema }}",
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{{ page.date | date_to_xmlschema }}",
+    "inLanguage": "en-US",
+    "isFamilyFriendly": "true",
+    "copyrightYear": "{{ page.date | date: "%Y"}}",
+    "copyrightHolder": "Andy Mehalick",
+    "author": {
+        "@type": "Person",
+        "name": "Andy Mehalick",
+        "url": "https://andy.mehalick.com"
+    }
+}
+</script>
+
 <article class="blog-post">
     <header>
         <h1>{{ page.title }}</h1>
-        <h2><time datetime="{{ page.date }}" pubdate>{{ page.date | date: "%-d %B %Y" }}</time></h2>
+        <h2><time datetime="{{ page.date | date_to_xmlschema }}" pubdate>{{ page.date | date: "%-d %B %Y" }}</time></h2>
     </header>
+    {% if page.image %}
+    <p class="image-lead"><img src="{{ page.image }}" alt=""></p>
+    {% endif %}
     {{ content }}
 </article>
 
@@ -17,14 +42,14 @@ layout: default
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" integrity="sha256-31Ef0tfMJHz4mcBYno6PKR2Iz5qPHPJLxIzej2AGl6c=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" integrity="sha256-v1Nxmv1+jRfdNuwdLgHXmAzZwADayhxn95rA7sJAg0c=" crossorigin="anonymous"></script>
 
-<script>
-    if (document.location.host === "andy.mehalick.com") {
-        var disqus_identifier = "{% if page.post_id %}{{ page.post_id }}{% else %}{{ page.url }}{% endif %}";
-        var disqus_title = "{{ page.title }}";
-        (function () {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//andymehalick.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    }
+{% if jekyll.environment == "production" %}
+<script>  
+    var disqus_identifier = "{% if page.post_id %}{{ page.post_id }}{% else %}{{ page.url }}{% endif %}";
+    var disqus_title = "{{ page.title }}";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//andymehalick.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
+{% endif %}

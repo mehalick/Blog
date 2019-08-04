@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head itemscope itemref="http://schema.org/Blog">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" itemprop="author" content="Andy Mehalick">
-    <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
-    <meta name="description" itemprop="description" content="DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not...">
-    <meta itemprop="name" content="Setting Up MySQL on an Azure Ubuntu VM">
-    <meta itemprop="image" content="">
+    <meta name="author" content="Andy Mehalick">
+    <meta name="copyright" content="Andy Mehalick">
+    <meta name="description" content="How to set up and configure a MySQL virtual machine in Microsoft Azure.">
     <meta property="og:title" content="Setting Up MySQL on an Azure Ubuntu VM">
     <meta property="og:type" content="blog">
     <meta property="og:url" content="https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/">
-    <meta property="og:image" content="">
+    <meta property="og:image" content="https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg">
     <meta property="og:site_name" content="Andy Mehalick">
-    <meta property="og:description" content="DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not...">
+    <meta property="og:description" content="How to set up and configure a MySQL virtual machine in Microsoft Azure.">
     <title>Setting Up MySQL on an Azure Ubuntu VM</title>
     <link rel="dns-prefetch" href="//andy.azureedge.net">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
@@ -25,20 +23,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
     <link rel="stylesheet" href="/css/main.css">
+    
     <script>
-        if (document.location.host === "andy.mehalick.com") {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments);
-                }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-28045940-1', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-        }
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
     </script>
+    
 </head>
 <body>  
     <nav>
@@ -64,14 +62,37 @@
                 <hr />
             </header>
             <div id="content">               
-                <article class="blog-post">
+                <script type="application/ld+json">
+{
+    "@context":"http://schema.org",
+    "@type": "BlogPosting",
+    "image": "https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg",
+    "url": "https://andy.mehalick.com/2016/01/18/setting-up-mysql-on-an-azure-ubuntu-vm/",
+    "headline": "Setting Up MySQL on an Azure Ubuntu VM",
+    "dateCreated": "2016-01-18T00:00:00+01:00",
+    "datePublished": "2016-01-18T00:00:00+01:00",
+    "dateModified": "2016-01-18T00:00:00+01:00",
+    "inLanguage": "en-US",
+    "isFamilyFriendly": "true",
+    "copyrightYear": "2016",
+    "copyrightHolder": "Andy Mehalick",
+    "author": {
+        "@type": "Person",
+        "name": "Andy Mehalick",
+        "url": "https://andy.mehalick.com"
+    }
+}
+</script>
+
+<article class="blog-post">
     <header>
         <h1>Setting Up MySQL on an Azure Ubuntu VM</h1>
-        <h2><time datetime="2016-01-18 00:00:00 +0100" pubdate>18 January 2016</time></h2>
+        <h2><time datetime="2016-01-18T00:00:00+01:00" pubdate>18 January 2016</time></h2>
     </header>
-    <p><img src="https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg" alt="" /></p>
-
-<p>DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck</p>
+    
+    <p class="image-lead"><img src="https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg" alt=""></p>
+    
+    <p>DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I’m not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can’t promise anything will work nor that you won’t burn your house down in the process. Good luck</p>
 
 <p>That said, the following is what I did to distance myself from ClearDB and run my own MySQL server on an Azure VM. This approach uses the new Azure Resource Manager VMs (not their “classic” VMs) and their new DSx VMs because if it’s more expensive it must be better, right? &lt;cracks knuckles&gt; Let’s get started…</p>
 
@@ -209,16 +230,15 @@ mysql&gt; grant all on testdb.<span class="k">*</span> to <span class="s1">'mysq
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" integrity="sha256-31Ef0tfMJHz4mcBYno6PKR2Iz5qPHPJLxIzej2AGl6c=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" integrity="sha256-v1Nxmv1+jRfdNuwdLgHXmAzZwADayhxn95rA7sJAg0c=" crossorigin="anonymous"></script>
 
-<script>
-    if (document.location.host === "andy.mehalick.com") {
-        var disqus_identifier = "9";
-        var disqus_title = "Setting Up MySQL on an Azure Ubuntu VM";
-        (function () {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//andymehalick.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    }
+
+<script>  
+    var disqus_identifier = "9";
+    var disqus_title = "Setting Up MySQL on an Azure Ubuntu VM";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//andymehalick.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
            
             </div>       

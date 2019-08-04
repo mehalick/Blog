@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "Setting Up MySQL on an Azure Ubuntu VM"
-date: 2016-01-18
 post_id: 9
+date: 2016-01-18
+title: "Setting Up MySQL on an Azure Ubuntu VM"
+excerpt: How to set up and configure a MySQL virtual machine in Microsoft Azure.
+image: https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg
 ---
-
-![](https://andy.azureedge.net/blog/penguin-1124649_1920-635887867308147334.jpg)
 
 DISCLAIMER: I know absolutely nothing about Linux or MySQL and the following is from hours of fat fingering an unforgiving PuTTY console with sweat, tears, and reckless abandon. I'm not sure how many search credits you get from Google but I probably used them all up trying to figure out how to do the simplest Linux tasks to get all of this working. If you follow these steps exactly I can't promise anything will work nor that you won't burn your house down in the process. Good luck
 

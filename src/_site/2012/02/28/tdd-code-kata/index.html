@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head itemscope itemref="http://schema.org/Blog">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" itemprop="author" content="Andy Mehalick">
-    <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
-    <meta name="description" itemprop="description" content="The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to...">
-    <meta itemprop="name" content="TDD Code Kata">
-    <meta itemprop="image" content="">
+    <meta name="author" content="Andy Mehalick">
+    <meta name="copyright" content="Andy Mehalick">
+    <meta name="description" content="The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to...">
     <meta property="og:title" content="TDD Code Kata">
     <meta property="og:type" content="blog">
     <meta property="og:url" content="https://andy.mehalick.com/2012/02/28/tdd-code-kata/">
@@ -25,20 +23,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
     <link rel="stylesheet" href="/css/main.css">
+    
     <script>
-        if (document.location.host === "andy.mehalick.com") {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments);
-                }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-28045940-1', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-        }
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
     </script>
+    
 </head>
 <body>  
     <nav>
@@ -64,11 +62,34 @@
                 <hr />
             </header>
             <div id="content">               
-                <article class="blog-post">
+                <script type="application/ld+json">
+{
+    "@context":"http://schema.org",
+    "@type": "BlogPosting",
+    "image": "",
+    "url": "https://andy.mehalick.com/2012/02/28/tdd-code-kata/",
+    "headline": "TDD Code Kata",
+    "dateCreated": "2012-02-28T00:00:00+01:00",
+    "datePublished": "2012-02-28T00:00:00+01:00",
+    "dateModified": "2012-02-28T00:00:00+01:00",
+    "inLanguage": "en-US",
+    "isFamilyFriendly": "true",
+    "copyrightYear": "2012",
+    "copyrightHolder": "Andy Mehalick",
+    "author": {
+        "@type": "Person",
+        "name": "Andy Mehalick",
+        "url": "https://andy.mehalick.com"
+    }
+}
+</script>
+
+<article class="blog-post">
     <header>
         <h1>TDD Code Kata</h1>
-        <h2><time datetime="2012-02-28 00:00:00 +0100" pubdate>28 February 2012</time></h2>
+        <h2><time datetime="2012-02-28T00:00:00+01:00" pubdate>28 February 2012</time></h2>
     </header>
+    
     <p>The virtues of code katas were first extolled to me at a TechEd conference several years ago but despite their apparent value I could never seem to commit myself to try them. Recently though I decided I wanted to master refactoring with ReSharper and found a perfect excuse to kick-off a month-long code kata regimen. Having taken a deep dive into TDD with <a href="https://tekpub.com/productions/tdd">Roy Osherove’s TekPub video series</a> followed by his book <a href="https://www.manning.com/osherove/">The Art of Unit Testing</a> I was aware of this <a href="https://osherove.com/tdd-kata-1">string calculator TDD kata</a> and knew that’s where I wanted to start.</p>
 
 <p>Working remotely in a +8 hour time zone made it easy to tack an extra 30 minutes onto my work day and commit to waking up my fingers and brain with a daily code kata first thing in the morning. I decided to keep a log of my progress and note any shortcuts or approaches I learned along the way. I wanted to not only exercise my TDD skills but also my efficiency with Visual Studio and ReSharper.</p>
@@ -323,16 +344,15 @@ Created NUnit PowerShell cmdlet for Install-Package NUnit; started using NCrunch
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" integrity="sha256-31Ef0tfMJHz4mcBYno6PKR2Iz5qPHPJLxIzej2AGl6c=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" integrity="sha256-v1Nxmv1+jRfdNuwdLgHXmAzZwADayhxn95rA7sJAg0c=" crossorigin="anonymous"></script>
 
-<script>
-    if (document.location.host === "andy.mehalick.com") {
-        var disqus_identifier = "4";
-        var disqus_title = "TDD Code Kata";
-        (function () {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//andymehalick.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    }
+
+<script>  
+    var disqus_identifier = "4";
+    var disqus_title = "TDD Code Kata";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//andymehalick.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
            
             </div>       

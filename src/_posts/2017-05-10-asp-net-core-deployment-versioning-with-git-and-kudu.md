@@ -4,10 +4,8 @@ post_id: 10
 date: 2017-05-10
 title: ASP.NET Core Deployment Versioning with Git and Kudu
 excerpt: How to add deployment version metadata to ASP.NET Core websites using Git, Microsoft Azure, and Kudu.
+image: https://andy.azureedge.net/blog/crab-636301801571668026.jpg
 ---
-
-{:.image-lead}
-![](https://andy.azureedge.net/blog/crab-636301801571668026.jpg)
 
 While there's no shortage of fancy and elaborate ways to add version and deployment metadata into ASP.NET apps you already have an easy option if you're using Git and Azure's Kudu deployment. With a simple script and a few extra bits added to your ASP.NET Core project you can easily add version and deployment data directly into your pages:
 

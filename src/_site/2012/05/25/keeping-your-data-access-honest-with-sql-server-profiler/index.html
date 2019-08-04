@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head itemscope itemref="http://schema.org/Blog">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" itemprop="author" content="Andy Mehalick">
-    <meta name="copyright" itemprop="copyrightHolder" content="Andy Mehalick">
-    <meta name="description" itemprop="description" content="I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and...">
-    <meta itemprop="name" content="Keeping Your Data Access Honest with SQL Server Profiler">
-    <meta itemprop="image" content="">
+    <meta name="author" content="Andy Mehalick">
+    <meta name="copyright" content="Andy Mehalick">
+    <meta name="description" content="I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and...">
     <meta property="og:title" content="Keeping Your Data Access Honest with SQL Server Profiler">
     <meta property="og:type" content="blog">
     <meta property="og:url" content="https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/">
@@ -25,20 +23,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
     <link rel="stylesheet" href="/css/main.css">
+    
     <script>
-        if (document.location.host === "andy.mehalick.com") {
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments);
-                }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
-                m.parentNode.insertBefore(a, m);
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-            ga('create', 'UA-28045940-1', 'auto');
-            ga('require', 'displayfeatures');
-            ga('send', 'pageview');
-        }
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
     </script>
+    
 </head>
 <body>  
     <nav>
@@ -64,11 +62,34 @@
                 <hr />
             </header>
             <div id="content">               
-                <article class="blog-post">
+                <script type="application/ld+json">
+{
+    "@context":"http://schema.org",
+    "@type": "BlogPosting",
+    "image": "",
+    "url": "https://andy.mehalick.com/2012/05/25/keeping-your-data-access-honest-with-sql-server-profiler/",
+    "headline": "Keeping Your Data Access Honest with SQL Server Profiler",
+    "dateCreated": "2012-05-25T00:00:00+02:00",
+    "datePublished": "2012-05-25T00:00:00+02:00",
+    "dateModified": "2012-05-25T00:00:00+02:00",
+    "inLanguage": "en-US",
+    "isFamilyFriendly": "true",
+    "copyrightYear": "2012",
+    "copyrightHolder": "Andy Mehalick",
+    "author": {
+        "@type": "Person",
+        "name": "Andy Mehalick",
+        "url": "https://andy.mehalick.com"
+    }
+}
+</script>
+
+<article class="blog-post">
     <header>
         <h1>Keeping Your Data Access Honest with SQL Server Profiler</h1>
-        <h2><time datetime="2012-05-25 00:00:00 +0200" pubdate>25 May 2012</time></h2>
+        <h2><time datetime="2012-05-25T00:00:00+02:00" pubdate>25 May 2012</time></h2>
     </header>
+    
     <p>I’ve been living in the magic forest of ORMs for a number of years and for an application developer it is truly a wonderful place. Since LINQ to SQL and later Entity Framework were introduced I can honestly say I’ve been a happier developer. Writing data access code for a new project is usually fun the first day but it gets tedious and tiring quickly. By the end of each day you’ve written hundreds of lines of code that could and should be written for you or abstracted away by magic data access fairies.</p>
 
 <p>Despite understandable skepticism from some DBAs, modern ORMs do a great job and do lower the costs of developing and maintaining software. As a bonus they make software developers happy and that’s often the secret sauce in the success of a large software project.</p>
@@ -133,16 +154,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/normalize-whitespace/prism-normalize-whitespace.min.js" integrity="sha256-31Ef0tfMJHz4mcBYno6PKR2Iz5qPHPJLxIzej2AGl6c=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/components/prism-csharp.min.js" integrity="sha256-v1Nxmv1+jRfdNuwdLgHXmAzZwADayhxn95rA7sJAg0c=" crossorigin="anonymous"></script>
 
-<script>
-    if (document.location.host === "andy.mehalick.com") {
-        var disqus_identifier = "5";
-        var disqus_title = "Keeping Your Data Access Honest with SQL Server Profiler";
-        (function () {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//andymehalick.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    }
+
+<script>  
+    var disqus_identifier = "5";
+    var disqus_title = "Keeping Your Data Access Honest with SQL Server Profiler";
+    (function () {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//andymehalick.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
            
             </div>       
