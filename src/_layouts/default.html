@@ -1,34 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-{% include head.html %}
-<body>  
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Andy Mehalick">
+    <meta name="copyright" content="Andy Mehalick">
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncatewords: 30 }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <meta property="og:image" content="{% if page.image %}{{ page.image }}{% else %}{{ site.image }}{% endif %}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncatewords: 30 }}{% else %}{{ site.description }}{% endif %}">
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <link rel="dns-prefetch" href="//andy.azureedge.net">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="https://feeds.feedburner.com/AndyMehalick">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.min.css" integrity="sha256-N1K43s+8twRa+tzzoF3V8EgssdDiZ6kd9r8Rfgg8kZU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha256-Afz2ZJtXw+OuaPX10lZHY7fN1+FuTE/KdCs+j7WZTGc=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-okaidia.min.css" integrity="sha256-+8ReLFz1xaTiP3T0xcJVWrHneeFwCnJUJwvcM0L+Ufw=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atomic+Age:400|Muli:400,700">
+    <link rel="stylesheet" href="/css/main.css">
+    {% if jekyll.environment == "production" %}
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-28045940-1', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+    </script>
+    {% endif %}
+</head>
+<body>
     <nav>
         <div class="page-width">
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/contact/">Contact</a></li>
-            </ul>        
+            </ul>
             <a id="rss" href="https://feeds.feedburner.com/AndyMehalick" title="Subscribe to RSS">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><style>.st0{fill:#F78C28;} .st1{fill:#FFFFFF;}</style><path class="st0" d="M0 0h28v28H0z"/><g><path class="st1" d="M18.2 9.8C14.4 6 9.4 3.9 4 3.9v4c4.3 0 8.4 1.7 11.4 4.7s4.7 7.1 4.7 11.4h4c0-5.4-2.1-10.4-5.9-14.2z"/><path class="st1" d="M3.9 10.6v4c5.2 0 9.5 4.2 9.5 9.5h4c0-7.5-6.1-13.5-13.5-13.5z"/><circle class="st1" cx="6.7" cy="21.3" r="2.8"/></g></svg> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                    <style>
+                        .st0 {
+                            fill: #F78C28;
+                        }
+
+                        .st1 {
+                            fill: #FFFFFF;
+                        }
+                    </style>
+                    <path class="st0" d="M0 0h28v28H0z" />
+                    <g>
+                        <path class="st1" d="M18.2 9.8C14.4 6 9.4 3.9 4 3.9v4c4.3 0 8.4 1.7 11.4 4.7s4.7 7.1 4.7 11.4h4c0-5.4-2.1-10.4-5.9-14.2z" />
+                        <path class="st1" d="M3.9 10.6v4c5.2 0 9.5 4.2 9.5 9.5h4c0-7.5-6.1-13.5-13.5-13.5z" />
+                        <circle class="st1" cx="6.7" cy="21.3" r="2.8" />
+                    </g>
+                </svg>
             </a>
             <div class="clearfix"></div>
         </div>
-    </nav>  
+    </nav>
     <main class="page-width">
         <div class="padded">
             <div id="site-photo">
-                <img src="https://andy.azureedge.net/assets/andy-mehalick-v1-280x280-635783259977684363.jpg" alt="Andy Mehalick" width="140" height="140" />
+                <img src="https://andy.azureedge.net/assets/andy-mehalick-v2-280x280-bw-637099131735023584.jpg" alt="Andy Mehalick" width="140" height="140" />
             </div>
             <header id="site-header">
                 <h1>Andy Mehalick</h1>
                 <h2>Software Architect, Engineer, UX Designer</h2>
                 <hr />
             </header>
-            <div id="content">               
-                {{ content }}           
-            </div>       
+            <div id="content">
+                {{ content }}
+            </div>
         </div>
-    </main> 
+    </main>
     <footer>
         <div class="page-width">
             Site content and theme by <a rel="author" href="https://plus.google.com/113902592100905338618">Andy Mehalick</a> | Built with <a href="http://jekyllrb.com/">Jekyll</a> on <a href="http://azure.microsoft.com/en-us/">Microsoft Azure</a>
